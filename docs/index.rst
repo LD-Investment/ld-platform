@@ -7,17 +7,19 @@ Welcome to L&D Investment Platform's documentation!
 ======================================================================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Contents:
 
-   howto
-   users
-
+   developing_locally_docker
+   settings
+   linters
+   testing
+   documents
+   deployment_docker
 
 
 Indices and tables
 ==================
 
 * :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`
