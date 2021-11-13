@@ -28,8 +28,8 @@ django.setup()
 # -- Project information -----------------------------------------------------
 
 project = "L&D Investment Platform"
-copyright = """2021, Jin J"""
-author = "Jin J"
+copyright = """2021, L&D Investment"""
+author = "L&D Developers"
 
 
 # -- General configuration ---------------------------------------------------
