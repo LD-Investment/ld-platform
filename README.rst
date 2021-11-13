@@ -25,7 +25,7 @@ Running Locally with Docker
 
 * This project is built with cookie-cutter Django. All general configuration and commands are inherited.
 
-Refer to this guides_.
+👉 Please read this guides_ thoroughly!
 
 .. _guides: https://cookiecutter-django.readthedocs.io/en/latest/developing-locally-docker.html
 
