@@ -1,0 +1,6 @@
+-r base.txt
+
+# Collector
+# ------------------------------------------------------------------------------
+aio-pika==6.8.0  # https://github.com/mosquito/aio-pika
+pymongo==3.12.0  # https://github.com/mongodb/mongo-python-driver
