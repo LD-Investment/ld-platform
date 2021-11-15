@@ -67,7 +67,7 @@ For example, if you want to build image for ``ld_platform_local_collector`` agai
 
 Alternatively, you can build with no cache option as well ::
 
-    # docker-compose -f local.yml build --no-cache
+    $ docker-compose -f local.yml build --no-cache
 
 Run the Stack
 -------------
