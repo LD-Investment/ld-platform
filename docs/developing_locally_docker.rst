@@ -27,6 +27,19 @@ Prerequisites
 Build the Stack
 ---------------
 
+Register SSH_PRIVATE_KEY
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+We use git+ssh to install CCXT Pro (private repository). If you do not have subscription to `CCXT Pro <https://ccxt.pro/>`_, please subscribe and make sure that your public key is registered to your subscribed Github Account.
+After that, please do the following before you build anything::
+
+    $ export SSH_PRIVATE_KEY=$(cat ~/.ssh/id_rsa)  // id_rsa should be the Github SSH key
+
+You may add this to your ``bashrc`` or ``zshrc`` so that you do not have to repeat whenever you try to build images.
+
+Build docker images
+~~~~~~~~~~~~~~~~~~~~~~~~
+
 This can take a while, especially the first time you run this particular command on your development system::
 
     $ docker-compose -f local.yml build
@@ -40,6 +53,21 @@ Before doing any git commit, `pre-commit`_ should be installed globally on your 
 
 Failing to do so will result with a bunch of CI and Linter errors that can be avoided with pre-commit.
 
+
+Modify docker image
+~~~~~~~~~~~~~~~~~~~~~~~~
+If you modified source code and want to build image again, you need to stop containers that are running, remove images and caches.
+For example, if you want to build image for ``ld_platform_local_collector`` again, ::
+
+    $ docker stop collector_producer            # stop container
+    $ docker rm collector_producer              # remove container
+    $ docker rmi ld_platform_local_collector    # remove image
+    $ docker system prune                       # remove cache
+    $ docker-compose -f local.yml build         # build again
+
+Alternatively, you can build with no cache option as well ::
+
+    $ docker-compose -f local.yml build --no-cache
 
 Run the Stack
 -------------

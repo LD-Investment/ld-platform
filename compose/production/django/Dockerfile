@@ -9,21 +9,33 @@ FROM python:${PYTHON_VERSION} as python
 FROM python as python-build-stage
 
 ARG BUILD_ENVIRONMENT=production
+ARG SSH_PRIVATE_KEY
 
 # Install apt packages
 RUN apt-get update && apt-get install --no-install-recommends -y \
   # dependencies for building Python packages
   build-essential \
   # psycopg2 dependencies
-  libpq-dev
+  libpq-dev \
+  # git ssh
+  ssh git
+
+# Add credentials on build
+RUN mkdir -p /root/.ssh && \
+    chmod 0700 /root/.ssh
+RUN ssh-keyscan github.com > /root/.ssh/known_hosts
+RUN echo "${SSH_PRIVATE_KEY}" > /root/.ssh/id_rsa && \
+    chmod 600 /root/.ssh/id_rsa
 
 # Requirements are installed here to ensure they will be cached.
-COPY ./requirements .
+COPY ./requirements/django .
 
 # Create Python Dependency and Sub-Dependency Wheels.
 RUN pip wheel --wheel-dir /usr/src/app/wheels  \
   -r ${BUILD_ENVIRONMENT}.txt
 
+# Remove SSH keys
+RUN rm -rf /root/.ssh/
 
 # Python 'run' stage
 FROM python as python-run-stage

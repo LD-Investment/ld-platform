@@ -26,11 +26,11 @@ RUN echo "${SSH_PRIVATE_KEY}" > /root/.ssh/id_rsa && \
     chmod 600 /root/.ssh/id_rsa
 
 # Requirements are installed here to ensure they will be cached.
-COPY ./requirements/django .
+COPY ./requirements/collector .
 
-# Create Python Dependency and Sub-Dependency Wheels.
-RUN pip wheel --wheel-dir /usr/src/app/wheels  \
-  -r ${BUILD_ENVIRONMENT}.txt
+# Create Python Dependency
+RUN pip wheel --wheel-dir /usr/src/app/wheels \
+    -r ${BUILD_ENVIRONMENT}.txt
 
 # Remove SSH keys
 RUN rm -rf /root/.ssh/
@@ -48,11 +48,7 @@ ENV BUILD_ENV ${BUILD_ENVIRONMENT}
 WORKDIR ${APP_HOME}
 
 # Install required system dependencies
-RUN apt-get update && apt-get install --no-install-recommends -y \
-  # psycopg2 dependencies
-  libpq-dev \
-  # Translations dependencies
-  gettext \
+RUN apt-get update \
   # cleaning up unused files
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && rm -rf /var/lib/apt/lists/*
@@ -65,29 +61,13 @@ COPY --from=python-build-stage /usr/src/app/wheels  /wheels/
 RUN pip install --no-cache-dir --no-index --find-links=/wheels/ /wheels/* \
 	&& rm -rf /wheels/
 
-COPY ./compose/production/django/entrypoint /entrypoint
-RUN sed -i 's/\r$//g' /entrypoint
-RUN chmod +x /entrypoint
+COPY ./compose/local/collector/rmq/producer/start /start-producer
+RUN sed -i 's/\r$//g' /start-producer
+RUN chmod +x /start-producer
 
-COPY ./compose/local/django/start /start
-RUN sed -i 's/\r$//g' /start
-RUN chmod +x /start
-
-
-COPY ./compose/local/django/celery/worker/start /start-celeryworker
-RUN sed -i 's/\r$//g' /start-celeryworker
-RUN chmod +x /start-celeryworker
-
-COPY ./compose/local/django/celery/beat/start /start-celerybeat
-RUN sed -i 's/\r$//g' /start-celerybeat
-RUN chmod +x /start-celerybeat
-
-COPY ./compose/local/django/celery/flower/start /start-flower
-RUN sed -i 's/\r$//g' /start-flower
-RUN chmod +x /start-flower
-
+COPY ./compose/local/collector/rmq/consumer/start /start-consumer
+RUN sed -i 's/\r$//g' /start-consumer
+RUN chmod +x /start-consumer
 
 # copy application code to WORKDIR
-COPY . ${APP_HOME}
-
-ENTRYPOINT ["/entrypoint"]
+COPY ./collector ${APP_HOME}

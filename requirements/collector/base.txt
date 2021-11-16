@@ -1,0 +1,3 @@
+# CCXT
+ccxt    # https://github.com/ccxt/ccxt (keep this up-to-date)
+ccxtpro @ git+ssh://git@github.com/kroitor/ccxt.pro.git#subdirectory=python
