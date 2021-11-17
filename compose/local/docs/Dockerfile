@@ -22,7 +22,7 @@ RUN apt-get update \
 # Requirements are installed here to ensure they will be cached.
 COPY ./requirements/docs .
 # All imports needed for autodoc.
-RUN pip install -r local.txt -r production.txt
+RUN pip install -r base.txt
 
 COPY ./compose/local/docs/start /start-docs
 RUN sed -i 's/\r$//g' /start-docs
