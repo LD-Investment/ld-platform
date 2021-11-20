@@ -23,6 +23,41 @@ Edit the ``docs`` files and project application docstrings to create your docume
 Sphinx can automatically include class and function signatures and docstrings in generated documentation.
 See the generated project documentation for more examples.
 
+Drawing Diagram
+----------------------------
+
+We use `sphinx-contrib/kroki`_ to produce various diagram in Sphinx framework.
+Just create whatever diagram you want in any ``.rst`` file like below. ::
+
+    .. kroki::
+        :caption: I am an example!
+        :type: plantuml
+
+        @startuml
+        Alice -> Bob: Authentication Request
+        Bob --> Alice: Authentication Response
+
+        Alice -> Bob: Another authentication Request
+        Alice <-- Bob: Another authentication Response
+        @enduml
+
+
+This will produce diagram like below.
+
+.. kroki::
+    :caption: I am an example!
+    :type: plantuml
+
+    @startuml
+    Alice -> Bob: Authentication Request
+    Bob --> Alice: Authentication Response
+
+    Alice -> Bob: Another authentication Request
+    Alice <-- Bob: Another authentication Response
+    @enduml
+
+Make sure you change ``type`` of diagram and write code accordingly. You may refer `Kroki use-cases`_ example for this.
+
 Setting up ReadTheDocs
 ----------------------
 
@@ -38,5 +73,7 @@ Additionally, you can auto-build Pull Request previews, but `you must enable it`
 .. _Sphinx: https://www.sphinx-doc.org/en/master/index.html
 .. _develop locally: ./developing-locally.html
 .. _develop locally with docker: ./developing-locally-docker.html
+.. _sphinx-contrib/kroki: https://github.com/sphinx-contrib/kroki
+.. _Kroki use-cases: https://kroki.io/examples.html#use-case
 .. _ReadTheDocs: https://readthedocs.org/
 .. _you must enable it: https://docs.readthedocs.io/en/latest/guides/autobuild-docs-for-pull-requests.html#autobuild-documentation-for-pull-requests
