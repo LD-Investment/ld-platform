@@ -58,9 +58,9 @@ Once user selects the bot, it should show the number of subscription by others, 
 Email notification of subscribe/unsubscribe event should be enabled, payment/cancellation system should also be considered and implemented.
 
 .. note::
-    In the future, we are planning to run this investment platform on top of ``De-Fi Blockchain``
+    In the future, we are planning to run this investment platform on top of **De-Fi Blockchain**
     so that any investment information like subscription fee, distribution of yields of funds, status of orders placed
-    will be trustlessly operated. Also payment system will be corporated into this blockchain system as well.
+    will be trustlessly operated. Also payment system will be integrated into this blockchain smart-contract as well.
 
 Settings
 ~~~~~~~~~~~~~~~
@@ -78,10 +78,17 @@ there are many settings that are bind to these bots. Settings may include the le
 rebalancing period, minimum amount of order per trade, take profit price, stop loss price etc. These default settings per
 bots should be persisted and user - who subscribed a bot and launched it - should be able to change settings for their own needs.
 
-Control/Management
-~~~~~~~~~~~~~~
+This is the one of example we should take into account.
 
-After successful subscribed to the bot, user will be able to control bot. **Control of Bot** can vary depending on types of bots.
+- Run type
+    - Simulation : Run simulation by given range of time.
+    - Dry-run : Run in real-time but do not actually place order.
+    - Live-run : Run in real-time with actual order.
+
+Control/Management
+~~~~~~~~~~~~~~~~~~~~~~
+
+After successfully subscribed to the bot, user will be able to control bot. **Control of Bot** can vary depending on types of bots.
 Basic control bot bots can be categorized as follows.
 
 - Automated Bot
@@ -110,7 +117,7 @@ Basic control bot bots can be categorized as follows.
 
 
 Monitoring/Report
-~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 User may wonder about the performance of bot - how much did the bot each earn and what is the accumulated yield of my
 subscribed bots?
@@ -129,79 +136,128 @@ Please refer `BurntSushi ERD`_ to know how to draw ERD using kroki tool.
 
     # Entities
 
-    [player] {bgcolor: "#d0e0d0"}
-      *player_id {label: "varchar, not null"}
-      full_name {label: "varchar, null"}
-      team {label: "varchar, not null"}
-      position {label: "player_pos, not null"}
-      status {label: "player_status, not null"}
+    [user] {bgcolor: "#e0e0e0"}
+      *id {label: "smallint, not null"}
+      email {label: "varchar, not null"}
+      password {label: "varchar, not null"}
+      +exchange_setting_id {label: "smallint, null"}
 
-    [team] {bgcolor: "#d0e0d0"}
-      *team_id {label: "varchar, not null"}
-      city {label: "varchar, not null"}
+    [exchange_setting] {bgcolor: "#e0e0e0"}
+      *id {label: "smallint, not null"}
       name {label: "varchar, not null"}
+      api_key {label: "varchar, not null"}
+      api_secret {label: "varchar, not null"}
 
-    [game] {bgcolor: "#ececfc"}
-      *gsis_id {label: "gameid, not null"}
-      start_time {label: "utctime, not null"}
-      week {label: "usmallint, not null"}
-      season_year {label: "usmallint, not null"}
-      season_type {label: "season_phase, not null"}
-      finished {label: "boolean, not null"}
-      home_team {label: "varchar, not null"}
-      home_score {label: "usmallint, not null"}
-      away_team {label: "varchar, not null"}
-      away_score {label: "usmallint, not null"}
+    [subscription] {bgcolor: "#ececfc"}
+      *id {label: "smallint, not null"}
+      +user_id {label: "smallint, not null"}
+      +bot_id {label: "smallint, not null"}
+      start_date {label: "utctime, not null"}
+      end_date {label: "utctime, not null"}
 
-    [drive] {bgcolor: "#ececfc"}
-      *+gsis_id {label: "gameid, not null"}
-      *drive_id {label: "usmallint, not null"}
-      start_field {label: "field_pos, null"}
-      start_time {label: "game_time, not null"}
-      end_field {label: "field_pos, null"}
-      end_time {label: "game_time, not null"}
-      pos_team {label: "varchar, not null"}
-      pos_time {label: "pos_period, null"}
+    [user_bot] {bgcolor: "#ececfc"}
+      *id {label: "smallint, not null"}
+      +user_id {label: "smallint, not null"}
+      +subscription_id {label: "smallint, not null"}
+      +bot_id {label: "smallint, not null"}
+      status {label: "varchar, not null"}
+      run_type {label: "varchar, not null"}
+      setting {label: "json, not null"}
 
-    [play] {bgcolor: "#ececfc"}
-      *+gsis_id {label: "gameid, not null"}
-      *+drive_id {label: "usmallint, not null"}
-      *play_id {label: "usmallint, not null"}
-      time {label: "game_time, not null"}
-      pos_team {label: "varchar, not null"}
-      yardline {label: "field_pos, null"}
-      down {label: "smallint, null"}
-      yards_to_go {label: "smallint, null"}
+    [bot] {bgcolor: "#ececfc"}
+      *id {label: "smallint, not null"}
+      type {label: "varchar, not null"}
+      name {label: "varchar, not null"}
+      version {label: "varchar, not null"}
+      default_setting {label: "json, not null"}
+      is_private {label: "boolean, not null"}
 
-    [play_player] {bgcolor: "#ececfc"}
-      *+gsis_id {label: "gameid, not null"}
-      *+drive_id {label: "usmallint, not null"}
-      *+play_id {label: "usmallint, not null"}
-      *+player_id {label: "varchar, not null"}
-      team {label: "varchar, not null"}
+    [trade] {bgcolor: "#fcecec"}
+      *id {label: "int, not null"}
+      +bot_id {label: "smallint, not null"}
+      exchange {label: "varchar, not null"}
+      pair {label: "varchar, not null"}
+      is_open {label: "boolean, not null"}
+      stop_loss {label: "float, null"}
+      take_profit {label: "float, null"}
 
-    [meta] {bgcolor: "#fcecec"}
-      version {label: "smallint, null"}
-      season_type {label: "season_phase, null"}
-      season_year {label: "usmallint, null"}
-      week {label: "usmallint, null"}
+    [order] {bgcolor: "#fcecec"}
+      *id {label: "int, not null"}
+      +trade_id {label: "int, not null"}
+      status {label: "varchar, not null"}
+      symbol {label: "varchar, not null"}
+      order_type {label: "varchar, not null"}
+      side {label: "varchar, not null"}
+      price {label: "float, not null"}
+      average {label: "float, not null"}
+      amount {label: "float, not null"}
+      filled {label: "float, null"}
+      remaining {label: "float, null"}
+      cost {label: "float, null"}
+      order_date {label: "utctime, not null"}
+      order_filled_date {label: "utctime, null"}
+      order_update_date {label: "utctime, null"}
 
-    # Relationships
+    [user_open_trade] {bgcolor: "#fcecec"}
+      *id {label: "int, not null"}
+      +user_id {label: "smallint, not null"}
+      +trade_id {label: "int, not null"}
 
-    player      *--1 team
-    game        *--1 team {label: "home"}
-    game        *--1 team {label: "away"}
-    drive       *--1 team
-    play        *--1 team
-    play_player *--1 team
+    # Relations
 
-    game        1--* drive
-    game        1--* play
-    game        1--* play_player
+    user                1--* exchange_setting
+    user                1--* subscription
+    user                1--* user_bot
+    subscription        1--* user_bot
+    bot                 1--* user_bot
+    user_bot            ?--* trade
+    trade               1--* order
+    user                1--* user_open_trade
+    trade               1--* user_open_trade
 
-    drive       1--* play
-    drive       1--* play_player
+Django app structure
+-------------------------
 
-    play        1--* play_player
+Before designing REST API URLs, need to define how we will structure Django Applications.
 
-    player      1--* play_player
+.. note::
+    Applications include some combination of models, views, templates, template tags, static files, URLs, middleware, etc.
+
+Please read and understand this `official django documentation`_ before commencing. This `discussion threads`_ is also helpful.
+
+.. _`official django documentation`: https://docs.djangoproject.com/en/4.0/ref/applications/
+.. _discussion threads: https://forum.djangoproject.com/t/why-do-we-need-apps/827/3
+
+
+Applications
+~~~~~~~~~~~~~~~~~~~
+
+We can divide into 4 django applications mainly. Since cookie-cutter already setup app for ``Users``, we may extend this
+structure and create rest 3 applications and integrate to root router and django setting.
+
+1. **Users**
+  - Sign up, Login in/out
+  - Registration/update/deletion of exchange api/secret
+  - Editing of user specific information (password, nickname etc)
+
+2. **Subscription**
+  - Payment/initiation of subscription
+  - Resuming/cancelling of subscription
+  - Checking status of subscription
+
+3. **BotManagement**
+  - Running/stopping bot (of which subscription is active)
+  - Selecting run type of bot (Simulation/Dry-run/Live-run)
+  - Checking user's exchange info (validity of api key, check wallet etc)
+  - Basic control of bot (RUN/STOP)
+  - Editing bot specific settings (dynamic application to the bot)
+  - Bot monitoring (real-time status, yields, recent history of trades/orders)
+  - Bot reporting (aggregated yields, fees, comparison with other models etc)
+
+4. **DataDownloader (internal usage)**
+  - Selecting time range and downloading from collector DB
+  - Processing data into specific format (OHLVC, 5 min OB etc)
+
+5. **Notification**
+  - Sending message from django apps via Email, Telegram, KakaoTalk etc
+  - Handling queuing/sending/retrial of messages
