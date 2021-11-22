@@ -50,10 +50,11 @@ displayed in L&D Platform UI or can be pushed to various mediums like Telegram, 
 
 
 
-Subscription
+Funds & Subscription
 ~~~~~~~~~~~~~~~
 
-To use L&D Bots, user should subscribe to it. The service flow should be like; users see the list of currently operated bots, their track records, simulation result, subscription fee etc.
+To use L&D Bots, user should subscribe to funds that compose of several bots. The service flow should be like; users see the list of currently operated funds,
+their track records, simulation result, subscription fee etc.
 Once user selects the bot, it should show the number of subscription by others, detailed information about the models and strategies etc.
 Email notification of subscribe/unsubscribe event should be enabled, payment/cancellation system should also be considered and implemented.
 
@@ -140,37 +141,36 @@ Please refer `BurntSushi ERD`_ to know how to draw ERD using kroki tool.
       *id {label: "smallint, not null"}
       email {label: "varchar, not null"}
       password {label: "varchar, not null"}
-      +exchange_setting_id {label: "smallint, null"}
 
     [exchange_setting] {bgcolor: "#e0e0e0"}
       *id {label: "smallint, not null"}
+      +user_id {label: "smallint, not null"}
       name {label: "varchar, not null"}
       api_key {label: "varchar, not null"}
       api_secret {label: "varchar, not null"}
 
-    [subscription] {bgcolor: "#ececfc"}
+    [user_fund] {bgcolor: "#e0e0e0"}
       *id {label: "smallint, not null"}
       +user_id {label: "smallint, not null"}
-      +bot_id {label: "smallint, not null"}
-      start_date {label: "utctime, not null"}
-      end_date {label: "utctime, not null"}
-
-    [user_bot] {bgcolor: "#ececfc"}
-      *id {label: "smallint, not null"}
-      +user_id {label: "smallint, not null"}
-      +subscription_id {label: "smallint, not null"}
-      +bot_id {label: "smallint, not null"}
+      +fund_id {label: "smallint, not null"}
       status {label: "varchar, not null"}
       run_type {label: "varchar, not null"}
       setting {label: "json, not null"}
+      subscription_start_date {label: "utctime, not null"}
+      subscription_end_date {label: "utctime, not null"}
+
+    [fund] {bgcolor: "#ececfc"}
+      *id {label: "smallint, not null"}
+      name {label: "varchar, not null"}
+      is_private {label: "boolean, not null"}
 
     [bot] {bgcolor: "#ececfc"}
       *id {label: "smallint, not null"}
+      +fund_id {label: "smallint, not null"}
       type {label: "varchar, not null"}
       name {label: "varchar, not null"}
       version {label: "varchar, not null"}
       default_setting {label: "json, not null"}
-      is_private {label: "boolean, not null"}
 
     [trade] {bgcolor: "#fcecec"}
       *id {label: "int, not null"}
@@ -186,7 +186,6 @@ Please refer `BurntSushi ERD`_ to know how to draw ERD using kroki tool.
       +trade_id {label: "int, not null"}
       status {label: "varchar, not null"}
       symbol {label: "varchar, not null"}
-      order_type {label: "varchar, not null"}
       side {label: "varchar, not null"}
       price {label: "float, not null"}
       average {label: "float, not null"}
@@ -194,26 +193,15 @@ Please refer `BurntSushi ERD`_ to know how to draw ERD using kroki tool.
       filled {label: "float, null"}
       remaining {label: "float, null"}
       cost {label: "float, null"}
-      order_date {label: "utctime, not null"}
-      order_filled_date {label: "utctime, null"}
-      order_update_date {label: "utctime, null"}
-
-    [user_open_trade] {bgcolor: "#fcecec"}
-      *id {label: "int, not null"}
-      +user_id {label: "smallint, not null"}
-      +trade_id {label: "int, not null"}
 
     # Relations
 
     user                1--* exchange_setting
-    user                1--* subscription
-    user                1--* user_bot
-    subscription        1--* user_bot
-    bot                 1--* user_bot
-    user_bot            ?--* trade
+    user                1--* user_fund
+    fund                1--* user_fund
+    fund                1--+ bot
+    bot                 ?--* trade
     trade               1--* order
-    user                1--* user_open_trade
-    trade               1--* user_open_trade
 
 Django app structure
 -------------------------
@@ -235,17 +223,17 @@ Applications
 We can divide into 4 django applications mainly. Since cookie-cutter already setup app for ``Users``, we may extend this
 structure and create rest 3 applications and integrate to root router and django setting.
 
-1. **Users**
+1. **[P0] Users**
   - Sign up, Login in/out
   - Registration/update/deletion of exchange api/secret
   - Editing of user specific information (password, nickname etc)
 
-2. **Subscription**
-  - Payment/initiation of subscription
-  - Resuming/cancelling of subscription
-  - Checking status of subscription
+2. **[P1] Funds**
+  - Payment/initiation of fund and its subscription
+  - Resuming/cancelling of fund subscription
+  - Checking status of fund subscription
 
-3. **BotManagement**
+3. **[P0] BotManagement**
   - Running/stopping bot (of which subscription is active)
   - Selecting run type of bot (Simulation/Dry-run/Live-run)
   - Checking user's exchange info (validity of api key, check wallet etc)
@@ -254,10 +242,15 @@ structure and create rest 3 applications and integrate to root router and django
   - Bot monitoring (real-time status, yields, recent history of trades/orders)
   - Bot reporting (aggregated yields, fees, comparison with other models etc)
 
-4. **DataDownloader (internal usage)**
+4. **[P3] Payment**
+  - Should be able to use various payment vendors like VISA, MASTERCARD etc
+  - De-fi based payment system should be enabled in the future
+
+5. **[P4] DataWarehouse**
   - Selecting time range and downloading from collector DB
   - Processing data into specific format (OHLVC, 5 min OB etc)
+  - Can be exposed to external so that it can earn money as well
 
-5. **Notification**
+6. **[P2] Notification**
   - Sending message from django apps via Email, Telegram, KakaoTalk etc
   - Handling queuing/sending/retrial of messages
