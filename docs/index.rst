@@ -16,6 +16,7 @@ Welcome to L&D Investment Platform's documentation!
    testing
    documents
    deployment_docker
+   architecture
 
 
 Indices and tables
