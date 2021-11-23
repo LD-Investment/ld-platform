@@ -64,14 +64,11 @@ DJANGO_APPS = [
     "django.forms",
 ]
 THIRD_PARTY_APPS = [
-    "crispy_forms",
-    "crispy_bootstrap5",
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
     "django_celery_beat",
     "rest_framework",
-    "rest_framework.authtoken",
     "corsheaders",
 ]
 
@@ -99,7 +96,7 @@ AUTH_USER_MODEL = "users.User"
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-redirect-url
 LOGIN_REDIRECT_URL = "users:redirect"
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-url
-LOGIN_URL = "account_login"
+LOGIN_URL = "api:account_login"
 
 # PASSWORDS
 # ------------------------------------------------------------------------------
@@ -144,7 +141,7 @@ STATIC_ROOT = str(ROOT_DIR / "staticfiles")
 # https://docs.djangoproject.com/en/dev/ref/settings/#static-url
 STATIC_URL = "/static/"
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
-STATICFILES_DIRS = [str(APPS_DIR / "static")]
+STATICFILES_DIRS = []
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
