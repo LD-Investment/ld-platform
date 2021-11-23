@@ -11,14 +11,8 @@ else:
 
 router.register("users", UserViewSet)
 
-
 app_name = "api"
-urlpatterns = router.urls
-
-# Your custom urls for API go here
-urlpatterns += [
-    # User management
-    # TODO: below is just example.
-    path("users/", include("ld_platform.users.urls", namespace="users")),
+urlpatterns = [
     path("accounts/", include("allauth.urls")),
 ]
+urlpatterns += router.urls
