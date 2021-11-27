@@ -149,10 +149,10 @@ Please refer `BurntSushi ERD`_ to know how to draw ERD using kroki tool.
       api_key {label: "varchar, not null"}
       api_secret {label: "varchar, not null"}
 
-    [user_fund] {bgcolor: "#e0e0e0"}
+    [user_subscription] {bgcolor: "#d1fff9"}
       *id {label: "smallint, not null"}
       +user_id {label: "smallint, not null"}
-      +fund_id {label: "smallint, not null"}
+      +subscription_id {label: "smallint, not null"}
       status {label: "varchar, not null"}
       run_type {label: "varchar, not null"}
       setting {label: "json, not null"}
@@ -171,6 +171,11 @@ Please refer `BurntSushi ERD`_ to know how to draw ERD using kroki tool.
       name {label: "varchar, not null"}
       version {label: "varchar, not null"}
       default_setting {label: "json, not null"}
+
+    [subscription] {bgcolor: "#d1fff9"}
+      *id {label: "smallint, not null"}
+      +fund_id {label: "smallint, not null"}
+      +bot_id {label: "smallint, not null"}
 
     [trade] {bgcolor: "#fcecec"}
       *id {label: "int, not null"}
@@ -197,9 +202,10 @@ Please refer `BurntSushi ERD`_ to know how to draw ERD using kroki tool.
     # Relations
 
     user                1--* exchange_setting
-    user                1--* user_fund
-    fund                1--* user_fund
-    fund                1--+ bot
+    user                1--* user_subscription
+    subscription        1--* user_subscription
+    fund                1--+ subscription
+    bot                 1--+ subscription
     bot                 ?--* trade
     trade               1--* order
 
