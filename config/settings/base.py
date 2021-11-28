@@ -76,7 +76,6 @@ LOCAL_APPS = [
     "ld_platform.users.apps.UsersConfig",
     "ld_platform.funds.apps.FundsConfig",
     "ld_platform.bots.apps.BotsConfig",
-    "ld_platform.bot_controls.apps.BotControlsConfig",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps

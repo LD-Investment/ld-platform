@@ -5,7 +5,7 @@ from ld_platform.bots.models import Bot
 
 
 class BotFactory(DjangoModelFactory):
-    name = Faker("bot_name")
+    name = Faker("sentence", nb_words=4)
 
     class Meta:
         model = Bot

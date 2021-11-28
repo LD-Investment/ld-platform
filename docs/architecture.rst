@@ -239,7 +239,7 @@ structure and create rest 3 applications and integrate to root router and django
   - Resuming/cancelling of fund subscription
   - Checking status of fund subscription
 
-3. **[P0] BotManagement**
+3. **[P0] Bots**
   - Running/stopping bot (of which subscription is active)
   - Selecting run type of bot (Simulation/Dry-run/Live-run)
   - Checking user's exchange info (validity of api key, check wallet etc)

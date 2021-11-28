@@ -5,7 +5,7 @@ from ld_platform.funds.models import Fund
 
 
 class FundFactory(DjangoModelFactory):
-    name = Faker("fund_name")
+    name = Faker("sentence", nb_words=4)
 
     class Meta:
         model = Fund
