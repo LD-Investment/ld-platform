@@ -2,17 +2,16 @@ from django.conf import settings
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter, SimpleRouter
 
-from ld_platform.users.api.views import UserViewSet
-
 if settings.DEBUG:
     router = DefaultRouter()
 else:
     router = SimpleRouter()
 
-router.register("users", UserViewSet)
-
 app_name = "api"
 urlpatterns = [
-    path("accounts/", include("allauth.urls")),
+    path("auth/", include("allauth.urls")),
+    path("users/", include("ld_platform.users.urls")),
+    path("funds/", include("ld_platform.funds.urls")),
+    path("bots/", include("ld_platform.bots.urls")),
 ]
 urlpatterns += router.urls
