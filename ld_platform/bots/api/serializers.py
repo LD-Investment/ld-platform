@@ -10,4 +10,4 @@ class BotSerializer(serializers.ModelSerializer):
 
 
 class BotControlCommandSerializer(serializers.Serializer):
-    command = serializers.CharField()
+    command = serializers.ChoiceField(Bot.CommandChoices)

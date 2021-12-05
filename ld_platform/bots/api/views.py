@@ -1,7 +1,8 @@
 import logging
 from typing import Any
 
-from rest_framework import status
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework import permissions, status, viewsets
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, UpdateModelMixin
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -34,22 +35,50 @@ class BotViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericVi
 ########################
 
 
-class BotControlCommandViewSet(GenericViewSet):
+class BotControlCommandViewSet(viewsets.GenericViewSet):
+    queryset = Bot.objects.all()
     serializer_class = BotControlCommandSerializer
+    permission_classes = [permissions.AllowAny]
 
+    @swagger_auto_schema(responses={200: "success", 406: "invalid payload"})
     def command(self, request: Request, *args: Any, **kwargs: Any) -> Response:
+        # bot = self.get_object()
         serializer = self.get_serializer(data=request.data)
         if not serializer.is_valid():
-            raise PermissionError
+            return Response(
+                data={
+                    "code": 406,
+                    "detail": f"invalid payload: {request.data}",
+                },
+                status=status.HTTP_406_NOT_ACCEPTABLE,
+            )
 
-        logger.info("data: ", serializer.data)
-        logger.info("hihi")
-        return Response(data="success", status=status.HTTP_200_OK)
+        # parse and execute command
+        command = serializer.data["command"]
+        if command == Bot.CommandChoices.START:
+            # TODO(@jin)
+            #  Bot instance should be initiated and saved into memory. Whenever user sends command, should
+            #  be able to react in quick manner.
+            print("hi")
+
+        elif command == Bot.CommandChoices.STOP:
+            # TODO(@jin)
+            print("bye")
+
+        return Response(
+            data={
+                "code": 200,
+                "detail": "success",
+            },
+            status=status.HTTP_200_OK,
+        )
 
 
 class BotControlSettingViewSet(RetrieveModelMixin, UpdateModelMixin, GenericViewSet):
-    def get_setting(self):
+    serializer_class = BotControlCommandSerializer
+
+    def retrieve(self, request: Request, *args: Any, **kwargs: Any) -> Response:
         pass
 
-    def update_setting(self):
+    def update(self, request: Request, *args: Any, **kwargs: Any) -> Response:
         pass
