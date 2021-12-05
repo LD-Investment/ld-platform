@@ -11,7 +11,6 @@ app_name = "api"
 urlpatterns = [
     path("auth/", include("allauth.urls")),
     path("users/", include("ld_platform.users.urls")),
-    path("funds/", include("ld_platform.funds.urls")),
     path("bots/", include("ld_platform.bots.urls")),
 ]
 urlpatterns += router.urls
