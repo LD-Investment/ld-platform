@@ -116,6 +116,18 @@ When ``DEBUG`` is set to ``True``, the host is validated against ``['localhost',
 
 .. _envs:
 
+
+Check Swagger and Redoc while developing API
+--------------------------------------------------------
+We use swagger & redoc as a tool for designing, documenting and collaborating on L&D Platform APIs. This is only applied to local development setting.
+
+Navigate to http://127.0.0.1:8000/swagger for Swagger page and http://127.0.0.1:8000/redoc for Redoc page.
+
+Please refer `django-yasg`_ for more info.
+
+.. _`django-yasg`: https://drf-yasg.readthedocs.io/en/stable/readme.html
+
+
 Configuring the Environment
 ---------------------------
 
