@@ -31,7 +31,7 @@ class Bot(models.Model):
         )
 
 
-class UserSubscribedBot(models.Model):
+class SubscribedBot(models.Model):
     class CommandChoices(models.TextChoices):
         START = "start", _("Start the bot")
         STOP = "stop", _("Stop the bot")
@@ -54,7 +54,7 @@ class UserSubscribedBot(models.Model):
     run_type = models.CharField(
         max_length=4, choices=RunTypeChoices.choices, default=RunTypeChoices.LIVE_RUN
     )
-    user_bot_settings = models.JSONField(default=dict)
+    user_bot_settings = models.JSONField(default=dict, null=True, blank=True)
     # TODO: for now, just leave it as null
     subscribe_start_date = models.DateTimeField(null=True)
     subscribe_end_date = models.DateTimeField(null=True)

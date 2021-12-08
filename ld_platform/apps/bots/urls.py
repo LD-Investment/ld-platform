@@ -27,6 +27,14 @@ urlpatterns = [
     path("", bot_list, name="bot-list"),
     path("<int:pk>/", bot_detail, name="bot-detail"),
     # Bot Control
-    path("control/bot/<int:pk>/command", bot_command, name="bot-control-command"),
-    path("control/bot/<int:pk>/setting", bot_setting, name="bot-control-setting"),
+    path(
+        "control/subscribed_bot/<int:pk>/command",
+        bot_command,
+        name="bot-control-command",
+    ),
+    path(
+        "control/subscribed_bot/<int:pk>/setting",
+        bot_setting,
+        name="bot-control-setting",
+    ),
 ]

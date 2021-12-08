@@ -16,8 +16,8 @@ import logging
 from abc import ABC, abstractmethod
 
 from ld_platform.apps.bots.models import Bot
-from ld_platform.apps.users.models import UserExchangeSetting
 from ld_platform.mixins.logging_mixins import LoggingMixin
+from ld_platform.resolver import CompiledBotSetting
 
 
 class IBot(ABC, LoggingMixin):
@@ -32,8 +32,8 @@ class IBot(ABC, LoggingMixin):
     NAME: str
     TYPE: Bot.TypeChoices
 
-    def __init__(self, setting: UserExchangeSetting, logger: logging.Logger):
-        self._setting = setting
+    def __init__(self, bot_setting: CompiledBotSetting, logger: logging.Logger):
+        self._bot_setting = bot_setting
         LoggingMixin.__init__(self, logger)
 
     @abstractmethod

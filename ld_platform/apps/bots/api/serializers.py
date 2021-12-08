@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from ld_platform.apps.bots.models import Bot, UserSubscribedBot
+from ld_platform.apps.bots.models import Bot, SubscribedBot
 
 
 class BotSerializer(serializers.ModelSerializer):
@@ -10,4 +10,4 @@ class BotSerializer(serializers.ModelSerializer):
 
 
 class BotControlCommandSerializer(serializers.Serializer):
-    command = serializers.ChoiceField(UserSubscribedBot.CommandChoices)
+    command = serializers.ChoiceField(SubscribedBot.CommandChoices)

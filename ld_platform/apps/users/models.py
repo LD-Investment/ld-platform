@@ -23,7 +23,7 @@ class User(AbstractUser):
 
 
 class UserExchangeSetting(models.Model):
-    name = models.CharField(blank=False, max_length=255)
+    exchange_name = models.CharField(blank=False, max_length=255)
     user = models.ForeignKey(User, on_delete=models.PROTECT)
     # TODO: Encrypt below fields. Consider using something like this.
     #   https://pypi.org/project/django-encrypted-model-fields/

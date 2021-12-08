@@ -4,13 +4,13 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 
 from ld_platform.apps.users.forms import UserChangeForm, UserCreationForm
+from ld_platform.apps.users.models import UserExchangeSetting
 
 User = get_user_model()
 
 
 @admin.register(User)
 class UserAdmin(auth_admin.UserAdmin):
-
     form = UserChangeForm
     add_form = UserCreationForm
     fieldsets = (
@@ -32,3 +32,9 @@ class UserAdmin(auth_admin.UserAdmin):
     )
     list_display = ["username", "name", "is_superuser"]
     search_fields = ["name"]
+
+
+@admin.register(UserExchangeSetting)
+class UserExchangeSettingAdmin(admin.ModelAdmin):
+    list_display = ["id", "exchange_name", "user", "api_key", "api_secret"]
+    search_fields = ["id", "exchange_name", "user", "api_key", "api_secret"]

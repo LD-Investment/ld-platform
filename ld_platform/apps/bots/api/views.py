@@ -8,7 +8,9 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
-from ld_platform.apps.bots.models import Bot, UserSubscribedBot
+from ld_platform.apps.bots.models import Bot, SubscribedBot
+from ld_platform.apps.users.models import UserExchangeSetting
+from ld_platform.resolver import BotResolver, BotSettingResolver
 
 from .serializers import BotControlCommandSerializer, BotSerializer
 
@@ -36,14 +38,15 @@ class BotViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericVi
 
 
 class BotControlCommandViewSet(viewsets.GenericViewSet):
-    queryset = UserSubscribedBot.objects.all()
+    queryset = SubscribedBot.objects.all()
     serializer_class = BotControlCommandSerializer
     permission_classes = [permissions.AllowAny]
 
     @swagger_auto_schema(responses={200: "success", 406: "invalid payload"})
     def command(self, request: Request, *args: Any, **kwargs: Any) -> Response:
-        # bot = self.get_object()
+        subscribed_bot: SubscribedBot = self.get_object()
         serializer = self.get_serializer(data=request.data)
+
         if not serializer.is_valid():
             return Response(
                 data={
@@ -55,15 +58,17 @@ class BotControlCommandViewSet(viewsets.GenericViewSet):
 
         # parse and execute command
         command = serializer.data["command"]
-        if command == UserSubscribedBot.CommandChoices.START:
-            # TODO(@jin)
-            #  Bot instance should be initiated and saved into memory. Whenever user sends command, should
-            #  be able to react in quick manner.
-            print("hi")
+        if command == SubscribedBot.CommandChoices.START:
+            # resolve settings and bot instance
+            exchange_setting = UserExchangeSetting.objects.get(user=subscribed_bot.user)
+            compiled_setting = BotSettingResolver.compile_setting(
+                exchange_setting, subscribed_bot
+            )
+            bot = BotResolver.model_to_instance(subscribed_bot, compiled_setting)
+            print(bot)
 
-        elif command == UserSubscribedBot.CommandChoices.STOP:
-            # TODO(@jin)
-            print("bye")
+        if command == SubscribedBot.CommandChoices.STOP:
+            pass
 
         return Response(
             data={
@@ -73,8 +78,18 @@ class BotControlCommandViewSet(viewsets.GenericViewSet):
             status=status.HTTP_200_OK,
         )
 
+    def check_object_permissions(self, request: Request, obj: Any) -> None:
+        """
+        Object level permissions are run by REST framework's generic
+        views when .get_object() is called
+        """
+        # TODO(1): check if user is owner of the bot
+        # TODO(2): check if subscription is valid
+        pass
+
 
 class BotControlSettingViewSet(RetrieveModelMixin, UpdateModelMixin, GenericViewSet):
+    queryset = SubscribedBot.objects.all()
     serializer_class = BotControlCommandSerializer
 
     def retrieve(self, request: Request, *args: Any, **kwargs: Any) -> Response:
