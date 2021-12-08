@@ -74,7 +74,6 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "ld_platform.users.apps.UsersConfig",
-    "ld_platform.funds.apps.FundsConfig",
     "ld_platform.bots.apps.BotsConfig",
     # Your stuff: custom apps go here
 ]
