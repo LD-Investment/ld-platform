@@ -10,7 +10,7 @@ else:
 app_name = "api"
 urlpatterns = [
     path("auth/", include("allauth.urls")),
-    path("users/", include("ld_platform.users.urls")),
-    path("bots/", include("ld_platform.bots.urls")),
+    path("users/", include("ld_platform.apps.users.urls")),
+    path("bots/", include("ld_platform.apps.bots.urls")),
 ]
 urlpatterns += router.urls
