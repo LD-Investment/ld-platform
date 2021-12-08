@@ -7,3 +7,7 @@ class BotSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bot
         fields = ["name"]
+
+
+class BotControlCommandSerializer(serializers.Serializer):
+    command = serializers.ChoiceField(Bot.CommandChoices)

@@ -1,11 +1,13 @@
-from factory import Faker
 from factory.django import DjangoModelFactory
+from factory.fuzzy import FuzzyChoice
 
 from ld_platform.bots.models import Bot
 
+BOT_NAME_CHOICES = [x[0] for x in Bot.NameChoices]
+
 
 class BotFactory(DjangoModelFactory):
-    name = Faker("sentence", nb_words=4)
+    name = FuzzyChoice(BOT_NAME_CHOICES)
 
     class Meta:
         model = Bot
