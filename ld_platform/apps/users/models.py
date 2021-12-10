@@ -3,6 +3,8 @@ from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
+from ld_platform.shared.choices import CryptoExchangeChoices
+
 
 class User(AbstractUser):
     """Default user for L&D Investment Platform."""
@@ -23,7 +25,9 @@ class User(AbstractUser):
 
 
 class UserExchangeSetting(models.Model):
-    exchange_name = models.CharField(blank=False, max_length=255)
+    exchange_name = models.CharField(
+        max_length=32, choices=CryptoExchangeChoices.choices, null=False, blank=False
+    )
     user = models.ForeignKey(User, on_delete=models.PROTECT)
     # TODO: Encrypt below fields. Consider using something like this.
     #   https://pypi.org/project/django-encrypted-model-fields/

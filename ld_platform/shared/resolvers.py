@@ -9,12 +9,24 @@ from ld_platform.apps.users.models import UserExchangeSetting
 
 
 class BotSettingResolver:
+    """
+    BotSettingResolver comprises of methods that are needed for
+    handling different settings needed in various bots.
+
+    Since there are many types of bots, each having different structure
+    of setting, this resolver can act as an interface for sustaining and
+    conversion of settings.
+    """
+
     @staticmethod
     def compile_setting(
         user_exchange_setting: UserExchangeSetting,
         subscribed_bot: SubscribedBot,
     ):
         """
+        Compile UserExchangeSetting and Bot specific setting so that
+        Bot instance can make use of.
+
         Args:
             subscribed_bot: UserExchangeSetting django model instance.
             user_exchange_setting: UserSubscribedBot django model instance.

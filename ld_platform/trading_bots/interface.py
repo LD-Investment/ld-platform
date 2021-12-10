@@ -1,36 +1,36 @@
-"""
-Flow:
-
-1. User가 UI에서 본인이 subscribe 된 정보를 클릭
-  * 해당 Subscription 내 Bot list를 보고 특정 bot control 클릭
-  * 토큰이 발급된다.
-
-2. 선택한 bot을 start한다 (토큰 인증).
-  * bot_id를 통해 Bot 정보를 SQL에서 받아서
-  * name을 통해 실제 Bot instance를 resolve한다.
-  * 유저가 설정한 setting 확인한다
-  * 유저가 설정한 bot setting을 통해 bot을 initiate한다.
-    * 여기서 부터는 각 Bot의 플로우대로
-"""
 import logging
 from abc import ABC, abstractmethod
+from dataclasses import dataclass
 
 from ld_platform.apps.bots.models import Bot
 from ld_platform.mixins.logging_mixins import LoggingMixin
-from ld_platform.resolver import CompiledBotSetting
+from ld_platform.shared.resolvers import CompiledBotSetting
+
+
+@dataclass
+class IBotDefaultSetting:
+    """
+    Interface for Bot Default Setting.
+    Method that converts to dictionary is a must-have.
+    """
+
+    def __init__(self, **kwargs):
+        self.__dict__.update(kwargs)
+
+    @abstractmethod
+    def to_dict(self):
+        return self.__dict__
 
 
 class IBot(ABC, LoggingMixin):
     """
-    필요기능:
-      * 유저의 CCXT Exchange 인스턴스 stop 때까지 연결 지속
-      * dynamic setting 설정
-      *
-
+    Interface for Bots. Any bots, regardless of its type (automated, manual,
+    indicator) should inherit this class and implement abstract methods.
     """
 
     NAME: str
     TYPE: Bot.TypeChoices
+    DEFAULT_SETTING: IBotDefaultSetting
 
     def __init__(self, bot_setting: CompiledBotSetting, logger: logging.Logger):
         self._bot_setting = bot_setting
