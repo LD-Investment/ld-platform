@@ -13,7 +13,11 @@ from ld_platform.apps.users.models import UserExchangeSetting
 from ld_platform.shared.resolvers import BotResolver, BotSettingResolver
 from ld_platform.trading_bots.interface import IBot
 
-from .serializers import BotControlCommandSerializer, BotSerializer
+from .serializers import (
+    BotControlGeneralCommandSerializer,
+    BotControlManualCommandSerializer,
+    BotSerializer,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -40,12 +44,18 @@ class BotViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericVi
 ########################
 
 
-class BotControlCommandViewSet(viewsets.GenericViewSet):
+class BotControlGeneralCommandViewSet(viewsets.GenericViewSet):
     queryset = SubscribedBot.objects.all()
-    serializer_class = BotControlCommandSerializer
+    serializer_class = BotControlGeneralCommandSerializer
     permission_classes = [permissions.AllowAny]
 
-    @swagger_auto_schema(responses={200: "success", 406: "invalid payload"})
+    @swagger_auto_schema(
+        responses={
+            200: "success",
+            403: "Bot is active/inactive",
+            406: "invalid payload",
+        }
+    )
     def command(self, request: Request, *args: Any, **kwargs: Any) -> Response:
         subscribed_bot: SubscribedBot = self.get_object()
         serializer = self.get_serializer(data=request.data)
@@ -91,6 +101,10 @@ class BotControlCommandViewSet(viewsets.GenericViewSet):
                     data={"detail": "Bot is already inactive. Cannot stop."},
                     status=status.HTTP_403_FORBIDDEN,
                 )
+            # TODO: Get bot instance and stop
+            # change status
+            subscribed_bot.status = SubscribedBot.StatusChoices.INACTIVE
+            subscribed_bot.save()
 
         return Response(status=status.HTTP_200_OK)
 
@@ -104,9 +118,38 @@ class BotControlCommandViewSet(viewsets.GenericViewSet):
         pass
 
 
+class BotControlManualCommandViewSet(viewsets.GenericViewSet):
+    queryset = SubscribedBot.objects.all()
+    serializer_class = BotControlManualCommandSerializer
+    permission_classes = [permissions.AllowAny]
+
+    @swagger_auto_schema(
+        responses={
+            200: "success",
+        }
+    )
+    def command(self, request: Request, *args: Any, **kwargs: Any) -> Response:
+        # subscribed_manual_bot: Bot = self.get_object()
+        return
+
+    def get_object(self) -> Bot:
+        # queryset = self.get_queryset()
+        return
+        # return queryset.filter(bot=)
+
+    def check_object_permissions(self, request: Request, obj: Any) -> None:
+        """
+        Object level permissions are run by REST framework's generic
+        views when .get_object() is called
+        """
+        # TODO(1): check if user is owner of the bot
+        # TODO(2): check if subscription is valid
+        # TODO(3): check if bot is manual bot
+
+
 class BotControlSettingViewSet(RetrieveModelMixin, UpdateModelMixin, GenericViewSet):
     queryset = SubscribedBot.objects.all()
-    serializer_class = BotControlCommandSerializer
+    serializer_class = BotControlGeneralCommandSerializer
 
     def retrieve(self, request: Request, *args: Any, **kwargs: Any) -> Response:
         pass

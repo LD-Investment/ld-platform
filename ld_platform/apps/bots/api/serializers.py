@@ -9,5 +9,10 @@ class BotSerializer(serializers.ModelSerializer):
         fields = ["name"]
 
 
-class BotControlCommandSerializer(serializers.Serializer):
+class BotControlGeneralCommandSerializer(serializers.Serializer):
     command = serializers.ChoiceField(SubscribedBot.CommandChoices)
+
+
+class BotControlManualCommandSerializer(serializers.Serializer):
+    # TODO: Custom Validator according to Bot
+    command = serializers.ChoiceField()

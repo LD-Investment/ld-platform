@@ -110,3 +110,8 @@ class BotResolver:
             pass
 
         raise RuntimeError(f"Failed to resolve bot_type({bot_type})")
+
+
+class BotCommandResolver:
+    pass
+    # def
