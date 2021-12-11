@@ -149,7 +149,7 @@ Please refer `BurntSushi ERD`_ to know how to draw ERD using kroki tool.
       api_key {label: "varchar, not null"}
       api_secret {label: "varchar, not null"}
 
-    [user_subscribed_bot] {bgcolor: "#d1fff9"}
+    [subscribed_bot] {bgcolor: "#d1fff9"}
       *id {label: "smallint, not null"}
       +user_id {label: "smallint, not null"}
       +bot_id {label: "smallint, not null"}
@@ -168,7 +168,7 @@ Please refer `BurntSushi ERD`_ to know how to draw ERD using kroki tool.
 
     [trade] {bgcolor: "#fcecec"}
       *id {label: "int, not null"}
-      +user_subscribed_bot_id {label: "smallint, not null"}
+      +subscribed_bot_id {label: "smallint, not null"}
       exchange {label: "varchar, not null"}
       pair {label: "varchar, not null"}
       is_open {label: "boolean, not null"}
@@ -191,9 +191,9 @@ Please refer `BurntSushi ERD`_ to know how to draw ERD using kroki tool.
     # Relations
 
     user        1--* exchange_setting
-    user        1--* user_subscribed_bot
-    bot         1--* user_subscribed_bot
-    trade       *--? user_subscribed_bot
+    user        1--* subscribed_bot
+    bot         1--* subscribed_bot
+    trade       *--? subscribed_bot
     trade       1--* order
 
 Django app structure
