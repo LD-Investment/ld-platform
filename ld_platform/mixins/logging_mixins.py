@@ -1,3 +1,4 @@
+import logging
 from typing import Callable
 
 from cachetools import TTLCache, cached
@@ -12,7 +13,7 @@ class LoggingMixin:
     # Disable output completely
     show_output = True
 
-    def __init__(self, logger, refresh_period: int = 3600):
+    def __init__(self, logger: logging.Logger, refresh_period: int = 3600):
         """
         :param refresh_period: in seconds - Show identical messages in this intervals
         """
@@ -30,8 +31,8 @@ class LoggingMixin:
         """
 
         @cached(cache=self._log_cache)
-        def _log_once(message: str):
-            logmethod(message)
+        def _log_once(_message: str):
+            logmethod(_message)
 
         # Log as debug first
         self.logger.debug(message)

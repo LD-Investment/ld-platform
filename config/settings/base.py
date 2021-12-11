@@ -73,8 +73,8 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
-    "ld_platform.users.apps.UsersConfig",
-    "ld_platform.bots.apps.BotsConfig",
+    "ld_platform.apps.users.apps.UsersConfig",
+    "ld_platform.apps.bots.apps.BotsConfig",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -296,6 +296,7 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.TokenAuthentication",
     ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    "DEFAULT_RENDERER_CLASSES": ("ld_platform.shared.renderers.JSONResponseRenderer",),
 }
 
 # django-cors-headers - https://github.com/adamchainz/django-cors-headers#setup
