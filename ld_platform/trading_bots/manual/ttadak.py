@@ -67,6 +67,12 @@ class TtadakBot(IBot):
     def stop(self):
         pass
 
+    def buy_game(self):
+        print("Buy Game triggered!")
+
+    def sell_game(self):
+        print("Sell Game triggered!")
+
     def _change_setting(self, new_setting):
         self._setting = new_setting
         pass

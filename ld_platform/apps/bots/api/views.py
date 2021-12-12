@@ -10,10 +10,11 @@ from rest_framework.viewsets import GenericViewSet
 
 from ld_platform.apps.bots.models import Bot, SubscribedBot
 from ld_platform.apps.users.models import UserExchangeSetting
+from ld_platform.shared.choices import BotCommandsChoices
 from ld_platform.shared.resolvers import BotResolver, BotSettingResolver
 from ld_platform.trading_bots.interface import IBot
 
-from .permissions import IsManualBot, IsSubscriptionValid, IsUserBotOwner
+from .permissions import IsBotActive, IsManualBot, IsSubscriptionValid, IsUserBotOwner
 from .serializers import (
     BotControlGeneralCommandSerializer,
     BotControlManualCommandSerializer,
@@ -22,12 +23,44 @@ from .serializers import (
 
 logger = logging.getLogger(__name__)
 
-# Stores Bot instance
-# TODO: This should be restored back when server is restarted
-#  by fetching active bots and resolving them as bot object again.
-_user_id = int
-_subscribed_bot_id = int
-RUNNING_BOTS: Dict[_user_id, Dict[_subscribed_bot_id, IBot]] = {}
+T_USER_ID = int
+T_SUBSCRIBED_BOT_ID = int
+
+
+class RunningBotObjStores:
+    """
+    A Class that stores running bot instance.
+    Maps with user_id and subscribed_bot_id so that viewset can
+    access/handle actual running bot instance.
+    """
+
+    # TODO: This should be restored back when server is restarted
+    #  by fetching active bots and resolving them as bot object again.
+    def __init__(self):
+        self._bot_stores: Dict[T_USER_ID, Dict[T_SUBSCRIBED_BOT_ID, IBot]] = {}
+
+    def set_bot_instance(
+        self, user_id: T_USER_ID, subscribed_bot_id: T_SUBSCRIBED_BOT_ID, bot_obj: IBot
+    ) -> None:
+        self._bot_stores[user_id] = {subscribed_bot_id: bot_obj}
+
+    def get_bot_instance(
+        self, user_id: T_USER_ID, subscribed_bot_id: T_SUBSCRIBED_BOT_ID
+    ) -> IBot:
+        try:
+            return self._bot_stores[user_id][subscribed_bot_id]
+        except KeyError:
+            raise RuntimeError(
+                f"There is no bot(id={subscribed_bot_id}) running for user(id={user_id})"
+            )
+
+    def del_bot_instance(
+        self, user_id: T_USER_ID, subscribed_bot_id: T_SUBSCRIBED_BOT_ID
+    ) -> None:
+        del self._bot_stores[user_id][subscribed_bot_id]
+
+
+store = RunningBotObjStores()
 
 
 ###############################
@@ -74,7 +107,7 @@ class BotControlGeneralCommandViewSet(viewsets.GenericViewSet):
 
         # parse and execute command
         command = serializer.data["command"]
-        if command == SubscribedBot.CommandChoices.START:
+        if command == BotCommandsChoices.General.START:
             # if bot active,
             if subscribed_bot.status == SubscribedBot.StatusChoices.ACTIVE:
                 return Response(
@@ -90,12 +123,12 @@ class BotControlGeneralCommandViewSet(viewsets.GenericViewSet):
             bot: IBot = BotResolver.model_to_instance(subscribed_bot, compiled_setting)
             # initiate bot and save instance
             bot.run()
-            RUNNING_BOTS[user.id] = {subscribed_bot.id: bot}
+            store.set_bot_instance(user.id, subscribed_bot.id, bot)
             # change status
             subscribed_bot.status = SubscribedBot.StatusChoices.ACTIVE
             subscribed_bot.save()
 
-        if command == SubscribedBot.CommandChoices.STOP:
+        if command == BotCommandsChoices.General.STOP:
             # if bot inactive,
             if subscribed_bot.status == SubscribedBot.StatusChoices.INACTIVE:
                 return Response(
@@ -104,9 +137,10 @@ class BotControlGeneralCommandViewSet(viewsets.GenericViewSet):
                 )
             # get bot instance and stop
             # delete instance
-            bot: IBot = RUNNING_BOTS[request.user.id][subscribed_bot.id]
+            user = subscribed_bot.user
+            bot = store.get_bot_instance(user.id, subscribed_bot.id)
             bot.stop()
-            del RUNNING_BOTS[request.user.id][subscribed_bot.id]
+            store.del_bot_instance(user.id, subscribed_bot.id)
             # change status
             subscribed_bot.status = SubscribedBot.StatusChoices.INACTIVE
             subscribed_bot.save()
@@ -117,24 +151,33 @@ class BotControlGeneralCommandViewSet(viewsets.GenericViewSet):
 class BotControlManualCommandViewSet(viewsets.GenericViewSet):
     queryset = SubscribedBot.objects.all()
     serializer_class = BotControlManualCommandSerializer
-    permission_classes = [IsUserBotOwner & IsSubscriptionValid & IsManualBot]
+    permission_classes = [
+        IsUserBotOwner & IsSubscriptionValid & IsManualBot & IsBotActive
+    ]
 
     @swagger_auto_schema(
         responses={
             200: "success",
+            403: "permission denied",
+            406: "invalid payload",
         }
     )
     def command(self, request: Request, *args: Any, **kwargs: Any) -> Response:
-        # subscribed_bot: SubscribedBot = self.get_object()
-        return
+        subscribed_bot: SubscribedBot = self.get_object()
+        serializer = self.get_serializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(
+                data={"detail": f"invalid payload: {request.data}"},
+                status=status.HTTP_406_NOT_ACCEPTABLE,
+            )
 
-    def check_object_permissions(self, request: Request, obj: Any) -> None:
-        """
-        Object level permissions are run by REST framework's generic
-        views when .get_object() is called
-        """
-        if obj.bot.type != Bot.TypeChoices.MANUAL:
-            pass
+        # resolve command to bot methods
+        command = serializer.data["command"]
+        bot: IBot = store.get_bot_instance(subscribed_bot.user.id, subscribed_bot.id)
+        method = BotResolver.command_to_method(command, bot)
+        # run
+        method()
+        return Response(status=status.HTTP_200_OK)
 
 
 class BotControlSettingViewSet(RetrieveModelMixin, UpdateModelMixin, GenericViewSet):

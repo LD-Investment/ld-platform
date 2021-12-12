@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Any, Callable
 
 from ld_platform.apps.bots.models import Bot, SubscribedBot
 from ld_platform.apps.users.models import UserExchangeSetting
@@ -111,7 +112,13 @@ class BotResolver:
 
         raise RuntimeError(f"Failed to resolve bot_type({bot_type})")
 
-
-class BotCommandResolver:
-    pass
-    # def
+    @staticmethod
+    def command_to_method(command: str, bot_obj: Any) -> Callable:
+        """
+        Resolves commands from client to bot methods.
+        """
+        if hasattr(bot_obj, command):
+            return getattr(bot_obj, command)
+        raise RuntimeError(
+            f"Failed to resolve command(={command}) to bot(={bot_obj})'s methods"
+        )
