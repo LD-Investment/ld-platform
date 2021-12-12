@@ -15,4 +15,4 @@ class BotControlGeneralCommandSerializer(serializers.Serializer):
 
 class BotControlManualCommandSerializer(serializers.Serializer):
     # TODO: Custom Validator according to Bot
-    command = serializers.ChoiceField()
+    command = serializers.ChoiceField(SubscribedBot.CommandChoices)
