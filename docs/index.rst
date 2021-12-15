@@ -17,6 +17,7 @@ Welcome to L&D Investment Platform's documentation!
    documents
    deployment_docker
    architecture
+   web_development
 
 
 Indices and tables

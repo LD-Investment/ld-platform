@@ -1,0 +1,43 @@
+{
+  "name": "ld-platform-web",
+  "version": "1.0.0",
+  "description": "L&D Investment Platform Frontend",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "prettier --check ld_platform_web && eslint ld_platform_web",
+    "start": "webpack-dev-server"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "5.16.1",
+    "@testing-library/react": "12.1.2",
+    "@testing-library/user-event": "13.5.0",
+    "babel-loader": "8.2.3",
+    "css-loader": "6.5.1",
+    "eslint": "8.4.1",
+    "eslint-config-prettier": "8.3.0",
+    "file-loader": "6.2.0",
+    "html-loader": "3.0.1",
+    "html-webpack-plugin": "5.5.0",
+    "husky": "7.0.4",
+    "prettier": "2.5.1",
+    "style-loader": "3.3.1",
+    "web-vitals": "2.1.2",
+    "webpack": "5.65.0",
+    "webpack-cli": "4.9.1",
+    "webpack-dev-server": "4.6.0"
+  },
+  "dependencies": {
+    "@babel/core": "7.16.5",
+    "@babel/preset-env": "7.16.5",
+    "@babel/preset-react": "7.16.5",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-scripts": "5.0.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
+  }
+}
