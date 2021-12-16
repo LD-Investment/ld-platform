@@ -7,15 +7,15 @@ env:
 
 on:
   pull_request:
-    branches: ["master", "main"]
-    paths-ignore: ["docs/**"]
+    branches: [ "master", "main" ]
+    paths-ignore: [ "docs/**" ]
 
   push:
-    branches: ["master", "main"]
-    paths-ignore: ["docs/**"]
+    branches: [ "master", "main" ]
+    paths-ignore: [ "docs/**" ]
 
 jobs:
-  linter:
+  linter-backend:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code Repository
@@ -33,7 +33,7 @@ jobs:
         uses: pre-commit/action@v2.0.3
 
   # With no caching at all the entire ci process takes 4m 30s to complete!
-  pytest:
+  test-backend:
     runs-on: ubuntu-latest
     env:
       SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
@@ -53,3 +53,21 @@ jobs:
 
       - name: Tear down the Stack
         run: docker-compose -f local.yml down
+
+  linter-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code Repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+          cache: 'npm'
+
+      - name: Build the Stack
+        run: npm install --loglevel verbose
+
+      - name: Run Linter
+        run: npm run lint --loglevel verbose
