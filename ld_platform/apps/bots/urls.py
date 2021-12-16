@@ -1,7 +1,8 @@
 from django.urls import path
 
 from ld_platform.apps.bots.api.views import (
-    BotControlCommandViewSet,
+    BotControlGeneralCommandViewSet,
+    BotControlManualCommandViewSet,
     BotControlSettingViewSet,
     BotViewSet,
 )
@@ -17,7 +18,12 @@ bot_detail = BotViewSet.as_view({"get": "retrieve"})
 #  should give token to control bot
 
 # Bot Control
-bot_command = BotControlCommandViewSet.as_view({"post": "command"})
+bot_general_command = BotControlGeneralCommandViewSet.as_view(
+    {"post": "command"}
+)  # Command to all bot types
+bot_manual_command = BotControlManualCommandViewSet.as_view(
+    {"post": "command"}
+)  # Command to manual bot only
 bot_setting = BotControlSettingViewSet.as_view(
     {"get": "get_setting", "put": "update_setting"}
 )
@@ -28,9 +34,14 @@ urlpatterns = [
     path("<int:pk>/", bot_detail, name="bot-detail"),
     # Bot Control
     path(
-        "control/subscribed_bot/<int:pk>/command",
-        bot_command,
-        name="bot-control-command",
+        "control/subscribed_bot/<int:pk>/general/command",
+        bot_general_command,
+        name="bot-control-general-command",
+    ),
+    path(
+        "control/subscribed_bot/<int:pk>/manual/command",
+        bot_manual_command,
+        name="bot-control-manual-command",
     ),
     path(
         "control/subscribed_bot/<int:pk>/setting",
