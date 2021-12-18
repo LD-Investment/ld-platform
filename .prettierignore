@@ -1,0 +1,5 @@
+# Ignore everything:
+/*
+
+# Except web app
+!/ld_platform_web
