@@ -143,7 +143,7 @@ export default () => {
           >
             <Image src={ReactHero} />
             <span className="ms-2 brand-text d-none d-md-inline">
-              Volt React
+              L&D Investment
             </span>
           </Navbar.Brand>
 
@@ -172,12 +172,16 @@ export default () => {
               </Nav>
             </Navbar.Collapse>
             <Button
-              as={HashLink}
-              to="#download"
-              variant="outline-white"
-              className="ms-3"
+              variant="secondary"
+              as={Link}
+              to={Routes.DashboardOverview.path}
+              className="text-dark me-3"
             >
-              <FontAwesomeIcon icon={faDownload} className="me-1" /> Download
+              L&D Platform{" "}
+              <FontAwesomeIcon
+                icon={faExternalLinkAlt}
+                className="d-none d-sm-inline ms-1"
+              />
             </Button>
           </div>
         </Container>
@@ -190,55 +194,16 @@ export default () => {
           <Row>
             <Col xs={12} className="text-center">
               <div className="react-big-icon d-none d-lg-block">
-                <span className="fab fa-react"></span>
+                <span className="fab fa-react" />
               </div>
-              <h1 className="fw-bolder text-secondary">Volt React Dashboard</h1>
-              <p className="text-muted fw-light mb-5 h5">
-                Open source powered by React.js and Bootstrap 5
-              </p>
-              <div className="d-flex align-items-center justify-content-center">
-                <Button
-                  variant="secondary"
-                  as={Link}
-                  to={Routes.DashboardOverview.path}
-                  className="text-dark me-3"
-                >
-                  Explore dashboard{" "}
-                  <FontAwesomeIcon
-                    icon={faExternalLinkAlt}
-                    className="d-none d-sm-inline ms-1"
-                  />
-                </Button>
-                <GitHubButton
-                  className="mt-lg-2"
-                  href="https://github.com/themesberg/volt-react-dashboard"
-                  data-size="large"
-                  data-show-count="true"
-                  aria-label="Star themesberg/volt-react-dashboard on GitHub"
-                >
-                  Star
-                </GitHubButton>
-              </div>
-              <div className="d-flex justify-content-center flex-column mb-6 mb-lg-5 mt-5">
-                <div className="text-center">
-                  <a
-                    href="https://themesberg.com"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <Image
-                      src={ThemesbergLogoIcon}
-                      height={25}
-                      width={25}
-                      className="mb-3"
-                      alt="Themesberg Logo"
-                    />
-                    <p className="text-muted font-small m-0">
-                      A Themesberg production
-                    </p>
-                  </a>
-                </div>
-              </div>
+              <h1 className="fw-bolder text-secondary">
+                L&D Investment Platform
+              </h1>
+              <pre className="text-muted fw-light mb-5 h5">
+                DeFi powered Asset Management System
+                <p>for Traders, Analysts and Investors of Web2.0 and 3.0</p>
+              </pre>
+              <div className="d-flex justify-content-center flex-column mb-6 mb-lg-5 mt-5" />
             </Col>
           </Row>
           <figure className="position-absolute bottom-0 left-0 w-100 d-none d-md-block mb-n2">
@@ -256,30 +221,42 @@ export default () => {
         <Container className="mt-n10 mt-lg-n12 z-2">
           <Row className="justify-content-center">
             <Col xs={12}>
+              {/* TODO: Change this mockup */}
               <Image src={MockupPresentation} alt="Mockup presentation" />
             </Col>
           </Row>
           <Row className="justify-content-center mt-5 mt-lg-6">
             <Col xs={6} md={3} className="text-center mb-4">
               <div className="icon icon-shape icon-lg bg-white shadow-lg border-light rounded-circle mb-4">
-                <FontAwesomeIcon icon={faPager} className="text-secondary" />
-              </div>
-              <h3 className="fw-bolder">10</h3>
-              <p className="text-gray">Example Pages</p>
-            </Col>
-            <Col xs={6} md={3} className="text-center mb-4">
-              <div className="icon icon-shape icon-lg bg-white shadow-lg border-light rounded-circle mb-4">
                 <FontAwesomeIcon icon={faReact} className="text-secondary" />
               </div>
-              <h3 className="fw-bolder">100+</h3>
-              <p className="text-gray">React Components</p>
+              <h3 className="fw-bolder">Automated Bots</h3>
+              <p className="text-gray">
+                Ai-driven automatic bots that make a best decision regardless of
+                market condition. Developed by world class quantitative
+                researchers.
+              </p>
             </Col>
             <Col xs={6} md={3} className="text-center">
               <div className="icon icon-shape icon-lg bg-white shadow-lg border-light rounded-circle mb-4">
                 <FontAwesomeIcon icon={faSass} className="text-secondary" />
               </div>
-              <h3 className="fw-bolder">Workflow</h3>
-              <p className="text-gray">Sass & react-app</p>
+              <h3 className="fw-bolder">Manual Bots</h3>
+              <p className="text-gray">
+                A scalping bot that helps traders to execute trades by providing
+                high, performant methods. Customizable to mock top-class
+                traders.
+              </p>
+            </Col>
+            <Col xs={6} md={3} className="text-center mb-4">
+              <div className="icon icon-shape icon-lg bg-white shadow-lg border-light rounded-circle mb-4">
+                <FontAwesomeIcon icon={faPager} className="text-secondary" />
+              </div>
+              <h3 className="fw-bolder">Indicator Bots</h3>
+              <p className="text-gray">
+                Live-streaming of investment indicators that foster decision
+                powered by AI-driven predicative models like crypto news.
+              </p>
             </Col>
             <Col xs={6} md={3} className="text-center">
               <div className="icon icon-shape icon-lg bg-white shadow-lg border-light rounded-circle mb-4">
@@ -289,8 +266,11 @@ export default () => {
                   className="text-secondary"
                 />
               </div>
-              <h3 className="fw-bolder">Bootstrap 5</h3>
-              <p className="text-gray">CSS Framework</p>
+              <h3 className="fw-bolder">Investment Reports</h3>
+              <p className="text-gray">
+                Web2.0/3.0 focused investment reports that are streamed to
+                subscibers in real-time researched by world top-class experts
+              </p>
             </Col>
           </Row>
         </Container>
@@ -299,32 +279,26 @@ export default () => {
         <Container>
           <Row className="justify-content-between align-items-center mb-5 mb-lg-7">
             <Col lg={5} className="order-lg-2 mb-5 mb-lg-0">
-              <h2>Powered by React.js</h2>
+              <h2>Powered by DeFi</h2>
               <p className="mb-3 lead fw-bold">
-                The most popular front-end library in the world
+                Trustless, immutable track-records executed by L&D investment
+                bots and strategies
               </p>
               <p className="mb-4">
-                Volt React is an admin dashboard template that is built using
-                React.js components using react hooks and a data-driven
-                structure that can kick-start your app in no time.
+                When selecting funds and asset managerial bots, one cannot know
+                whether the claimed track-records of each funds are not
+                intentionally forged or opinionated. All of orders and yields
+                performed by L&D Investment funds and bots are carved into DeFi
+                on-chain, thus fostering trustfulness and immutability of
+                investment results.
               </p>
               <Button
-                as={Link}
-                to={Routes.DashboardOverview.path}
+                href="https://www.investopedia.com/decentralized-finance-defi-5113835"
                 variant="secondary"
                 target="_blank"
               >
-                Live Demo{" "}
+                What is DeFi?{" "}
                 <FontAwesomeIcon icon={faExternalLinkAlt} className="ms-1" />
-              </Button>
-              <Button
-                as={HashLink}
-                to="#download"
-                variant="outline-primary"
-                className="ms-3"
-              >
-                <FontAwesomeIcon icon={faShoppingCart} className="me-1" />{" "}
-                Download
               </Button>
             </Col>
             <Col lg={6} className="order-lg-1">
@@ -333,19 +307,22 @@ export default () => {
           </Row>
           <Row className="justify-content-between align-items-center mb-5 mb-lg-7">
             <Col lg={5}>
-              <h2>React.js Components</h2>
+              <h2>Market beating Strategies</h2>
               <p className="mb-3 lead fw-bold">
-                100+ premium UI elements based on Bootstrap 5
+                A direct exposure to various strategies developed by world class
+                AI/Quant researchers.
               </p>
               <p className="mb-4">
-                We've built over 100 React.js powered components to be used
-                throughout your application saving you time kickstarting your
-                project.
+                blablablablablablablablablablablablablablablablablablablablab
+                blablablablablablablablablablablablablablablablablablablablab
+                blablablablablablablablablablablablablablablablablablablablab
               </p>
               <p className="mb-4">
-                Check out the components and use our live React.js component
-                editor to try the code.
+                hellohello hello hellohellohello hello hellohellohello hello
+                hellohellohello hello hellohellohello hello hellohellohello
+                hello hello
               </p>
+              {/* TODO: Replace path to AI/Quant strategy pages */}
               <Button
                 as={Link}
                 to={Routes.Forms.path}
@@ -353,68 +330,11 @@ export default () => {
                 className="mb-5 mb-lg-0"
                 target="_blank"
               >
-                <FontAwesomeIcon icon={faReact} className="me-1" /> Components
-                examples
+                <FontAwesomeIcon icon={faReact} className="me-1" />
+                L&D AI/Quant Strategies
               </Button>
             </Col>
             <Col lg={6} className="rounded shadow pt-3">
-              <Code
-                scope={{ Form, Button }}
-                code={`<Form>
-  <Form.Group id="frameworks" className="mb-3">
-    <Form.Label>Example select</Form.Label>
-    <Form.Select>
-      <option defaultValue>Open this select menu</option>
-      <option>One</option>
-      <option>Two</option>
-      <option>Three</option>
-    </Form.Select>
-  </Form.Group>
-  <Button variant="primary" className="m-1">Primary</Button>
-</Form>`}
-                language="jsx"
-              />
-            </Col>
-          </Row>
-          <Row className="justify-content-between align-items-center mb-5 mb-lg-7">
-            <Col lg={5} className="order-lg-2 mb-5 mb-lg-0">
-              <h2 className="d-flex align-items-center">
-                Mapbox{" "}
-                <Badge
-                  pill
-                  bg="secondary"
-                  text="dark"
-                  className="badge-md ms-3 mb-0 fs-6"
-                >
-                  Pro
-                </Badge>
-              </h2>
-              <p className="mb-3 lead fw-bold">
-                Markers and cards integration with Leaflet.js
-              </p>
-              <p className="mb-4">
-                You can use this map to add markers with custom cards and show
-                them on a map using our custom MapBox integration with
-                Leaflet.js
-              </p>
-              <Button
-                href="https://demo.themesberg.com/volt-pro-react/#/map"
-                className="me-3"
-                variant="secondary"
-                target="_blank"
-              >
-                <FontAwesomeIcon icon={faMapMarkedAlt} className="me-2" /> Demo
-                Map
-              </Button>
-              <Button
-                href="https://demo.themesberg.com/volt-pro-react/#/plugins/map"
-                variant="outline-primary"
-                target="_blank"
-              >
-                <FontAwesomeIcon icon={faBook} className="me-2" /> Guide
-              </Button>
-            </Col>
-            <Col lg={6} className="order-lg-1">
               <Image
                 src={MapboxImg}
                 alt="MapBox Leaflet.js Custom Integration Mockup"
@@ -422,57 +342,30 @@ export default () => {
             </Col>
           </Row>
           <Row className="justify-content-between align-items-center mb-5 mb-lg-7">
-            <Col lg={5}>
+            <Col lg={5} className="order-lg-2 mb-5 mb-lg-0">
               <h2 className="d-flex align-items-center">
-                Calendar{" "}
-                <Badge
-                  pill
-                  bg="secondary"
-                  text="dark"
-                  className="badge-md ms-3 mb-0 fs-6"
-                >
-                  Pro
-                </Badge>
+                High-end Investment Reports{" "}
               </h2>
               <p className="mb-3 lead fw-bold">
-                Advanced FullCalendar.js integration
+                Get validated, insightful reports from Web2.0/3.0 investment
+                experts in country
               </p>
               <p className="mb-4">
-                We created a fully editable calendar where you can add, edit and
-                delete events for your admin dashboard.
+                blablablablablablablablablablablablablablablablablablablablab
+                blablablablablablablablablablablablablablablablablablablablab
+                blablablablablablablablablablablablablablablablablablablablab
               </p>
               <Button
-                href="https://demo.themesberg.com/volt-pro-react/#/calendar"
+                href="https://demo.themesberg.com/volt-pro-react/#/map"
                 className="me-3"
                 variant="secondary"
                 target="_blank"
               >
-                <FontAwesomeIcon icon={faCalendarAlt} className="me-2" /> Demo
-                Calendar
-              </Button>
-              <Button
-                href="https://demo.themesberg.com/volt-pro-react/#/plugins/calendar"
-                variant="outline-primary"
-                target="_blank"
-              >
-                <FontAwesomeIcon icon={faBook} className="me-2" /> Guide
+                <FontAwesomeIcon icon={faMapMarkedAlt} className="me-2" />{" "}
+                Report example
               </Button>
             </Col>
-            <Col lg={6}>
-              <Image src={CalendarImg} alt="Calendar Preview" />
-            </Col>
-          </Row>
-          <Row className="justify-content-between align-items-center">
-            <Col lg={5} className="order-lg-2 mb-5 mb-lg-0">
-              <h2>Bootstrap 5</h2>
-              <p className="mb-3 lead fw-bold">Latest version of Bootstrap 5</p>
-              <p className="mb-4">
-                Volt React is built using the latest version of Bootstrap 5 and
-                we only used Vanilla Javascript for everything including the
-                plugins
-              </p>
-            </Col>
-            <Col lg={6} className="col-lg-6 order-lg-1">
+            <Col lg={6} className="order-lg-1">
               <Image src={BS5IllustrationsImg} alt="Front pages overview" />
             </Col>
           </Row>
@@ -484,7 +377,7 @@ export default () => {
             <Col xs={12} className="text-center">
               <h2 className="px-lg-5">10 hand-crafted pages</h2>
               <p className="lead px-lg-10">
-                Every page from Volt has been carefully built to provide all the
+                Every page from L&D has been carefully built to provide all the
                 necessary pages your startup will require
               </p>
             </Col>
@@ -692,7 +585,7 @@ export default () => {
               <h2 className="fw-light mb-3">Download or upgrade to pro</h2>
               <p className="lead mb-4 me-lg-6">
                 Do you want to take React development to the next level? Check
-                out the premium version of Volt React Dashboard in the following
+                out the premium version of L&D React Dashboard in the following
                 comparison table.
               </p>
             </Col>

@@ -12,7 +12,7 @@ export default () => (
                 License
               </h1>
               <p className="fs-5 fw-light">
-                Licensing details for Volt React Dashboard
+                Licensing details for L&D Investment Company
               </p>
               <p>
                 Please check our{" "}

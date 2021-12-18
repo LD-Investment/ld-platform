@@ -180,7 +180,7 @@ export default (props = {}) => {
             </div>
             <Nav className="flex-column pt-3 pt-md-0">
               <NavItem
-                title="Volt React"
+                title="L&D Investment"
                 link={Routes.Presentation.path}
                 image={ReactHero}
               />

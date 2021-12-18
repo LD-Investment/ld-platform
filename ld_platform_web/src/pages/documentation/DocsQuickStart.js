@@ -18,7 +18,7 @@ export default () => (
               </p>
 
               <p>
-                <b>Volt React Dashboard</b> is built on top of{" "}
+                <b>L&D Investment Platform</b> is built on top of{" "}
                 <Card.Link
                   href="https://react-bootstrap.github.io/"
                   target="_blank"

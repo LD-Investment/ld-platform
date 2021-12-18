@@ -31,7 +31,7 @@ export default () => {
             <Breadcrumb.Item>
               <FontAwesomeIcon icon={faHome} />
             </Breadcrumb.Item>
-            <Breadcrumb.Item>Volt</Breadcrumb.Item>
+            <Breadcrumb.Item>L&D</Breadcrumb.Item>
             <Breadcrumb.Item active>Transactions</Breadcrumb.Item>
           </Breadcrumb>
           <h4>Transactions</h4>

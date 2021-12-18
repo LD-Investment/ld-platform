@@ -344,7 +344,7 @@ export const ProgressTrackWidget = () => {
         />
         <Progress
           last
-          title="Volt - Dashboard"
+          title="L&D - Platform"
           color="purple"
           icon={faBootstrap}
           percentage={34}
