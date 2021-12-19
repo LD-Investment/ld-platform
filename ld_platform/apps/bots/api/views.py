@@ -3,13 +3,14 @@ from typing import Any, Dict
 
 from django.db.utils import ProgrammingError
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import permissions, status, viewsets
+from rest_framework import status, viewsets
 from rest_framework.mixins import (
+    CreateModelMixin,
+    DestroyModelMixin,
     ListModelMixin,
     RetrieveModelMixin,
     UpdateModelMixin,
-    CreateModelMixin,
-    DestroyModelMixin,
+)
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
@@ -24,8 +25,8 @@ from .permissions import IsBotActive, IsManualBot, IsSubscriptionValid, IsUserBo
 from .serializers import (
     BotControlGeneralCommandSerializer,
     BotControlManualCommandSerializer,
-    BotSerializer,
     BotDefaultSettingSerializer,
+    BotSerializer,
 )
 
 logger = logging.getLogger(__name__)
