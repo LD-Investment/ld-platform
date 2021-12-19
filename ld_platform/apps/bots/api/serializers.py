@@ -7,7 +7,13 @@ from ld_platform.shared.choices import BotCommandsChoices
 class BotSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bot
-        fields = ["name"]
+        fields = ["type", "name", "version", "default_setting"]
+
+
+class BotDefaultSettingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Bot
+        fields = ["default_setting"]
 
 
 class BotControlGeneralCommandSerializer(serializers.Serializer):

@@ -3,8 +3,13 @@ from typing import Any, Dict
 
 from django.db.utils import ProgrammingError
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import status, viewsets
-from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, UpdateModelMixin
+from rest_framework import permissions, status, viewsets
+from rest_framework.mixins import (
+    ListModelMixin,
+    RetrieveModelMixin,
+    UpdateModelMixin,
+    CreateModelMixin,
+    DestroyModelMixin,
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
@@ -20,6 +25,7 @@ from .serializers import (
     BotControlGeneralCommandSerializer,
     BotControlManualCommandSerializer,
     BotSerializer,
+    BotDefaultSettingSerializer,
 )
 
 logger = logging.getLogger(__name__)
@@ -110,14 +116,22 @@ store = RunningBotObjStores()
 ###############################
 
 
-class BotViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericViewSet):
+class BotViewSet(
+    RetrieveModelMixin,
+    ListModelMixin,
+    CreateModelMixin,
+    DestroyModelMixin,
+    GenericViewSet,
+):
     serializer_class = BotSerializer
     queryset = Bot.objects.all()
-    lookup_field = "bot_id"
+    lookup_field = "id"
 
-    def get_queryset(self, *args, **kwargs):
-        # TODO
-        return
+
+class BotDefaultSettingViewSet(UpdateModelMixin, RetrieveModelMixin, GenericViewSet):
+    serializer_class = BotDefaultSettingSerializer
+    queryset = Bot.objects.all()
+    lookup_field = "id"
 
 
 ########################

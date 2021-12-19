@@ -4,14 +4,18 @@ from ld_platform.apps.bots.api.views import (
     BotControlGeneralCommandViewSet,
     BotControlManualCommandViewSet,
     BotControlSettingViewSet,
+    BotDefaultSettingViewSet,
     BotViewSet,
 )
 
 app_name = "bots"
 
 # Bot Administration
-bot_list = BotViewSet.as_view({"get": "list"})
-bot_detail = BotViewSet.as_view({"get": "retrieve"})
+bot_list = BotViewSet.as_view({"get": "list", "post": "create"})
+bot_detail = BotViewSet.as_view({"get": "retrieve", "delete": "destroy"})
+bot_default_setting = BotDefaultSettingViewSet.as_view(
+    {"get": "retrieve", "put": "update"}
+)
 
 # Bot Authentication
 # TODO: Check if subscription is valid, bot setting etc.
@@ -31,7 +35,12 @@ bot_setting = BotControlSettingViewSet.as_view(
 urlpatterns = [
     # Bot Administration
     path("", bot_list, name="bot-list"),
-    path("<int:pk>/", bot_detail, name="bot-detail"),
+    path("<int:id>/", bot_detail, name="bot-detail"),
+    path(
+        "<int:id>/administration/setting",
+        bot_default_setting,
+        name="bot-default-setting",
+    ),
     # Bot Control
     path(
         "control/subscribed_bot/<int:pk>/general/command",
