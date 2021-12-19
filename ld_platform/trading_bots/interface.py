@@ -36,6 +36,9 @@ class IBot(ABC, LoggingMixin):
         self._bot_setting = bot_setting
         LoggingMixin.__init__(self, logger)
 
+    def __str__(self):
+        return self.NAME
+
     @abstractmethod
     def run(self):
         pass

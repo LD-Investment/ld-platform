@@ -5,8 +5,8 @@ from ld_platform.apps.bots.models import Bot, SubscribedBot
 
 @admin.register(Bot)
 class BotAdmin(admin.ModelAdmin):
-    list_display = ["id", "name", "default_setting", "version"]
-    search_fields = ["id", "name", "version"]
+    list_display = ["id", "name", "type", "default_setting", "version"]
+    search_fields = ["id", "name", "type", "version"]
 
 
 @admin.register(SubscribedBot)
@@ -14,7 +14,7 @@ class SubscribedBotAdmin(admin.ModelAdmin):
     list_display = [
         "id",
         "user",
-        "bot",
+        "get_bot_name",
         "status",
         "run_type",
         "user_bot_settings",
@@ -31,3 +31,8 @@ class SubscribedBotAdmin(admin.ModelAdmin):
         "subscribe_start_date",
         "subscribe_end_date",
     ]
+
+    def get_bot_name(self, obj):
+        return obj.bot.name
+
+    get_bot_name.short_description = "Bot Name"  # Renames column head

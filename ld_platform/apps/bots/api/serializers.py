@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
-from ld_platform.apps.bots.models import Bot, SubscribedBot
+from ld_platform.apps.bots.models import Bot
+from ld_platform.shared.choices import BotCommandsChoices
 
 
 class BotSerializer(serializers.ModelSerializer):
@@ -15,5 +16,10 @@ class BotDefaultSettingSerializer(serializers.ModelSerializer):
         fields = ["default_setting"]
 
 
-class BotControlCommandSerializer(serializers.Serializer):
-    command = serializers.ChoiceField(SubscribedBot.CommandChoices)
+class BotControlGeneralCommandSerializer(serializers.Serializer):
+    command = serializers.ChoiceField(BotCommandsChoices.General)
+
+
+class BotControlManualCommandSerializer(serializers.Serializer):
+    # TODO: Custom Validator according to Bot
+    command = serializers.ChoiceField(BotCommandsChoices.Manual)

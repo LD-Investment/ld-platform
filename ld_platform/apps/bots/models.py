@@ -32,10 +32,6 @@ class Bot(models.Model):
 
 
 class SubscribedBot(models.Model):
-    class CommandChoices(models.TextChoices):
-        START = "start", _("Start the bot")
-        STOP = "stop", _("Stop the bot")
-
     class StatusChoices(models.TextChoices):
         ACTIVE = "ACTV", _("Active")
         INACTIVE = "INAC", _("Inactive")
