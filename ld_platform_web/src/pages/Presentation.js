@@ -1,65 +1,44 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faBook,
-  faExternalLinkAlt,
-  faTimesCircle,
   faCheckCircle,
-  faCalendarAlt,
-  faCodeBranch,
-  faShoppingCart,
-  faFolder,
+  faExternalLinkAlt,
   faMapMarkedAlt,
-  faPager,
-  faFileCode,
-  faDownload
+  faPager
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faBootstrap,
-  faGithub,
-  faJs,
   faReact,
   faSass
 } from "@fortawesome/free-brands-svg-icons";
 import {
-  Col,
-  Row,
-  Card,
-  Image,
   Button,
+  Card,
+  Col,
   Container,
+  Image,
   ListGroup,
-  Tooltip,
-  OverlayTrigger,
-  Form,
-  Navbar,
   Nav,
-  Badge
+  Navbar,
+  Row
 } from "@themesberg/react-bootstrap";
 import { Link } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
-import Code from "../components/CodeEditor";
-import GitHubButton from "react-github-btn";
 
 import { Routes } from "../routes";
-import ThemesbergLogoIcon from "../assets/img/themesberg.svg";
-import ThemesbergLogo from "../assets/img/themesberg-logo.svg";
 import MockupPresentation from "../assets/img/mockup-presentation.png";
 import ReactHero from "../assets/img/technologies/react-hero-logo.svg";
 import MapboxImg from "../assets/img/mockup-map-presentation.png";
-import CalendarImg from "../assets/img/mockup-calendar-presentation.png";
 import ReactMockupImg from "../assets/img/react-mockup.png";
 import BS5IllustrationsImg from "../assets/img/illustrations/bs5-illustrations.svg";
-import BS5Logo from "../assets/img/technologies/bootstrap-5-logo.svg";
-import ReactLogo from "../assets/img/technologies/react-logo.svg";
 
 import pages from "../data/pages";
-import features from "../data/features";
+import managers from "../data/managers";
+import ProfileCover from "../assets/img/profile-cover.jpg";
 
 export default () => {
   const PagePreview = props => {
     const { name, image, link } = props;
-
     return (
       <Col xs={6} className="mb-5">
         <Card.Link
@@ -84,46 +63,26 @@ export default () => {
     );
   };
 
-  const Feature = props => {
-    const { title, description, icon } = props;
-
+  const ProfileCardWidget = props => {
+    const { image, title, subtitle, text } = props;
     return (
-      <Col xs={12} sm={6} lg={3}>
-        <Card className="bg-white shadow-soft text-primary rounded mb-4">
-          <div className="px-3 px-lg-4 py-5 text-center">
-            <span className="icon icon-lg mb-4">
-              <FontAwesomeIcon icon={icon} />
-            </span>
-            <h5 className="fw-bold text-primary">{title}</h5>
-            <p>{description}</p>
-          </div>
+      <Col xs={4} className="mb-5">
+        <Card border="light" className="text-center p-0 mb-4">
+          <div
+            style={{ backgroundImage: `url(${ProfileCover})` }}
+            className="profile-cover rounded-top"
+          />
+          <Card.Body className="pb-5">
+            <Card.Img
+              src={image}
+              className="user-avatar large-avatar rounded-circle mx-auto mt-n7 mb-4"
+            />
+            <Card.Title>{title}</Card.Title>
+            <Card.Subtitle className="fw-normal">{subtitle}</Card.Subtitle>
+            <Card.Text className="text-gray mb-4">{text}</Card.Text>
+          </Card.Body>
         </Card>
       </Col>
-    );
-  };
-
-  const FolderItem = props => {
-    const { name, icon, tooltip, iconColor } = props;
-    const color = iconColor ? `text-${iconColor}` : "";
-
-    return (
-      <OverlayTrigger
-        trigger={["hover", "focus"]}
-        placement="left"
-        overlay={<Tooltip>{tooltip}</Tooltip>}
-      >
-        <li
-          data-toggle="tooltip"
-          data-placement="left"
-          title="Main folder that you will be working with"
-        >
-          <FontAwesomeIcon
-            icon={icon ? icon : faFolder}
-            className={`${color} me-2`}
-          />{" "}
-          {name}
-        </li>
-      </OverlayTrigger>
     );
   };
 
@@ -150,24 +109,21 @@ export default () => {
           <div className="d-flex align-items-center">
             <Navbar.Collapse id="navbar-default-primary">
               <Nav className="navbar-nav-hover align-items-lg-center">
-                <Nav.Link as={HashLink} to="#features">
-                  Features
+                <Nav.Link as={HashLink} to="#who-are-we">
+                  Who are we?
                 </Nav.Link>
-                <Nav.Link as={HashLink} to="#pages">
-                  Pages
+                <Nav.Link as={HashLink} to="#funds-and-bots">
+                  Funds & Bots
                 </Nav.Link>
                 <Nav.Link
                   as={HashLink}
-                  to="#folder"
+                  to="#ld-managers"
                   className="d-sm-none d-xl-inline"
                 >
-                  Folder Structure
+                  Managers
                 </Nav.Link>
-                <Nav.Link as={HashLink} to="#getting-started">
-                  Getting Started
-                </Nav.Link>
-                <Nav.Link as={HashLink} to="#download">
-                  Upgrade to Pro
+                <Nav.Link as={HashLink} to="#subscribe">
+                  Subscribe
                 </Nav.Link>
               </Nav>
             </Navbar.Collapse>
@@ -200,8 +156,10 @@ export default () => {
                 L&D Investment Platform
               </h1>
               <pre className="text-muted fw-light mb-5 h5">
-                DeFi powered Asset Management System
-                <p>for Traders, Analysts and Investors of Web2.0 and 3.0</p>
+                <span className="fw-bold">DeFi</span> powered{" "}
+                <span className="fw-bold">hedge funds</span> &{" "}
+                <span className="fw-bold">bots</span>
+                <p>for traders, analysts and investors of web2.0 and 3.0</p>
               </pre>
               <div className="d-flex justify-content-center flex-column mb-6 mb-lg-5 mt-5" />
             </Col>
@@ -225,12 +183,12 @@ export default () => {
               <Image src={MockupPresentation} alt="Mockup presentation" />
             </Col>
           </Row>
-          <Row className="justify-content-center mt-5 mt-lg-6">
+          <Row className="justify-content-center mt-5 mt-lg-6" id="who-are-we">
             <Col xs={6} md={3} className="text-center mb-4">
               <div className="icon icon-shape icon-lg bg-white shadow-lg border-light rounded-circle mb-4">
                 <FontAwesomeIcon icon={faReact} className="text-secondary" />
               </div>
-              <h3 className="fw-bolder">Automated Bots</h3>
+              <h3 className="fw-bolder">Ultimate Strategies</h3>
               <p className="text-gray">
                 Ai-driven automatic bots that make a best decision regardless of
                 market condition. Developed by world class quantitative
@@ -241,7 +199,7 @@ export default () => {
               <div className="icon icon-shape icon-lg bg-white shadow-lg border-light rounded-circle mb-4">
                 <FontAwesomeIcon icon={faSass} className="text-secondary" />
               </div>
-              <h3 className="fw-bolder">Manual Bots</h3>
+              <h3 className="fw-bolder">Trustless Operations</h3>
               <p className="text-gray">
                 A scalping bot that helps traders to execute trades by providing
                 high, performant methods. Customizable to mock top-class
@@ -252,7 +210,7 @@ export default () => {
               <div className="icon icon-shape icon-lg bg-white shadow-lg border-light rounded-circle mb-4">
                 <FontAwesomeIcon icon={faPager} className="text-secondary" />
               </div>
-              <h3 className="fw-bolder">Indicator Bots</h3>
+              <h3 className="fw-bolder">Reports to Funds</h3>
               <p className="text-gray">
                 Live-streaming of investment indicators that foster decision
                 powered by AI-driven predicative models like crypto news.
@@ -266,7 +224,7 @@ export default () => {
                   className="text-secondary"
                 />
               </div>
-              <h3 className="fw-bolder">Investment Reports</h3>
+              <h3 className="fw-bolder">Assets in Web2.0/3.0</h3>
               <p className="text-gray">
                 Web2.0/3.0 focused investment reports that are streamed to
                 subscibers in real-time researched by world top-class experts
@@ -275,7 +233,7 @@ export default () => {
           </Row>
         </Container>
       </div>
-      <section className="section section-md bg-soft pt-lg-3" id="features">
+      <section className="section section-md bg-soft pt-lg-3">
         <Container>
           <Row className="justify-content-between align-items-center mb-5 mb-lg-7">
             <Col lg={5} className="order-lg-2 mb-5 mb-lg-0">
@@ -371,14 +329,21 @@ export default () => {
           </Row>
         </Container>
       </section>
-      <section className="section section-sm pt-0" id="pages">
+      <section
+        className="section section-lg bg-primary text-white"
+        id="funds-and-bots"
+      >
         <Container>
           <Row className="justify-content-center mb-5 mb-lg-6">
             <Col xs={12} className="text-center">
-              <h2 className="px-lg-5">10 hand-crafted pages</h2>
-              <p className="lead px-lg-10">
-                Every page from L&D has been carefully built to provide all the
-                necessary pages your startup will require
+              <h2 className="fw-light mb-3">
+                Profit from our <span className="fw-bold">market-beating</span>{" "}
+                bots
+              </h2>
+              <p className="lead px-lg-8">
+                Our funds and bots are beating the crypto market! Check out
+                their amazing track-records that are immnutably on-chained in
+                DeFi.
               </p>
             </Col>
           </Row>
@@ -389,405 +354,128 @@ export default () => {
           </Row>
         </Container>
       </section>
-      <section className="section section-lg bg-primary text-white">
+      <section className="section section-lg line-bottom-soft" id="ld-managers">
         <Container>
-          <Row className="justify-content-center mb-5 mb-lg-6">
+          <Row className="justify-content-between mb-5 mb-lg-6">
             <Col xs={12} className="text-center">
-              <h2 className="px-lg-5">Awesome Features</h2>
+              <h2 className="fw-light mb-3">
+                Meet our <span className="fw-bold">superb</span> fund managers
+              </h2>
               <p className="lead px-lg-8">
-                You get all React.js components fully customized. Besides, you
-                receive numerous plugins out of the box and ready to use.
-              </p>
-            </Col>
-          </Row>
-          <Row>
-            {features.map(feature => (
-              <Feature key={`features-${feature.id}`} {...feature} />
-            ))}
-          </Row>
-        </Container>
-      </section>
-      <section className="section section-lg line-bottom-soft" id="folder">
-        <Container>
-          <Row className="justify-content-center mb-5 mb-lg-6">
-            <Col xs={12} className="text-center">
-              <h2 className="px-lg-5">What's inside?</h2>
-              <p className="lead px-lg-8">
-                We have carefully crafted the perfect folder structure to ensure
-                that finding the files you're looking for are easily reachable
-                and well organized.
+                All funds and bots operated by L&D Investment are the direct
+                results of researches and development by world-class AI/Quant
+                engineers and researchers.
               </p>
             </Col>
           </Row>
           <Row className="d-flex align-items-center">
-            <Col xs={12} lg={6} className="mb-4">
-              <div className="d-none d-lg-block mt-5">
-                <h4>The perfect folder structure for your project</h4>
-                <p className="lead mb-4">
-                  The folder structure is based on the popular{" "}
-                  <code>create-react-app</code> repository using Sass source
-                  files for CSS preprocessing.
-                </p>
-                <Button
-                  as={Link}
-                  variant="secondary"
-                  size="md"
-                  to={Routes.DocsFolderStructure.path}
-                  target="_blank"
-                  className="text-dark"
-                >
-                  <FontAwesomeIcon icon={faCodeBranch} className="me-2" />{" "}
-                  Folder Structure
-                </Button>
-              </div>
-            </Col>
-            <Col
-              xs={12}
-              lg={6}
-              className="order-lg-first d-flex justify-content-center"
-            >
-              <ListGroup className="d-block fmw-100 list-style-none folder-structure">
-                <FolderItem
-                  name="src"
-                  tooltip="Main folder that you will be working with"
-                />
-
-                <ListGroup className="list-style-none ps-4">
-                  <FolderItem
-                    name="assets"
-                    tooltip="CSS, Images, Fonts and Javascript"
-                  />
-                  <FolderItem
-                    name="components"
-                    tooltip="Custom React.js components on top of react-bootstrap"
-                  />
-                  <FolderItem
-                    name="data"
-                    tooltip="Data source for the dashboard and components"
-                  />
-                  <FolderItem
-                    name="pages"
-                    tooltip="React.js admin dashboard pages"
-                  />
-                  <FolderItem name="scss" tooltip="Sass source files" />
-                  <FolderItem
-                    name="index.js"
-                    tooltip="Main React.js file that wraps the project"
-                    icon={faJs}
-                    iconColor="secondary"
-                  />
-                  <FolderItem
-                    name="routes.js"
-                    tooltip="The file where the routes are registered at"
-                    icon={faJs}
-                    iconColor="secondary"
-                  />
-                </ListGroup>
-
-                <FolderItem
-                  name="build"
-                  tooltip="The production build of the project"
-                />
-                <FolderItem
-                  name="node_modules"
-                  tooltip="Project dependencies from package.json"
-                />
-
-                <FolderItem
-                  name="package.json"
-                  tooltip="Project details and dependencies."
-                  icon={faFileCode}
-                  iconColor="tertiary"
-                />
-                <FolderItem
-                  name="README.md"
-                  tooltip="No project can miss a README :)"
-                  icon={faFileCode}
-                  iconColor="tertiary"
-                />
-                <FolderItem
-                  name=".gitignore"
-                  tooltip="This file ensures that generated files and folder are ignored by Git. (eg. node_modules)"
-                  icon={faFileCode}
-                  iconColor="tertiary"
-                />
-              </ListGroup>
-            </Col>
-            <Col xs={12} className="mt-5 d-lg-none">
-              <h5>The perfect folder structure for your project</h5>
-              <p className="lead mb-4">
-                The folder structure is based on the popular{" "}
-                <code>create-react-app</code> repository using Sass source files
-                for CSS preprocessing.
-              </p>
-            </Col>
+            {managers.map(manager => (
+              <ProfileCardWidget key={`manager-${manager.id}`} {...manager} />
+            ))}
           </Row>
         </Container>
       </section>
-      <section className="section section-lg bg-primary" id="getting-started">
+      <section
+        className="section section-lg bg-primary text-white"
+        id="subscribe"
+      >
         <Container>
-          <Row className="justify-content-center text-center text-white mb-5">
-            <Col xs={12}>
-              <h2 className="fw-light mb-3">
-                Less <span className="fw-bold">work</span>, more{" "}
-                <span className="fw-bold">flow</span>.
-              </h2>
-              <p className="lead px-lg-8">
-                Boost productivity with BrowserSync. Sass changes are reflected
-                instantly and pages scroll and refresh on devices as you work.
-              </p>
-            </Col>
-          </Row>
-          <Row className="justify-content-center">
-            <Col md={10} xl={9}>
-              <div className="position-relative">
-                <div className="rounded bg-white p-4 text-dark mb-2">
-                  <div className="mb-3">
-                    <div className="fw-bold">
-                      &gt; $ yarn install{" "}
-                      <span className="text-gray-600">(or npm install)</span>
-                    </div>
-                    <div className="text-gray">Everything’s installed!</div>
-                  </div>
-                  <div className="mb-3">
-                    <div className="fw-bold">
-                      &gt; $ yarn start{" "}
-                      <span className="text-gray-600">(or npm run start)</span>
-                    </div>
-                    <div className="text-gray">SCSS watching</div>
-                    <div className="text-gray">Opening localhost:3000</div>
-                  </div>
-                  <div>
-                    <div className="fw-bold">&gt; $ that's it?</div>
-                    <div className="text-gray">It's that simple!</div>
-                  </div>
-                </div>
-              </div>
-              <p className="mt-4 text-white text-center mb-0">
-                Looks unfamiliar? Don’t worry! Our{" "}
-                <Link
-                  to={Routes.DocsQuickStart.path}
-                  className="text-white text-underline fw-bold"
-                  target="_blank"
-                >
-                  documentation
-                </Link>{" "}
-                has got you covered.
-              </p>
-            </Col>
-          </Row>
-        </Container>
-      </section>
-      <section className="section section-lg bg-white" id="download">
-        <Container>
-          <Row>
+          <Row className="d-flex align-items-center">
             <Col xs={12} lg={8}>
-              <h2 className="fw-light mb-3">Download or upgrade to pro</h2>
+              <h2 className="fw-light mb-3">
+                <span className="fw-bold">Subscribe</span> L&D funds and bots!
+              </h2>
               <p className="lead mb-4 me-lg-6">
-                Do you want to take React development to the next level? Check
-                out the premium version of L&D React Dashboard in the following
-                comparison table.
+                See the list of funds and bots running in L&D Investment
+                Platform. Look carefully each of their yields, track-records and
+                affinity of your investment style. Pick one and you will not all
+                set!
               </p>
-            </Col>
-            <Col xs={12} lg={4}>
-              <div className="github-big-icon">
-                <FontAwesomeIcon icon={faGithub} />
-              </div>
-            </Col>
-          </Row>
-          <Row className="mt-6">
-            <Col xs={12} md={6} lg={4} className="mb-5 mb-lg-0">
-              <Card border="light" className="p-4">
-                <Card.Header className="bg-white border-0 pb-0">
-                  <span className="d-block">
-                    <h2 className="text-primary fw-bold align-top">
-                      Free version
-                    </h2>
-                  </span>
-                </Card.Header>
-                <Card.Body>
-                  <ListGroup className="list-group-flush price-list">
-                    <ListGroup.Item className="bg-white border-0 ps-0">
-                      <strong>100</strong> React Components
-                    </ListGroup.Item>
-                    <ListGroup.Item className="bg-white border-0 ps-0">
-                      <strong>10</strong> Example Pages
-                    </ListGroup.Item>
-                    <ListGroup.Item className="bg-white border-0 ps-0">
-                      <FontAwesomeIcon
-                        icon={faTimesCircle}
-                        className="text-danger me-2"
-                      />{" "}
-                      Advanced Sidebar
-                    </ListGroup.Item>
-                    <ListGroup.Item className="bg-white border-0 ps-0">
-                      <FontAwesomeIcon
-                        icon={faTimesCircle}
-                        className="text-danger me-2"
-                      />{" "}
-                      MapBox
-                    </ListGroup.Item>
-                    <ListGroup.Item className="bg-white border-0 ps-0">
-                      <FontAwesomeIcon
-                        icon={faTimesCircle}
-                        className="text-danger me-2"
-                      />{" "}
-                      Calendar
-                    </ListGroup.Item>
-                    <ListGroup.Item className="bg-white border-0 ps-0">
-                      <FontAwesomeIcon
-                        icon={faTimesCircle}
-                        className="text-danger me-2"
-                      />{" "}
-                      SVG Map
-                    </ListGroup.Item>
-                    <ListGroup.Item className="bg-white border-0 ps-0">
-                      <FontAwesomeIcon
-                        icon={faTimesCircle}
-                        className="text-danger me-2"
-                      />{" "}
-                      Widgets
-                    </ListGroup.Item>
-                    <ListGroup.Item className="bg-white border-0 ps-0 pb-0">
-                      <FontAwesomeIcon
-                        icon={faTimesCircle}
-                        className="text-danger me-2"
-                      />{" "}
-                      Premium Support
-                    </ListGroup.Item>
-                  </ListGroup>
-                </Card.Body>
-                <Button
-                  href="https://themesberg.com/product/dashboard/volt-react"
-                  target="_blank"
-                  variant="primary"
-                  className="w-100 m-0 mt-3 mb-3"
-                >
-                  <FontAwesomeIcon icon={faDownload} className="me-1" />{" "}
-                  Download
-                </Button>
-              </Card>
             </Col>
             <Col xs={12} md={6} lg={4} className="mb-5 mb-lg-0">
               <Card border="light" className="p-4 py-5 mt-lg-n5">
                 <Card.Header className="bg-white border-0 pb-0">
                   <span className="d-block">
                     <h2 className="text-primary fw-bold align-top">
-                      Pro Version
+                      L&D offers..
                     </h2>
                   </span>
                 </Card.Header>
                 <Card.Body>
                   <ListGroup className="list-group-flush price-list">
                     <ListGroup.Item className="bg-white border-0 ps-0">
-                      <strong>200+</strong> React Components
-                    </ListGroup.Item>
-                    <ListGroup.Item className="bg-white border-0 ps-0">
-                      <strong>20</strong> Example Pages
-                    </ListGroup.Item>
-                    <ListGroup.Item className="bg-white border-0 ps-0">
-                      <strong>6</strong> Plugins
+                      <FontAwesomeIcon
+                        icon={faCheckCircle}
+                        className="text-success me-2"
+                      />{" "}
+                      10+ AI driven bots
                     </ListGroup.Item>
                     <ListGroup.Item className="bg-white border-0 ps-0">
                       <FontAwesomeIcon
                         icon={faCheckCircle}
                         className="text-success me-2"
                       />{" "}
-                      Advanced Sidebar
+                      20+ Indicator bots
                     </ListGroup.Item>
                     <ListGroup.Item className="bg-white border-0 ps-0">
                       <FontAwesomeIcon
                         icon={faCheckCircle}
                         className="text-success me-2"
                       />{" "}
-                      MapBox
+                      1 Scalping manual bot
                     </ListGroup.Item>
                     <ListGroup.Item className="bg-white border-0 ps-0">
                       <FontAwesomeIcon
                         icon={faCheckCircle}
                         className="text-success me-2"
                       />{" "}
-                      Calendar
+                      5+ Insight reports daily
                     </ListGroup.Item>
                     <ListGroup.Item className="bg-white border-0 ps-0">
                       <FontAwesomeIcon
                         icon={faCheckCircle}
                         className="text-success me-2"
                       />{" "}
-                      SVG Map
-                    </ListGroup.Item>
-                    <ListGroup.Item className="bg-white border-0 ps-0">
-                      <FontAwesomeIcon
-                        icon={faCheckCircle}
-                        className="text-success me-2"
-                      />{" "}
-                      Widgets
+                      On-chained fund results
                     </ListGroup.Item>
                     <ListGroup.Item className="bg-white border-0 border-0 ps-0 pb-0">
                       <FontAwesomeIcon
                         icon={faCheckCircle}
                         className="text-success me-2"
                       />{" "}
-                      Premium Support
+                      Premium Consulting
                     </ListGroup.Item>
                   </ListGroup>
                 </Card.Body>
                 <Button
-                  href="https://demo.themesberg.com/volt-pro-react/#/"
-                  target="_blank"
                   variant="secondary"
-                  className="w-100 m-0 mt-3"
+                  as={Link}
+                  to={Routes.DashboardOverview.path}
+                  className="text-dark me-3"
                 >
-                  Demo Volt React Pro{" "}
-                  <FontAwesomeIcon icon={faExternalLinkAlt} className="ms-1" />
+                  Go to L&D Platform!{" "}
+                  <FontAwesomeIcon
+                    icon={faExternalLinkAlt}
+                    className="d-none d-sm-inline ms-1"
+                  />
                 </Button>
               </Card>
             </Col>
           </Row>
-          <Row className="mt-lg-6">
-            <Col xs={12} className="text-center">
-              <h2 className="h5 text-gray fw-normal mb-4">
-                Available in the following technologies:
+        </Container>
+      </section>
+      <section className="section section-lg bg-white" id="getting-started">
+        <Container>
+          <Row className="justify-content-center text-center mb-5">
+            <Col xs={12}>
+              <h2 className="fw-light mb-3">
+                Get some <span className="fw-bold">sleep</span>.
               </h2>
-              <div>
-                <Card.Link
-                  href="https://themesberg.com/product/admin-dashboard/volt-bootstrap-5-dashboard"
-                  target="_blank"
-                  className="me-3"
-                >
-                  <OverlayTrigger
-                    placement="top"
-                    trigger={["hover", "focus"]}
-                    overlay={
-                      <Tooltip>
-                        Bootstrap 5 · The most popular HTML, CSS, and JS library
-                        in the world.
-                      </Tooltip>
-                    }
-                  >
-                    <Image src={BS5Logo} className="image image-sm" />
-                  </OverlayTrigger>
-                </Card.Link>
-
-                <Card.Link
-                  href="https://themesberg.com/product/dashboard/volt-react"
-                  target="_blank"
-                  className="me-3"
-                >
-                  <OverlayTrigger
-                    placement="top"
-                    trigger={["hover", "focus"]}
-                    overlay={
-                      <Tooltip>
-                        React · A JavaScript library for building user
-                        interfaces.
-                      </Tooltip>
-                    }
-                  >
-                    <Image src={ReactLogo} className="image image-sm" />
-                  </OverlayTrigger>
-                </Card.Link>
-              </div>
+              <p className="lead px-lg-8">
+                Do not stay overnight because of the crushed crypto wallet. Just
+                subscribe L&D funds and bots via Platform and you will now crush
+                the market.
+              </p>
             </Col>
           </Row>
         </Container>
@@ -802,27 +490,19 @@ export default () => {
                 className="me-lg-3 mb-3 d-flex align-items-center"
               >
                 <Image src={ReactHero} />
-                <span className="ms-2 brand-text">Volt React</span>
+                <span className="ms-2 brand-text">L&D Investment</span>
               </Navbar.Brand>
               <p>
-                Volt React is a free and open source admin dashboard template
-                powered by React.js and Bootstrap 5.
+                We run DeFi powered hedge funds & bots for traders, analysts and
+                investors of web2.0 and 3.0.
               </p>
             </Col>
             <Col xs={6} md={2} className="mb-5 mb-lg-0">
-              <span className="h5">Themesberg</span>
+              <span className="h5">More info</span>
               <ul className="links-vertical mt-2">
                 <li>
                   <Card.Link target="_blank" href="https://themesberg.com/blog">
                     Blog
-                  </Card.Link>
-                </li>
-                <li>
-                  <Card.Link
-                    target="_blank"
-                    href="https://themesberg.com/products"
-                  >
-                    Products
                   </Card.Link>
                 </li>
                 <li>
@@ -833,14 +513,6 @@ export default () => {
                     About Us
                   </Card.Link>
                 </li>
-                <li>
-                  <Card.Link
-                    target="_blank"
-                    href="https://themesberg.com/contact"
-                  >
-                    Contact Us
-                  </Card.Link>
-                </li>
               </ul>
             </Col>
             <Col xs={6} md={2} className="mb-5 mb-lg-0">
@@ -848,20 +520,10 @@ export default () => {
               <ul className="links-vertical mt-2">
                 <li>
                   <Card.Link
-                    as={Link}
-                    to={Routes.DocsQuickStart.path}
                     target="_blank"
+                    href="https://themesberg.com/contact"
                   >
-                    Getting started
-                  </Card.Link>
-                </li>
-                <li>
-                  <Card.Link
-                    as={Link}
-                    to={Routes.DocsChangelog.path}
-                    target="_blank"
-                  >
-                    Changelog
+                    Contact Us
                   </Card.Link>
                 </li>
                 <li>
@@ -875,7 +537,7 @@ export default () => {
               </ul>
             </Col>
             <Col xs={12} md={4} className="mb-5 mb-lg-0">
-              <span className="h5 mb-3 d-block">Subscribe</span>
+              <span className="h5 mb-3 d-block">Stay tuned</span>
               <form action="#">
                 <div className="form-row mb-2">
                   <div className="col-12">
@@ -894,7 +556,7 @@ export default () => {
                       className="btn btn-secondary text-dark shadow-soft btn-block"
                       data-loading-text="Sending"
                     >
-                      <span>Subscribe</span>
+                      <span>Submit</span>
                     </button>
                   </div>
                 </div>
@@ -910,25 +572,13 @@ export default () => {
           <hr className="bg-gray my-5" />
           <Row>
             <Col className="mb-md-2">
-              <Card.Link
-                href="https://themesberg.com"
-                target="_blank"
-                className="d-flex justify-content-center"
-              >
-                <Image
-                  src={ThemesbergLogo}
-                  height={35}
-                  className="d-block mx-auto mb-3"
-                  alt="Themesberg Logo"
-                />
-              </Card.Link>
               <div
                 className="d-flex text-center justify-content-center align-items-center"
                 role="contentinfo"
               >
                 <p className="font-weight-normal font-small mb-0">
-                  Copyright © Themesberg 2019-
-                  <span className="current-year">2021</span>. All rights
+                  Copyright © Luke and David Investment, Inc. 2021-
+                  <span className="current-year">2022</span>. All rights
                   reserved.
                 </p>
               </div>
