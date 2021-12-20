@@ -26,11 +26,8 @@ import { Link } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
 
 import { Routes } from "../routes";
-import MockupPresentation from "../assets/img/mockup-presentation.png";
+import PlaceholderImage from "../assets/img/placeholder.png";
 import ReactHero from "../assets/img/technologies/react-hero-logo.svg";
-import MapboxImg from "../assets/img/mockup-map-presentation.png";
-import ReactMockupImg from "../assets/img/react-mockup.png";
-import BS5IllustrationsImg from "../assets/img/illustrations/bs5-illustrations.svg";
 
 import pages from "../data/pages";
 import managers from "../data/managers";
@@ -157,8 +154,8 @@ export default () => {
               </h1>
               <pre className="text-muted fw-light mb-5 h5">
                 <span className="fw-bold">DeFi</span> powered{" "}
-                <span className="fw-bold">hedge funds</span> &{" "}
-                <span className="fw-bold">bots</span>
+                <span className="fw-bold">Hedge Funds</span> &{" "}
+                <span className="fw-bold">Bots</span>
                 <p>for traders, analysts and investors of web2.0 and 3.0</p>
               </pre>
               <div className="d-flex justify-content-center flex-column mb-6 mb-lg-5 mt-5" />
@@ -178,42 +175,39 @@ export default () => {
       <div className="section pt-0">
         <Container className="mt-n10 mt-lg-n12 z-2">
           <Row className="justify-content-center">
-            <Col xs={12}>
-              {/* TODO: Change this mockup */}
-              <Image src={MockupPresentation} alt="Mockup presentation" />
+            <Col xs={9}>
+              <Image src={PlaceholderImage} alt="Mockup presentation" />
             </Col>
           </Row>
           <Row className="justify-content-center mt-5 mt-lg-6" id="who-are-we">
-            <Col xs={6} md={3} className="text-center mb-4">
-              <div className="icon icon-shape icon-lg bg-white shadow-lg border-light rounded-circle mb-4">
-                <FontAwesomeIcon icon={faReact} className="text-secondary" />
-              </div>
-              <h3 className="fw-bolder">Ultimate Strategies</h3>
-              <p className="text-gray">
-                Ai-driven automatic bots that make a best decision regardless of
-                market condition. Developed by world class quantitative
-                researchers.
-              </p>
-            </Col>
             <Col xs={6} md={3} className="text-center">
               <div className="icon icon-shape icon-lg bg-white shadow-lg border-light rounded-circle mb-4">
                 <FontAwesomeIcon icon={faSass} className="text-secondary" />
               </div>
-              <h3 className="fw-bolder">Trustless Operations</h3>
+              <h3 className="fw-bolder">Trustless Track-records</h3>
               <p className="text-gray">
-                A scalping bot that helps traders to execute trades by providing
-                high, performant methods. Customizable to mock top-class
-                traders.
+                All investment decisions are fed into DeFi blockchain thus
+                providing immutable track-records.
               </p>
             </Col>
             <Col xs={6} md={3} className="text-center mb-4">
               <div className="icon icon-shape icon-lg bg-white shadow-lg border-light rounded-circle mb-4">
                 <FontAwesomeIcon icon={faPager} className="text-secondary" />
               </div>
-              <h3 className="fw-bolder">Reports to Funds</h3>
+              <h3 className="fw-bolder">World-class AI/Quants</h3>
               <p className="text-gray">
-                Live-streaming of investment indicators that foster decision
-                powered by AI-driven predicative models like crypto news.
+                Our funds are operated by world-class AI researchers, top-tier
+                quants who knows about alpha.
+              </p>
+            </Col>
+            <Col xs={6} md={3} className="text-center mb-4">
+              <div className="icon icon-shape icon-lg bg-white shadow-lg border-light rounded-circle mb-4">
+                <FontAwesomeIcon icon={faReact} className="text-secondary" />
+              </div>
+              <h3 className="fw-bolder">Investment as a Platform</h3>
+              <p className="text-gray">
+                We provide cutting-edge platform where investors easily
+                subscribe our funds, bots and reports.
               </p>
             </Col>
             <Col xs={6} md={3} className="text-center">
@@ -224,10 +218,10 @@ export default () => {
                   className="text-secondary"
                 />
               </div>
-              <h3 className="fw-bolder">Assets in Web2.0/3.0</h3>
+              <h3 className="fw-bolder">Bridging Web2.0/3.0</h3>
               <p className="text-gray">
-                Web2.0/3.0 focused investment reports that are streamed to
-                subscibers in real-time researched by world top-class experts
+                We are here to bridge assets, investors, financial operations of
+                web 2.0 and 3.0.
               </p>
             </Col>
           </Row>
@@ -237,18 +231,20 @@ export default () => {
         <Container>
           <Row className="justify-content-between align-items-center mb-5 mb-lg-7">
             <Col lg={5} className="order-lg-2 mb-5 mb-lg-0">
-              <h2>Powered by DeFi</h2>
+              <h2>Trustless Track Records</h2>
               <p className="mb-3 lead fw-bold">
-                Trustless, immutable track-records executed by L&D investment
-                bots and strategies
+                Powered by DeFi, all investment decisions and orders executed
+                are on-chained.
               </p>
               <p className="mb-4">
                 When selecting funds and asset managerial bots, one cannot know
                 whether the claimed track-records of each funds are not
-                intentionally forged or opinionated. All of orders and yields
-                performed by L&D Investment funds and bots are carved into DeFi
-                on-chain, thus fostering trustfulness and immutability of
-                investment results.
+                intentionally forged or opinionated.
+              </p>
+              <p className="mb-4">
+                All of orders and yields performed by L&D Investment funds and
+                bots are carved into DeFi on-chain, thus fostering trustfulness
+                and immutability of investment results.
               </p>
               <Button
                 href="https://www.investopedia.com/decentralized-finance-defi-5113835"
@@ -260,15 +256,15 @@ export default () => {
               </Button>
             </Col>
             <Col lg={6} className="order-lg-1">
-              <Image src={ReactMockupImg} alt="Calendar Preview" />
+              <Image src={PlaceholderImage} alt="Calendar Preview" />
             </Col>
           </Row>
           <Row className="justify-content-between align-items-center mb-5 mb-lg-7">
             <Col lg={5}>
-              <h2>Market beating Strategies</h2>
+              <h2>World-class AI/Quants</h2>
               <p className="mb-3 lead fw-bold">
-                A direct exposure to various strategies developed by world class
-                AI/Quant researchers.
+                Get a direct exposure to various strategies developed by world
+                class AI/Quant researchers.
               </p>
               <p className="mb-4">
                 blablablablablablablablablablablablablablablablablablablablab
@@ -289,12 +285,12 @@ export default () => {
                 target="_blank"
               >
                 <FontAwesomeIcon icon={faReact} className="me-1" />
-                L&D AI/Quant Strategies
+                Check out Strategies!
               </Button>
             </Col>
             <Col lg={6} className="rounded shadow pt-3">
               <Image
-                src={MapboxImg}
+                src={PlaceholderImage}
                 alt="MapBox Leaflet.js Custom Integration Mockup"
               />
             </Col>
@@ -302,11 +298,11 @@ export default () => {
           <Row className="justify-content-between align-items-center mb-5 mb-lg-7">
             <Col lg={5} className="order-lg-2 mb-5 mb-lg-0">
               <h2 className="d-flex align-items-center">
-                High-end Investment Reports{" "}
+                Investment as a Platform{" "}
               </h2>
               <p className="mb-3 lead fw-bold">
-                Get validated, insightful reports from Web2.0/3.0 investment
-                experts in country
+                Get an easy access to subscribing funds, bots and report at our
+                L&D Platform.
               </p>
               <p className="mb-4">
                 blablablablablablablablablablablablablablablablablablablablab
@@ -320,11 +316,36 @@ export default () => {
                 target="_blank"
               >
                 <FontAwesomeIcon icon={faMapMarkedAlt} className="me-2" />{" "}
-                Report example
+                Explore Platform
               </Button>
             </Col>
             <Col lg={6} className="order-lg-1">
-              <Image src={BS5IllustrationsImg} alt="Front pages overview" />
+              <Image src={PlaceholderImage} alt="Front pages overview" />
+            </Col>
+          </Row>
+          <Row className="justify-content-between align-items-center mb-5 mb-lg-7">
+            <Col lg={5}>
+              <h2>Bridging Web2.0 and 3.0</h2>
+              <p className="mb-3 lead fw-bold">
+                A next generation hedge-funds that bridges finance and assets of
+                Web2.0 and 3.0
+              </p>
+              <p className="mb-4">
+                blablablablablablablablablablablablablablablablablablablablab
+                blablablablablablablablablablablablablablablablablablablablab
+                blablablablablablablablablablablablablablablablablablablablab
+              </p>
+              <p className="mb-4">
+                hellohello hello hellohellohello hello hellohellohello hello
+                hellohellohello hello hellohellohello hello hellohellohello
+                hello hello
+              </p>
+            </Col>
+            <Col lg={6} className="rounded shadow pt-3">
+              <Image
+                src={PlaceholderImage}
+                alt="MapBox Leaflet.js Custom Integration Mockup"
+              />
             </Col>
           </Row>
         </Container>
@@ -338,11 +359,11 @@ export default () => {
             <Col xs={12} className="text-center">
               <h2 className="fw-light mb-3">
                 Profit from our <span className="fw-bold">market-beating</span>{" "}
-                bots
+                Bots
               </h2>
               <p className="lead px-lg-8">
                 Our funds and bots are beating the crypto market! Check out
-                their amazing track-records that are immnutably on-chained in
+                their amazing track-records that are immnutably on-chained as
                 DeFi.
               </p>
             </Col>
@@ -544,7 +565,7 @@ export default () => {
                     <input
                       type="email"
                       className="form-control mb-2"
-                      placeholder="example@company.com"
+                      placeholder="example@domain.com"
                       name="email"
                       aria-label="Subscribe form"
                       required
