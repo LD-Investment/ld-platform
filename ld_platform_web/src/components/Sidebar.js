@@ -93,7 +93,7 @@ export default (props = {}) => {
         <Navbar.Brand
           className="me-lg-5"
           as={Link}
-          to={Routes.DashboardOverview.path}
+          to={Routes.PlatformDashboard.path}
         >
           <Image src={ReactHero} className="navbar-brand-light" />
         </Navbar.Brand>
@@ -121,7 +121,7 @@ export default (props = {}) => {
             <Nav className="flex-column pt-3 pt-md-0">
               <NavItem
                 title="L&D Investment"
-                link={Routes.DashboardOverview.path}
+                link={Routes.PlatformDashboard.path}
                 image={ReactHero}
               />
               <NavItem

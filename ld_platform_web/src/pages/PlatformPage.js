@@ -6,9 +6,9 @@ import { Routes } from "../routes";
 import LandingPage from "./LandingPage";
 
 // L&D Platform
-import DashboardOverview from "./dashboard/DashboardOverview";
-import MyBots from "./my/MyBots";
-import MySettings from "./my/Settings";
+import PlatformDashboard from "./dashboard/Dashboard";
+import MyBots from "./user/MyBots";
+import MySettings from "./user/Settings";
 import Signin from "./auth/Signin";
 import Signup from "./auth/Signup";
 import ForgotPassword from "./auth/ForgotPassword";
@@ -80,8 +80,8 @@ export default () => (
     {/* Sidebar pages */}
     <RouteWithSidebar
       exact
-      path={Routes.DashboardOverview.path}
-      component={DashboardOverview}
+      path={Routes.PlatformDashboard.path}
+      component={PlatformDashboard}
     />
     <RouteWithSidebar exact path={Routes.MyBots.path} component={MyBots} />
     <RouteWithSidebar
