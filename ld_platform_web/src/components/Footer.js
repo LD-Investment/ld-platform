@@ -2,7 +2,7 @@ import React from "react";
 import moment from "moment-timezone";
 import { Card, Col, Row } from "@themesberg/react-bootstrap";
 
-export default props => {
+export default () => {
   const currentYear = moment().get("year");
   return (
     <div>

@@ -19,7 +19,6 @@ import ServerError from "./errors/ServerError";
 // components
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 import Preloader from "../components/Preloader";
 
 const RouteWithLoader = ({ component: Component, ...rest }) => {
@@ -62,7 +61,6 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
           <main className="content">
             <Navbar />
             <Component {...props} />
-            <Footer />
           </main>
         </>
       )}
@@ -72,12 +70,14 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
 
 export default () => (
   <Switch>
+    {/* L&D Landing Pages */}
     <RouteWithLoader
       exact
       path={Routes.LandingView.path}
       component={LandingPage}
     />
-    {/* Sidebar pages */}
+
+    {/* L&D Platform Pages */}
     <RouteWithSidebar
       exact
       path={Routes.PlatformDashboard.path}
@@ -94,8 +94,6 @@ export default () => (
       path={Routes.MySettings.path}
       component={MySettings}
     />
-
-    {/* Loader pages */}
     <RouteWithLoader exact path={Routes.Signin.path} component={Signin} />
     <RouteWithLoader exact path={Routes.Signup.path} component={Signup} />
     <RouteWithLoader
@@ -119,7 +117,7 @@ export default () => (
       component={ServerError}
     />
 
-    {/* redirect to */}
+    {/* Global */}
     <Redirect to={Routes.NotFound.path} />
   </Switch>
 );
