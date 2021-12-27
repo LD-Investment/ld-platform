@@ -9,13 +9,13 @@ import "./scss/volt.scss";
 import "@fortawesome/fontawesome-free/css/all.css";
 import "react-datetime/css/react-datetime.css";
 
-import HomePage from "./pages/HomePage";
+import PlatformHomePage from "./pages/PlatformHomePage";
 import ScrollToTop from "./components/ScrollToTop";
 
 ReactDOM.render(
   <HashRouter>
     <ScrollToTop />
-    <HomePage />
+    <PlatformHomePage />
   </HashRouter>,
   document.getElementById("root")
 );

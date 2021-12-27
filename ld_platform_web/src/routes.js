@@ -1,20 +1,31 @@
 export const Routes = {
   // pages
-  Presentation: { path: "/" },
-  DashboardOverview: { path: "/dashboard/overview" },
-  Transactions: { path: "/transactions" },
-  Settings: { path: "/settings" },
+  LandingView: { path: "/" },
+  AutoBotView: { path: "/product/auto-bot " },
+  ManualBotView: { path: "/product/manual-bot " },
+  IndicatorBotView: { path: "/product/indicator-bot " },
+  ReportView: { path: "/product/report" },
+
+  // L&D Platform
+  DashboardOverview: { path: "/platform/dashboard/overview" },
+
+  MyBots: { path: "/platform/my/bots" },
+  MyTrades: { path: "/platform/my/trades" },
+  MySettings: { path: "/platform/my/settings" },
+
+  Signin: { path: "/platform/auth/sign-in" },
+  Signup: { path: "/platform/auth/sign-up" },
+  ForgotPassword: { path: "/platform/auth/forgot-password" },
+  ResetPassword: { path: "/platform/auth/reset-password" },
+
+  NotFound: { path: "/platform/errors/404" },
+  ServerError: { path: "/platform/errors/500" },
+
+  // ARCHIVE
   Upgrade: { path: "/upgrade" },
   BootstrapTables: { path: "/tables/bootstrap-tables" },
   Billing: { path: "/examples/billing" },
   Invoice: { path: "/examples/invoice" },
-  Signin: { path: "/examples/sign-in" },
-  Signup: { path: "/examples/sign-up" },
-  ForgotPassword: { path: "/examples/forgot-password" },
-  ResetPassword: { path: "/examples/reset-password" },
-  Lock: { path: "/examples/lock" },
-  NotFound: { path: "/examples/404" },
-  ServerError: { path: "/examples/500" },
 
   // docs
   DocsOverview: { path: "/documentation/overview" },

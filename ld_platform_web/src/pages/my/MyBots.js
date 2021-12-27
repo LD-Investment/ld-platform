@@ -17,7 +17,7 @@ import {
   Dropdown
 } from "@themesberg/react-bootstrap";
 
-import { TransactionsTable } from "../components/Tables";
+import { TransactionsTable } from "../../components/Tables";
 
 export default () => {
   return (

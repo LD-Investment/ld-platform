@@ -28,7 +28,6 @@ import {
   SalesValueWidgetPhone,
   AcquisitionWidget
 } from "../../components/Widgets";
-import { PageVisitsTable } from "../../components/Tables";
 import { trafficShares, totalOrders } from "../../data/charts";
 
 export default () => {
@@ -124,10 +123,6 @@ export default () => {
           <Row>
             <Col xs={12} xl={8} className="mb-4">
               <Row>
-                <Col xs={12} className="mb-4">
-                  <PageVisitsTable />
-                </Col>
-
                 <Col xs={12} lg={6} className="mb-4">
                   <TeamMembersWidget />
                 </Col>
