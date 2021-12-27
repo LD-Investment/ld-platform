@@ -127,7 +127,7 @@ export default () => {
             <Button
               variant="secondary"
               as={Link}
-              to={Routes.DashboardOverview.path}
+              to={Routes.PlatformDashboard.path}
               className="text-dark me-3"
             >
               L&D Platform{" "}
@@ -279,7 +279,7 @@ export default () => {
               {/* TODO: Replace path to AI/Quant strategy pages */}
               <Button
                 as={Link}
-                to={Routes.Forms.path}
+                to={Routes.NotFound.path}
                 variant="secondary"
                 className="mb-5 mb-lg-0"
                 target="_blank"
@@ -471,7 +471,7 @@ export default () => {
                 <Button
                   variant="secondary"
                   as={Link}
-                  to={Routes.DashboardOverview.path}
+                  to={Routes.PlatformDashboard.path}
                   className="text-dark me-3"
                 >
                   Go to L&D Platform!{" "}

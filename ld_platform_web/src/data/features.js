@@ -12,27 +12,27 @@ export default [
     title: "AI/Quant Fund",
     icon: faReact,
     description: "Blabla blabla blabla Blabla blabla blabla",
-    link: Routes.Transactions.path
+    link: Routes.NotFound.path
   },
   {
     id: 1,
     title: "Indicator Bot",
     icon: faBootstrap,
     description: "Blabla blabla blabla Blabla blabla blabla",
-    link: Routes.Transactions.path
+    link: Routes.NotFound.path
   },
   {
     id: 2,
     title: "Manual Bot",
     icon: faSass,
     description: "Blabla blabla blabla Blabla blabla blabla",
-    link: Routes.Transactions.path
+    link: Routes.NotFound.path
   },
   {
     id: 3,
     title: "Insightful reports",
     icon: faMobileAlt,
     description: "Blabla blabla blabla Blabla blabla blabla",
-    link: Routes.Transactions.path
+    link: Routes.NotFound.path
   }
 ];
