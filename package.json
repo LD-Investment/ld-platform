@@ -4,9 +4,7 @@
   "description": "L&D Investment Platform Frontend",
   "main": "index.js",
   "scripts": {
-    "prepare": "husky install",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "prettier --write ld_platform_web && eslint ld_platform_web",
     "build": "webpack",
     "start": "webpack-dev-server"
   },
@@ -21,7 +19,6 @@
     "file-loader": "6.2.0",
     "html-loader": "3.0.1",
     "html-webpack-plugin": "5.5.0",
-    "husky": "7.0.4",
     "interpolate-html-plugin": "4.0.0",
     "prettier": "2.5.1",
     "sass": "1.45.0",

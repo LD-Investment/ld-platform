@@ -3,6 +3,7 @@ from django.db import models
 from django.urls import reverse
 
 from ld_platform.shared.choices import CryptoExchangeChoices
+
 from .managers import UserManager
 
 
