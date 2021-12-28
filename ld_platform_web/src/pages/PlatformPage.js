@@ -7,8 +7,8 @@ import LandingPage from "./LandingPage";
 
 // L&D Platform
 import PlatformDashboard from "./dashboard/Dashboard";
-import MyBots from "./user/MyBots";
-import MySettings from "./user/Settings";
+import MyBots from "./my/Bots";
+import MySettings from "./my/Settings";
 import Signin from "./auth/Signin";
 import Signup from "./auth/Signup";
 import ForgotPassword from "./auth/ForgotPassword";

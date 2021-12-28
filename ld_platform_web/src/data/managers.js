@@ -1,6 +1,8 @@
-import DavidProfile from "../assets/img/managers/david-jeong-profile.jpg";
+// import DavidProfile from "../assets/img/managers/david-jeong-profile.jpg";
 import LukeProfile from "../assets/img/managers/luke-kim-profile.jpg";
-import HanulProfile from "../assets/img/managers/hanul-lee-profile.jpg";
+// import HanulProfile from "../assets/img/managers/hanul-lee-profile.jpg";
+import JWLeeProfile from "../assets/img/managers/jw-lee-profile.jpg";
+import YKJeongProfile from "../assets/img/managers/yk-jeong-profile.jpg";
 
 export default [
   {
@@ -12,16 +14,16 @@ export default [
   },
   {
     id: 2,
-    image: DavidProfile,
-    title: "David Jeong",
-    subtitle: "SW Engineer",
-    text: "Korea University"
+    image: JWLeeProfile,
+    title: "J.W Lee",
+    subtitle: "Equity Analyst",
+    text: "Korea Ratings"
   },
   {
     id: 3,
-    image: HanulProfile,
-    title: "Hanul Lee",
-    subtitle: "SW Engineer",
-    text: "Korea University"
+    image: YKJeongProfile,
+    title: "Y.K Jeong",
+    subtitle: "Limited Partners, Manager",
+    text: "MG Insurance"
   }
 ];
