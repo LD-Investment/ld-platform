@@ -1,18 +1,20 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.urls import reverse
-from django.utils.translation import gettext_lazy as _
 
 from ld_platform.shared.choices import CryptoExchangeChoices
+from .managers import UserManager
 
 
 class User(AbstractUser):
     """Default user for L&D Investment Platform."""
 
     #: First and last name do not cover name patterns around the globe
-    name = models.CharField(_("Name of User"), blank=True, max_length=255)
+    email = models.EmailField(unique=True)
     first_name = None  # type: ignore
     last_name = None  # type: ignore
+
+    objects = UserManager()
 
     def get_absolute_url(self):
         """Get url for user's detail view.
