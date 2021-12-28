@@ -9,8 +9,7 @@ import {
   faFlagUsa,
   faFolderOpen,
   faGlobeEurope,
-  faPaperclip,
-  faUserPlus
+  faPaperclip
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faAngular,
@@ -19,22 +18,22 @@ import {
   faVuejs
 } from "@fortawesome/free-brands-svg-icons";
 import {
-  Col,
-  Row,
-  Card,
-  Image,
   Button,
+  Card,
+  Col,
+  Image,
   ListGroup,
-  ProgressBar
+  ProgressBar,
+  Row
 } from "@themesberg/react-bootstrap";
 import {
-  CircleChart,
   BarChart,
+  CircleChart,
   SalesValueChart,
   SalesValueChartphone
 } from "./Charts";
 
-import Profile1 from "../assets/img/team/profile-picture-1.jpg";
+import Profile1 from "../assets/img/managers/david-jeong-profile.jpg";
 import ProfileCover from "../assets/img/profile-cover.jpg";
 
 import teamMembers from "../data/teamMembers";
@@ -52,18 +51,9 @@ export const ProfileCardWidget = () => {
           alt="Neil Portrait"
           className="user-avatar large-avatar rounded-circle mx-auto mt-n7 mb-4"
         />
-        <Card.Title>Neil Sims</Card.Title>
-        <Card.Subtitle className="fw-normal">
-          Senior Software Engineer
-        </Card.Subtitle>
-        <Card.Text className="text-gray mb-4">New York, USA</Card.Text>
-
-        <Button variant="primary" size="sm" className="me-2">
-          <FontAwesomeIcon icon={faUserPlus} className="me-1" /> Connect
-        </Button>
-        <Button variant="secondary" size="sm">
-          Send Message
-        </Button>
+        <Card.Title>Jin Jeong</Card.Title>
+        <Card.Subtitle className="fw-normal">SW Engineer</Card.Subtitle>
+        <Card.Text className="text-gray mb-4">California, USA</Card.Text>
       </Card.Body>
     </Card>
   );
