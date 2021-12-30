@@ -56,7 +56,6 @@ INSTALLED_APPS += [
     "django_extensions",
     "drf_yasg",
 ]  # noqa F405
-LOCAL_APPS = ["config"] + LOCAL_APPS  # noqa F405
 
 # Celery
 # ------------------------------------------------------------------------------

@@ -12,8 +12,6 @@ class User(AbstractUser):
 
     #: First and last name do not cover name patterns around the globe
     email = models.EmailField(unique=True)
-    first_name = None  # type: ignore
-    last_name = None  # type: ignore
 
     objects = UserManager()
 

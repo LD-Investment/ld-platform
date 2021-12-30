@@ -73,6 +73,7 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
+    "ld_platform.infra",
     "ld_platform.apps.users.apps.UsersConfig",
     "ld_platform.apps.bots.apps.BotsConfig",
     # Your stuff: custom apps go here
