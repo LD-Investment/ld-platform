@@ -109,7 +109,7 @@ class RunningBotObjStores:
         del self._bot_stores[user_id][subscribed_bot_id]
 
 
-store = RunningBotObjStores()
+# store = RunningBotObjStores()
 
 
 ###############################
@@ -180,7 +180,7 @@ class BotControlGeneralCommandViewSet(viewsets.GenericViewSet):
             bot: IBot = BotResolver.model_to_instance(subscribed_bot, compiled_setting)
             # initiate bot and save instance
             bot.run()
-            store.set_bot_instance(user.id, subscribed_bot.id, bot)
+            # store.set_bot_instance(user.id, subscribed_bot.id, bot)
             # change status
             subscribed_bot.status = SubscribedBot.StatusChoices.ACTIVE
             subscribed_bot.save()
@@ -195,9 +195,9 @@ class BotControlGeneralCommandViewSet(viewsets.GenericViewSet):
             # get bot instance and stop
             # delete instance
             user = subscribed_bot.user
-            bot = store.get_bot_instance(user.id, subscribed_bot.id)
-            bot.stop()
-            store.del_bot_instance(user.id, subscribed_bot.id)
+            # bot = store.get_bot_instance(user.id, subscribed_bot.id)
+            # bot.stop()
+            # store.del_bot_instance(user.id, subscribed_bot.id)
             # change status
             subscribed_bot.status = SubscribedBot.StatusChoices.INACTIVE
             subscribed_bot.save()
@@ -220,7 +220,7 @@ class BotControlManualCommandViewSet(viewsets.GenericViewSet):
         }
     )
     def command(self, request: Request, *args: Any, **kwargs: Any) -> Response:
-        subscribed_bot: SubscribedBot = self.get_object()
+        # subscribed_bot: SubscribedBot = self.get_object()
         serializer = self.get_serializer(data=request.data)
         if not serializer.is_valid():
             return Response(
@@ -229,11 +229,11 @@ class BotControlManualCommandViewSet(viewsets.GenericViewSet):
             )
 
         # resolve command to bot methods
-        command = serializer.data["command"]
-        bot: IBot = store.get_bot_instance(subscribed_bot.user.id, subscribed_bot.id)
-        method = BotResolver.command_to_method(command, bot)
+        # command = serializer.data["command"]
+        # bot: IBot = store.get_bot_instance(subscribed_bot.user.id, subscribed_bot.id)
+        # method = BotResolver.command_to_method(command, bot)
         # run
-        method()
+        # method()
         return Response(status=status.HTTP_200_OK)
 
 

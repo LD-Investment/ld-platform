@@ -15,7 +15,7 @@ on:
     paths-ignore: [ "docs/**" ]
 
 jobs:
-  linter-backend:
+  linter-all:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code Repository
@@ -25,6 +25,9 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
+
+      - name: Build Front Stack
+        run: npm install
 
       # Run all pre-commit hooks on all the files.
       # Getting only staged files can be tricky in case a new PR is opened
@@ -54,7 +57,7 @@ jobs:
       - name: Tear down the Stack
         run: docker-compose -f local.yml down
 
-  linter-frontend:
+  test-frontend:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code Repository
@@ -69,5 +72,4 @@ jobs:
       - name: Build the Stack
         run: npm install --loglevel verbose
 
-      - name: Run Linter
-        run: npm run lint --loglevel verbose
+      # Once JS test codes are added, make step

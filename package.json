@@ -4,9 +4,7 @@
   "description": "L&D Investment Platform Frontend",
   "main": "index.js",
   "scripts": {
-    "prepare": "husky install",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "prettier --write ld_platform_web && eslint ld_platform_web",
     "build": "webpack",
     "start": "webpack-dev-server"
   },
@@ -15,13 +13,13 @@
     "@testing-library/react": "12.1.2",
     "@testing-library/user-event": "13.5.0",
     "babel-loader": "8.2.3",
+    "babel-preset-react-app": "10.0.1",
     "css-loader": "6.5.1",
     "eslint": "8.4.1",
-    "eslint-config-prettier": "8.3.0",
+    "eslint-config-react-app": "7.0.0",
     "file-loader": "6.2.0",
     "html-loader": "3.0.1",
     "html-webpack-plugin": "5.5.0",
-    "husky": "7.0.4",
     "interpolate-html-plugin": "4.0.0",
     "prettier": "2.5.1",
     "sass": "1.45.0",
@@ -35,7 +33,6 @@
   "dependencies": {
     "@babel/core": "7.16.5",
     "@babel/preset-env": "7.16.5",
-    "@babel/preset-react": "7.16.5",
     "@fortawesome/fontawesome-free": "5.15.4",
     "@fortawesome/fontawesome-svg-core": "1.2.36",
     "@fortawesome/free-brands-svg-icons": "5.15.4",
