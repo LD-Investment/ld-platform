@@ -99,32 +99,14 @@ class Command(BaseCommand):
         )
 
         """ Bot Setup """
-        ttadak_auto_bot = Bot.objects.create(
-            name=Bot.NameChoices.TTADAK,
-            type=Bot.TypeChoices.AUTOMATED,
-            version="1.0.0",
-            default_setting={"option1": 1, "option2": "test"},
-        )
         ttadak_man_bot = Bot.objects.create(
             name=Bot.NameChoices.TTADAK,
             type=Bot.TypeChoices.MANUAL,
             version="0.0.1",
             default_setting={"option1": 2.0, "option2": "test", "option3": "test2"},
         )
-        news_summary_indi_bot = Bot.objects.create(
-            name=Bot.NameChoices.NEWS_TRACKER_SUMMARY,
-            type=Bot.TypeChoices.INDICATOR,
-            version="0.0.1",
-            default_setting={"option1": 2.0, "option2": "test", "option3": "test2"},
-        )
-        news_keyword_indi_bot = Bot.objects.create(
-            name=Bot.NameChoices.NEWS_TRACKER_KEYWORD,
-            type=Bot.TypeChoices.INDICATOR,
-            version="0.0.1",
-            default_setting={"option1": 2.0, "option2": "test", "option3": "test2"},
-        )
-        news_score_indi_bot = Bot.objects.create(
-            name=Bot.NameChoices.NEWS_TRACKER_SCORE,
+        news_tracker_indi_bot = Bot.objects.create(
+            name=Bot.NameChoices.NEWS_TRACKER,
             type=Bot.TypeChoices.INDICATOR,
             version="0.0.1",
             default_setting={"option1": 2.0, "option2": "test", "option3": "test2"},
@@ -133,15 +115,6 @@ class Command(BaseCommand):
 
         """ SubscribedBot Setup """
         now = timezone.now()
-        SubscribedBot.objects.create(
-            user=user1,
-            bot=ttadak_auto_bot,
-            status=SubscribedBot.StatusChoices.ACTIVE,
-            run_type=SubscribedBot.RunTypeChoices.LIVE_RUN,
-            user_bot_settings={"user_setting1": 1234, "user_setting2": "hihi"},
-            subscribe_start_date=now,
-            subscribe_end_date=now + timezone.timedelta(days=10),
-        )
         SubscribedBot.objects.create(
             user=user1,
             bot=ttadak_man_bot,
@@ -153,35 +126,8 @@ class Command(BaseCommand):
         )
         SubscribedBot.objects.create(
             user=user1,
-            bot=news_summary_indi_bot,
+            bot=news_tracker_indi_bot,
             status=SubscribedBot.StatusChoices.ACTIVE,
-            run_type=SubscribedBot.RunTypeChoices.LIVE_RUN,
-            user_bot_settings={"user_setting1": 1234, "user_setting2": "hihi"},
-            subscribe_start_date=now,
-            subscribe_end_date=now + timezone.timedelta(days=5),
-        )
-        SubscribedBot.objects.create(
-            user=user1,
-            bot=news_keyword_indi_bot,
-            status=SubscribedBot.StatusChoices.ACTIVE,
-            run_type=SubscribedBot.RunTypeChoices.LIVE_RUN,
-            user_bot_settings={"user_setting1": 1234, "user_setting2": "hihi"},
-            subscribe_start_date=now,
-            subscribe_end_date=now + timezone.timedelta(days=12),
-        )
-        SubscribedBot.objects.create(
-            user=user1,
-            bot=news_score_indi_bot,
-            status=SubscribedBot.StatusChoices.ACTIVE,
-            run_type=SubscribedBot.RunTypeChoices.LIVE_RUN,
-            user_bot_settings={"user_setting1": 1234, "user_setting2": "hihi"},
-            subscribe_start_date=now,
-            subscribe_end_date=now + timezone.timedelta(days=22),
-        )
-        SubscribedBot.objects.create(
-            user=user2,
-            bot=ttadak_auto_bot,
-            status=SubscribedBot.StatusChoices.INACTIVE,
             run_type=SubscribedBot.RunTypeChoices.LIVE_RUN,
             user_bot_settings={"user_setting1": 1234, "user_setting2": "hihi"},
             subscribe_start_date=now,
@@ -191,23 +137,14 @@ class Command(BaseCommand):
             user=user2,
             bot=ttadak_man_bot,
             status=SubscribedBot.StatusChoices.INACTIVE,
-            run_type=SubscribedBot.RunTypeChoices.SIMULATION,
+            run_type=SubscribedBot.RunTypeChoices.LIVE_RUN,
             user_bot_settings={"user_setting1": 1234, "user_setting2": "hihi"},
             subscribe_start_date=now,
             subscribe_end_date=now + timezone.timedelta(days=5),
         )
         SubscribedBot.objects.create(
             user=user2,
-            bot=news_summary_indi_bot,
-            status=SubscribedBot.StatusChoices.INACTIVE,
-            run_type=SubscribedBot.RunTypeChoices.SIMULATION,
-            user_bot_settings={"user_setting1": 1234, "user_setting2": "hihi"},
-            subscribe_start_date=now,
-            subscribe_end_date=now + timezone.timedelta(days=5),
-        )
-        SubscribedBot.objects.create(
-            user=user2,
-            bot=news_keyword_indi_bot,
+            bot=news_tracker_indi_bot,
             status=SubscribedBot.StatusChoices.INACTIVE,
             run_type=SubscribedBot.RunTypeChoices.SIMULATION,
             user_bot_settings={"user_setting1": 1234, "user_setting2": "hihi"},
@@ -216,7 +153,7 @@ class Command(BaseCommand):
         )
         SubscribedBot.objects.create(
             user=user3,
-            bot=ttadak_auto_bot,
+            bot=ttadak_man_bot,
             status=SubscribedBot.StatusChoices.ACTIVE,
             run_type=SubscribedBot.RunTypeChoices.LIVE_RUN,
             user_bot_settings={"user_setting1": 1234, "user_setting2": "hihi"},
@@ -225,16 +162,7 @@ class Command(BaseCommand):
         )
         SubscribedBot.objects.create(
             user=user3,
-            bot=ttadak_man_bot,
-            status=SubscribedBot.StatusChoices.ACTIVE,
-            run_type=SubscribedBot.RunTypeChoices.LIVE_RUN,
-            user_bot_settings={"user_setting1": 1234, "user_setting2": "hihi"},
-            subscribe_start_date=now,
-            subscribe_end_date=now + timezone.timedelta(days=45),
-        )
-        SubscribedBot.objects.create(
-            user=user3,
-            bot=news_summary_indi_bot,
+            bot=news_tracker_indi_bot,
             status=SubscribedBot.StatusChoices.ACTIVE,
             run_type=SubscribedBot.RunTypeChoices.LIVE_RUN,
             user_bot_settings={"user_setting1": 1234, "user_setting2": "hihi"},

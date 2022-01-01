@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { HashRouter } from "react-router-dom";
+import axios from "axios";
 
 // core styles
 import "./scss/volt.scss";
@@ -11,6 +12,8 @@ import "react-datetime/css/react-datetime.css";
 
 import PlatformPage from "./pages/PlatformPage";
 import ScrollToTop from "./components/ScrollToTop";
+
+axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 
 ReactDOM.render(
   <HashRouter>

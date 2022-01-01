@@ -11,8 +11,8 @@ from ld_platform.apps.bots.api.views import (
 app_name = "bots"
 
 # Bot Administration
-bot_list = BotViewSet.as_view({"get": "list", "post": "create"})
-bot_detail = BotViewSet.as_view({"get": "retrieve", "delete": "destroy"})
+bot_list = BotViewSet.as_view({"get": "list"})
+bot_detail = BotViewSet.as_view({"get": "retrieve"})
 bot_default_setting = BotDefaultSettingViewSet.as_view(
     {"get": "retrieve", "put": "update"}
 )

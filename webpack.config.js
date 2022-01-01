@@ -1,5 +1,7 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const InterpolateHtmlPlugin = require("interpolate-html-plugin");
+const Dotenv = require('dotenv-webpack');
+
 
 module.exports = {
   mode: "development",
@@ -58,7 +60,8 @@ module.exports = {
     }),
     new InterpolateHtmlPlugin({
       PUBLIC_URL: "ld_platform_web/public" // can modify `static` to another name or get it from `process`
-    })
+    }),
+    new Dotenv()
   ],
   devServer: {
     host: "localhost",
