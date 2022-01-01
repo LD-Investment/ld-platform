@@ -8,9 +8,7 @@ class Bot(models.Model):
     class NameChoices(models.TextChoices):
         # Add field every time new bots are created
         TTADAK = "TTDK", _("Ttadak Bot")
-        NEWS_TRACKER_SUMMARY = "NTSM", _("News Tracker Summary")
-        NEWS_TRACKER_KEYWORD = "NTKW", _("News Tracker Summary")
-        NEWS_TRACKER_SCORE = "NTSR", _("News Tracker Summary")
+        NEWS_TRACKER = "NTRK", _("News Tracker")
 
     class TypeChoices(models.TextChoices):
         AUTOMATED = "AUTO", _("Automated Bot")

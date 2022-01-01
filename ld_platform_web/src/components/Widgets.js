@@ -92,11 +92,8 @@ export const ChoosePhotoWidget = props => {
   );
 };
 
-export const CounterWidget = props => {
-  const { icon, iconColor, category, title, period, percentage } = props;
-  const percentageIcon = percentage < 0 ? faAngleDown : faAngleUp;
-  const percentageColor = percentage < 0 ? "text-danger" : "text-success";
-
+export const BotCardWidget = props => {
+  const { name, type, version, icon, iconColor } = props;
   return (
     <Card border="light" className="shadow-sm">
       <Card.Body>
@@ -110,30 +107,16 @@ export const CounterWidget = props => {
             >
               <FontAwesomeIcon icon={icon} />
             </div>
-            <div className="d-sm-none">
-              <h5>{category}</h5>
-              <h3 className="mb-1">{title}</h3>
-            </div>
           </Col>
           <Col xs={12} xl={7} className="px-xl-0">
             <div className="d-none d-sm-block">
-              <h5>{category}</h5>
-              <h3 className="mb-1">{title}</h3>
+              <h5>{type}</h5>
+              <h3 className="mb-1">{name}</h3>
             </div>
             <small>
-              {period}, <FontAwesomeIcon icon={faGlobeEurope} size="xs" />{" "}
+              v{version} <FontAwesomeIcon icon={faGlobeEurope} size="xs" />{" "}
               web3.0
             </small>
-            <div className="small mt-2">
-              <FontAwesomeIcon
-                icon={percentageIcon}
-                className={`${percentageColor} me-1`}
-              />
-              <span className={`${percentageColor} fw-bold`}>
-                {percentage}%
-              </span>{" "}
-              Since last month
-            </div>
           </Col>
         </Row>
       </Card.Body>
