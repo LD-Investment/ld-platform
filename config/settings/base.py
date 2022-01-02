@@ -317,7 +317,6 @@ REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": ("ld_platform.shared.renderers.JSONResponseRenderer",),
 }
 
-# django-cors-headers - https://github.com/adamchainz/django-cors-headers#setup
-CORS_URLS_REGEX = r"^/api/.*$"
 # Your stuff...
 # ------------------------------------------------------------------------------
+APPEND_SLASH = False

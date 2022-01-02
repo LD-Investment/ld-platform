@@ -1,11 +1,13 @@
 import axios from "axios";
 import { Routes } from "../routes";
-import Login from "../pages/auth/LogIn";
-import RouteWithLoader from "../pages/PlatformPage";
 import React from "react";
 
 const LdAxios = axios.create({
-  baseURL: process.env.REACT_APP_BASE_URL
+  baseURL: process.env.REACT_APP_BASE_URL,
+  withCredentials: true,
+  headers: {
+    "content-type": "application/json"
+  }
 });
 
 // uses http-only JWT cookie for authorization
