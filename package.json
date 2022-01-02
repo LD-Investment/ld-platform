@@ -9,6 +9,7 @@
     "start": "webpack-dev-server"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-decorators": "7.16.7",
     "@testing-library/jest-dom": "5.16.1",
     "@testing-library/react": "12.1.2",
     "@testing-library/user-event": "13.5.0",
@@ -46,6 +47,8 @@
     "chartist-plugin-tooltips-updated": "0.1.4",
     "dotenv-webpack": "7.0.3",
     "ld-axios": "file:ld_platform_web/src/api",
+    "mobx": "6.3.10",
+    "mobx-react": "7.2.1",
     "moment-timezone": "0.5.34",
     "node-sass": "7.0.0",
     "react": "17.0.2",

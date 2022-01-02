@@ -18,7 +18,7 @@ import ServerError from "./errors/ServerError";
 
 // components
 import Sidebar from "../components/Sidebar";
-import Navbar from "../components/Navbar";
+import UserInfoNavBar from "../components/Navbar";
 import Preloader from "../components/Preloader";
 
 const RouteWithLoader = ({ component: Component, ...rest }) => {
@@ -59,7 +59,7 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
           <Sidebar />
 
           <main className="content">
-            <Navbar />
+            <UserInfoNavBar />
             <Component {...props} />
           </main>
         </>

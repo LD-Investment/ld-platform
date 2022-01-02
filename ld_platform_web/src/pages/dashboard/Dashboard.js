@@ -24,8 +24,6 @@ export default () => {
               name={item.name_display}
               type={item.type_display}
               version={item.version}
-              period="21/08/11 ~ Present"
-              percentage={18.2}
               icon={faChartLine}
               iconColor="shape-secondary"
             />

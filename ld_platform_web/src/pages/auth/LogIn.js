@@ -20,9 +20,11 @@ import { Link } from "react-router-dom";
 import { Routes } from "../../routes";
 import BgImage from "../../assets/img/illustrations/signin.svg";
 import LdAxios from "../../api/axios";
+import useUserStore from "../../store/user_store_context";
 
 export default () => {
   const [loginFailed, setLoginFailed] = React.useState(false);
+  const userStore = useUserStore();
 
   const onSubmitLoginForm = e => {
     e.preventDefault();
@@ -30,13 +32,16 @@ export default () => {
       username: e.target.username.value,
       password: e.target.password.value
     })
-      .then(() => {
+      .then(res => {
         setLoginFailed(false);
+        // set UserStore
+        userStore.initUserInfo(res.data.data.user);
         // redirect
         window.location.href = `/#${Routes.PlatformDashboard.path}`;
       })
-      .catch(() => {
+      .catch(e => {
         setLoginFailed(true);
+        throw e;
       });
   };
 
