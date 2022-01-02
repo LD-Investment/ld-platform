@@ -1,17 +1,23 @@
 from django.contrib.auth import get_user_model
-from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, UpdateModelMixin
+from django.shortcuts import get_object_or_404
+from rest_framework.mixins import RetrieveModelMixin, UpdateModelMixin
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import GenericViewSet
 
-from .serializers import UserSerializer
+from .serializers import UserProfileSerializer
 
 User = get_user_model()
 
 
-class UserViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericViewSet):
-    serializer_class = UserSerializer
-    queryset = User.objects.all()
-    lookup_field = "id"
+class UserProfileViewSet(RetrieveModelMixin, UpdateModelMixin, GenericViewSet):
+    """This endpoint is used to check whether requester is authenticated with its
+    httpOnly JWT cookie"""
 
-    def get_queryset(self, *args, **kwargs):
-        assert isinstance(self.request.user.id, int)
-        return self.queryset.filter(id=self.request.user.id)
+    serializer_class = UserProfileSerializer
+    queryset = User.objects.all()
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        queryset = self.get_queryset()
+        obj = get_object_or_404(queryset, id=self.request.user.id)
+        return obj

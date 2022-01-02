@@ -275,6 +275,7 @@ CELERY_TASK_TIME_LIMIT = 5 * 60
 CELERY_TASK_SOFT_TIME_LIMIT = 60
 # http://docs.celeryproject.org/en/latest/userguide/configuration.html#beat-scheduler
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
+
 # django-allauth
 # ------------------------------------------------------------------------------
 ACCOUNT_ALLOW_REGISTRATION = env.bool("DJANGO_ACCOUNT_ALLOW_REGISTRATION", True)
@@ -290,8 +291,18 @@ ACCOUNT_EMAIL_VERIFICATION = "none"
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
 # SOCIALACCOUNT_ADAPTER = "ld_platform.users.adapters.SocialAccountAdapter"
 # https://django-rest-auth.readthedocs.io/en/latest/configuration.html
+
+# django-rest-auth
+# ------------------------------------------------------------------------------
 REST_USE_JWT = True
 ACCOUNT_LOGOUT_ON_GET = True
+
+# djangorestframework-jwt
+# ------------------------------------------------------------------------------
+# https://jpadilla.github.io/django-rest-framework-jwt/?#security
+JWT_AUTH = {
+    "JWT_AUTH_COOKIE": "jwt_ld_platform",
+}
 
 # django-rest-framework
 # -------------------------------------------------------------------------------

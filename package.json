@@ -45,6 +45,7 @@
     "chartist": "0.11.4",
     "chartist-plugin-tooltips-updated": "0.1.4",
     "dotenv-webpack": "7.0.3",
+    "ld-axios": "file:ld_platform_web/src/api",
     "moment-timezone": "0.5.34",
     "node-sass": "7.0.0",
     "react": "17.0.2",

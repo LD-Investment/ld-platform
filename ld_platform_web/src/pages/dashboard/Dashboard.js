@@ -1,13 +1,14 @@
 import React from "react";
-import { faCashRegister, faChartLine } from "@fortawesome/free-solid-svg-icons";
+import { faChartLine } from "@fortawesome/free-solid-svg-icons";
 import { Col, Row } from "@themesberg/react-bootstrap";
-import axios from "axios";
+import LdAxios from "ld-axios/axios";
 import { BotCardWidget } from "../../components/Widgets";
 
 export default () => {
   const [bots, setBots] = React.useState([]);
   React.useEffect(() => {
-    axios.get("/api/bots/").then(response => {
+    LdAxios.get("/api/bots/").then(response => {
+      if (!response) return;
       setBots(response.data.data);
     });
   }, []);
