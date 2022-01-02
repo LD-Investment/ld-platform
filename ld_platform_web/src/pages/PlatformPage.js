@@ -9,7 +9,7 @@ import LandingPage from "./LandingPage";
 import PlatformDashboard from "./dashboard/Dashboard";
 import MyBots from "./my/Bots";
 import MySettings from "./my/Settings";
-import Signin from "./auth/Signin";
+import Login from "./auth/LogIn";
 import Signup from "./auth/Signup";
 import ForgotPassword from "./auth/ForgotPassword";
 import ResetPassword from "./auth/ResetPassword";
@@ -94,7 +94,7 @@ export default () => (
       path={Routes.MySettings.path}
       component={MySettings}
     />
-    <RouteWithLoader exact path={Routes.Signin.path} component={Signin} />
+    <RouteWithLoader exact path={Routes.Login.path} component={Login} />
     <RouteWithLoader exact path={Routes.Signup.path} component={Signup} />
     <RouteWithLoader
       exact
