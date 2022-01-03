@@ -21,6 +21,7 @@ export default () => {
         {bots.map((item, index) => (
           <Col xs={12} sm={6} xl={4} className="mb-4" key={index}>
             <BotCardWidget
+              id={item.id}
               name={item.name_display}
               type={item.type_display}
               version={item.version}

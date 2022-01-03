@@ -5,6 +5,7 @@ from django.db.utils import ProgrammingError
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status, viewsets
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, UpdateModelMixin
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
@@ -127,6 +128,26 @@ class BotDefaultSettingViewSet(UpdateModelMixin, RetrieveModelMixin, GenericView
     lookup_field = "id"
 
 
+#############################
+# Bot Subscription ViewSets #
+#############################
+
+
+class BotSubscribeViewSet(viewsets.GenericViewSet):
+    queryset = Bot.objects.all()
+    permission_classes = [IsAuthenticated]
+    lookup_field = "id"
+
+    @swagger_auto_schema(
+        responses={200: "success", 403: "permission denied", 404: "not found"}
+    )
+    def subscribe(self, request: Request, *args: Any, **kwargs: Any):
+        # TODO: check if user already subscribed to the bot
+        return Response(
+            status=status.HTTP_200_OK,
+        )
+
+
 ########################
 # Bot Control ViewSets #
 ########################
@@ -136,6 +157,7 @@ class BotControlGeneralCommandViewSet(viewsets.GenericViewSet):
     queryset = SubscribedBot.objects.all()
     serializer_class = BotControlGeneralCommandSerializer
     permission_classes = [IsUserBotOwner & IsSubscriptionValid]
+    lookup_field = "id"
 
     @swagger_auto_schema(
         responses={

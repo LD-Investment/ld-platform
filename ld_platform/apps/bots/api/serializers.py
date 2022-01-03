@@ -11,6 +11,7 @@ class BotSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bot
         fields = [
+            "id",
             "type",
             "type_display",
             "name",
