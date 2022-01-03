@@ -1,4 +1,4 @@
-import { action, computed, observable } from "mobx";
+import { action, computed, makeObservable, observable } from "mobx";
 import { createContext, useContext } from "react";
 import LdAxios from "../api/axios";
 
@@ -10,7 +10,9 @@ export class UserStore {
     firstName: "",
     lastName: ""
   };
-  constructor() {}
+  constructor() {
+    makeObservable(this);
+  }
 
   @computed
   get isUserInfoEmpty() {
@@ -19,6 +21,7 @@ export class UserStore {
 
   @action
   initUserInfo = data => {
+    console.log(data);
     this.userInfo = {
       username: data.username,
       email: data.email,
@@ -30,7 +33,7 @@ export class UserStore {
   @action
   updateUserInfo = () => {
     LdAxios.get("/api/users/profile/").then(res => {
-      userStore.initUserInfo(res.data.data);
+      this.initUserInfo(res.data.data);
     });
   };
 

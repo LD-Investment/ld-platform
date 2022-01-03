@@ -20,6 +20,7 @@ import ServerError from "./errors/ServerError";
 import Sidebar from "../components/Sidebar";
 import UserInfoNavBar from "../components/Navbar";
 import Preloader from "../components/Preloader";
+import useUserStore from "../store/user_store_context";
 
 const RouteWithLoader = ({ component: Component, ...rest }) => {
   const [loaded, setLoaded] = useState(false);
@@ -44,11 +45,16 @@ const RouteWithLoader = ({ component: Component, ...rest }) => {
 
 const RouteWithSidebar = ({ component: Component, ...rest }) => {
   const [loaded, setLoaded] = useState(false);
+  const userStore = useUserStore();
 
   useEffect(() => {
     const timer = setTimeout(() => setLoaded(true), 1000);
     return () => clearTimeout(timer);
   }, []);
+
+  if (userStore.isUserInfoEmpty) {
+    userStore.updateUserInfo();
+  }
 
   return (
     <Route
