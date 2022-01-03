@@ -72,7 +72,7 @@ export default () => {
                   <h3 className="mb-0">Sign in to our platform</h3>
                 </div>
                 <Form className="mt-4" onSubmit={onSubmitLoginForm}>
-                  <Form.Group id="email" className="mb-4">
+                  <Form.Group id="username" className="mb-4">
                     <Form.Label>Your Username</Form.Label>
                     <InputGroup>
                       <InputGroup.Text>

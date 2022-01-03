@@ -21,7 +21,6 @@ export class UserStore {
 
   @action
   initUserInfo = data => {
-    console.log(data);
     this.userInfo = {
       username: data.username,
       email: data.email,

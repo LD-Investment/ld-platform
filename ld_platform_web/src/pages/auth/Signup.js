@@ -3,29 +3,58 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faAngleLeft,
   faEnvelope,
+  faIdCard,
   faUnlockAlt
 } from "@fortawesome/free-solid-svg-icons";
 import {
-  faFacebookF,
-  faGithub,
-  faTwitter
-} from "@fortawesome/free-brands-svg-icons";
-import {
-  Col,
-  Row,
-  Form,
-  Card,
   Button,
-  FormCheck,
+  Card,
+  Col,
   Container,
-  InputGroup
+  Form,
+  FormCheck,
+  InputGroup,
+  Row
 } from "@themesberg/react-bootstrap";
 import { Link } from "react-router-dom";
 
 import { Routes } from "../../routes";
 import BgImage from "../../assets/img/illustrations/signin.svg";
+import LdAxios from "../../api/axios";
 
 export default () => {
+  const [signUpFailed, setSignUpFailed] = React.useState(false);
+  const [signUpFailReason, setSignUpFailReason] = React.useState("");
+
+  const onSubmitSignUpForm = e => {
+    e.preventDefault();
+    LdAxios.post("/api/auth/signup/", {
+      username: e.target.username.value,
+      email: e.target.email.value,
+      password1: e.target.password1.value,
+      password2: e.target.password2.value
+    })
+      .then(() => {
+        setSignUpFailed(false);
+        // redirect to login page
+        window.location.href = `/#${Routes.Login.path}`;
+      })
+      .catch(e => {
+        setSignUpFailed(true);
+        setSignUpFailReason(e.messages);
+      });
+  };
+
+  const showSignUpFailureMessages = Object.keys(signUpFailReason).map(
+    (key, index) => (
+      <div key={index}>
+        <Form.Text className="text-danger">
+          {signUpFailReason[key][0]}
+        </Form.Text>
+      </div>
+    )
+  );
+
   return (
     <main>
       <section className="d-flex align-items-center my-5 mt-lg-6 mb-lg-5">
@@ -37,7 +66,7 @@ export default () => {
               className="text-gray-700"
             >
               <FontAwesomeIcon icon={faAngleLeft} className="me-2" /> Back to
-              homepage
+              home
             </Card.Link>
           </p>
           <Row
@@ -52,7 +81,22 @@ export default () => {
                 <div className="text-center text-md-center mb-4 mt-md-0">
                   <h3 className="mb-0">Create an account</h3>
                 </div>
-                <Form className="mt-4">
+                <Form className="mt-4" onSubmit={onSubmitSignUpForm}>
+                  <Form.Group id="username" className="mb-4">
+                    <Form.Label>Your Username</Form.Label>
+                    <InputGroup>
+                      <InputGroup.Text>
+                        <FontAwesomeIcon icon={faIdCard} />
+                      </InputGroup.Text>
+                      <Form.Control
+                        autoFocus
+                        required
+                        type="text"
+                        name="username"
+                        placeholder="username"
+                      />
+                    </InputGroup>
+                  </Form.Group>
                   <Form.Group id="email" className="mb-4">
                     <Form.Label>Your Email</Form.Label>
                     <InputGroup>
@@ -63,6 +107,7 @@ export default () => {
                         autoFocus
                         required
                         type="email"
+                        name="email"
                         placeholder="example@company.com"
                       />
                     </InputGroup>
@@ -76,6 +121,7 @@ export default () => {
                       <Form.Control
                         required
                         type="password"
+                        name="password1"
                         placeholder="Password"
                       />
                     </InputGroup>
@@ -89,6 +135,7 @@ export default () => {
                       <Form.Control
                         required
                         type="password"
+                        name="password2"
                         placeholder="Confirm Password"
                       />
                     </InputGroup>
@@ -103,6 +150,7 @@ export default () => {
                   <Button variant="primary" type="submit" className="w-100">
                     Sign up
                   </Button>
+                  {signUpFailed && showSignUpFailureMessages}
                 </Form>
 
                 <div className="d-flex justify-content-center align-items-center mt-4">

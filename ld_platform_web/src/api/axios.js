@@ -24,7 +24,10 @@ LdAxios.interceptors.response.use(
         return;
       }
     }
-    throw e;
+    throw {
+      status: e.response.status,
+      messages: e.response.data.data
+    };
   }
 );
 
