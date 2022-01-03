@@ -72,3 +72,4 @@ CELERY_TASK_EAGER_PROPAGATES = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:9000",  # Allow ld_platform_web.webpack server
 ]
+CORS_ALLOW_CREDENTIALS = True

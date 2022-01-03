@@ -23,7 +23,7 @@ export default () => {
             <p className="text-center">
               <Card.Link
                 as={Link}
-                to={Routes.Signin.path}
+                to={Routes.Login.path}
                 className="text-gray-700"
               >
                 <FontAwesomeIcon icon={faAngleLeft} className="me-2" /> Back to

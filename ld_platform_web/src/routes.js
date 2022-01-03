@@ -13,8 +13,8 @@ export const Routes = {
   MyTrades: { path: "/platform/user/trades" },
   MySettings: { path: "/platform/user/settings" },
 
-  Signin: { path: "/platform/auth/sign-in" },
-  Signup: { path: "/platform/auth/sign-up" },
+  Login: { path: "/platform/auth/login" },
+  Signup: { path: "/platform/auth/signup" },
   ForgotPassword: { path: "/platform/auth/forgot-password" },
   ResetPassword: { path: "/platform/auth/reset-password" },
 

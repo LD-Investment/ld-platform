@@ -3,7 +3,7 @@ from typing import Any, Dict
 
 from django.db.utils import ProgrammingError
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import permissions, status, viewsets
+from rest_framework import status, viewsets
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, UpdateModelMixin
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -119,7 +119,6 @@ class BotViewSet(
     serializer_class = BotSerializer
     queryset = Bot.objects.all()
     lookup_field = "id"
-    permission_classes = [permissions.AllowAny]
 
 
 class BotDefaultSettingViewSet(UpdateModelMixin, RetrieveModelMixin, GenericViewSet):

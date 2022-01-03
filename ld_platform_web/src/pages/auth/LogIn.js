@@ -2,30 +2,49 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faAngleLeft,
-  faEnvelope,
+  faIdCard,
   faUnlockAlt
 } from "@fortawesome/free-solid-svg-icons";
 import {
-  faFacebookF,
-  faGithub,
-  faTwitter
-} from "@fortawesome/free-brands-svg-icons";
-import {
-  Col,
-  Row,
-  Form,
-  Card,
   Button,
-  FormCheck,
+  Card,
+  Col,
   Container,
-  InputGroup
+  Form,
+  FormCheck,
+  InputGroup,
+  Row
 } from "@themesberg/react-bootstrap";
 import { Link } from "react-router-dom";
 
 import { Routes } from "../../routes";
 import BgImage from "../../assets/img/illustrations/signin.svg";
+import LdAxios from "../../api/axios";
+import useUserStore from "../../store/user_store_context";
 
 export default () => {
+  const [loginFailed, setLoginFailed] = React.useState(false);
+  const userStore = useUserStore();
+
+  const onSubmitLoginForm = e => {
+    e.preventDefault();
+    LdAxios.post("/api/auth/login/", {
+      username: e.target.username.value,
+      password: e.target.password.value
+    })
+      .then(res => {
+        setLoginFailed(false);
+        // set UserStore
+        userStore.initUserInfo(res.data.data.user);
+        // redirect
+        window.location.href = `/#${Routes.PlatformDashboard.path}`;
+      })
+      .catch(e => {
+        setLoginFailed(true);
+        throw e;
+      });
+  };
+
   return (
     <main>
       <section className="d-flex align-items-center my-5 mt-lg-6 mb-lg-5">
@@ -37,7 +56,7 @@ export default () => {
               className="text-gray-700"
             >
               <FontAwesomeIcon icon={faAngleLeft} className="me-2" /> Back to
-              homepage
+              home
             </Card.Link>
           </p>
           <Row
@@ -52,18 +71,19 @@ export default () => {
                 <div className="text-center text-md-center mb-4 mt-md-0">
                   <h3 className="mb-0">Sign in to our platform</h3>
                 </div>
-                <Form className="mt-4">
-                  <Form.Group id="email" className="mb-4">
-                    <Form.Label>Your Email</Form.Label>
+                <Form className="mt-4" onSubmit={onSubmitLoginForm}>
+                  <Form.Group id="username" className="mb-4">
+                    <Form.Label>Your Username</Form.Label>
                     <InputGroup>
                       <InputGroup.Text>
-                        <FontAwesomeIcon icon={faEnvelope} />
+                        <FontAwesomeIcon icon={faIdCard} />
                       </InputGroup.Text>
                       <Form.Control
                         autoFocus
                         required
-                        type="email"
-                        placeholder="example@company.com"
+                        type="text"
+                        name="username"
+                        placeholder="User ID"
                       />
                     </InputGroup>
                   </Form.Group>
@@ -77,6 +97,7 @@ export default () => {
                         <Form.Control
                           required
                           type="password"
+                          name="password"
                           placeholder="Password"
                         />
                       </InputGroup>
@@ -97,33 +118,13 @@ export default () => {
                     </div>
                   </Form.Group>
                   <Button variant="primary" type="submit" className="w-100">
-                    Sign in
+                    Log in
                   </Button>
+                  {loginFailed && (
+                    <Form.Text className="text-danger">Login failed</Form.Text>
+                  )}
                 </Form>
 
-                <div className="mt-3 mb-4 text-center">
-                  <span className="fw-normal">or login with</span>
-                </div>
-                <div className="d-flex justify-content-center my-4">
-                  <Button
-                    variant="outline-light"
-                    className="btn-icon-only btn-pill text-facebook me-2"
-                  >
-                    <FontAwesomeIcon icon={faFacebookF} />
-                  </Button>
-                  <Button
-                    variant="outline-light"
-                    className="btn-icon-only btn-pill text-twitter me-2"
-                  >
-                    <FontAwesomeIcon icon={faTwitter} />
-                  </Button>
-                  <Button
-                    variant="outline-light"
-                    className="btn-icon-only btn-pil text-dark"
-                  >
-                    <FontAwesomeIcon icon={faGithub} />
-                  </Button>
-                </div>
                 <div className="d-flex justify-content-center align-items-center mt-4">
                   <span className="fw-normal">
                     Not registered?
@@ -132,7 +133,7 @@ export default () => {
                       to={Routes.Signup.path}
                       className="fw-bold"
                     >
-                      {` Create account `}
+                      {` Sign up `}
                     </Card.Link>
                   </span>
                 </div>

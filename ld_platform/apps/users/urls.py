@@ -1,13 +1,9 @@
 from django.urls import path
 
-from ld_platform.apps.users.api.views import UserViewSet
+from ld_platform.apps.users.api.views import UserProfileViewSet
 
 app_name = "users"
 
-user_list = UserViewSet.as_view({"get": "list"})
-user_detail = UserViewSet.as_view({"get": "retrieve"})
+user_profile_detail = UserProfileViewSet.as_view({"get": "retrieve"})
 
-urlpatterns = [
-    path("", user_list, name="user-list"),
-    path("<int:user_id>/", user_detail, name="user-detail"),
-]
+urlpatterns = [path("profile/", user_profile_detail, name="user-profile-detail")]
