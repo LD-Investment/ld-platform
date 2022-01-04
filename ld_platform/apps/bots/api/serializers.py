@@ -1,6 +1,8 @@
+from django.db.models.query import QuerySet
 from rest_framework import serializers
 
-from ld_platform.apps.bots.models import Bot
+from ld_platform.apps.bots.models import Bot, SubscribedBot
+from ld_platform.apps.users.models import User
 from ld_platform.shared.choices import BotCommandsChoices
 
 
@@ -19,6 +21,36 @@ class BotSerializer(serializers.ModelSerializer):
             "version",
             "default_setting",
         ]
+
+
+class BotSubscribeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SubscribedBot
+        fields = ["status", "run_type", "user_bot_settings"]
+
+    def create(self, validated_data):
+        user: User = self.context["user"]
+        bot: Bot = self.context["bot"]
+
+        # check if user already subscribed to same bot
+        if self.check_bot_subscription(user, bot):
+            raise serializers.ValidationError("user already subscribed to the bot")
+
+        subscribed_bot: SubscribedBot = SubscribedBot(
+            user=user,
+            bot=bot,
+            **validated_data,
+        )
+        subscribed_bot.save()
+        return subscribed_bot
+
+    @staticmethod
+    def check_bot_subscription(user: User, bot: Bot):
+        """
+        Check whether the user subscribed to the Bot or not.
+        """
+        qs: QuerySet = SubscribedBot.objects.filter(bot=bot, user=user)
+        return qs.exists()
 
 
 class BotDefaultSettingSerializer(serializers.ModelSerializer):

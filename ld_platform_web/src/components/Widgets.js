@@ -3,23 +3,25 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGlobeEurope } from "@fortawesome/free-solid-svg-icons";
 import { Card, Col, Row } from "@themesberg/react-bootstrap";
 import LdAxios from "../api/axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { Routes } from "../routes";
 
 export const BotCardWidget = props => {
+  React.useState(false);
   const { id, name, type, version, icon, iconColor } = props;
 
   const onClick = botId => {
-    LdAxios.post(`/api/bots/${botId}/subscribe`)
+    LdAxios.post(`/api/bots/${botId}/subscribe`, {
+      user_bot_settings: {} // TODO: make it customizable
+    })
       .then(res => {
-        console.log(res);
-        // setLoginFailed(false);
-        // // set UserStore
-        // userStore.initUserInfo(res.data.data.user);
-        // // redirect
-        // window.location.href = `/#${Routes.PlatformDashboard.path}`;
+        toast.success("Success!");
+        // redirect
+        window.location.href = `/#${Routes.MyBots.path}`;
       })
       .catch(e => {
-        // setLoginFailed(true);
+        toast.error(e.messages[0]);
         throw e;
       });
   };

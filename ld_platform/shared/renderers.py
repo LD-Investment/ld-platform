@@ -16,9 +16,8 @@ class JSONResponseRenderer(JSONRenderer):
             response["data"] = None
             try:
                 response["message"] = data["detail"]
-            except KeyError:
+            except (KeyError, TypeError):
                 response["data"] = data
-
         return super(JSONResponseRenderer, self).render(
             response, accepted_media_type, renderer_context
         )
