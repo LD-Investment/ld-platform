@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { HashRouter } from "react-router-dom";
 import axios from "axios";
+import { ToastContainer } from "react-toastify";
 
 // core styles
 import "./scss/volt.scss";
@@ -19,6 +20,7 @@ ReactDOM.render(
   <HashRouter>
     <ScrollToTop />
     <PlatformPage />
+    <ToastContainer />
   </HashRouter>,
   document.getElementById("root")
 );

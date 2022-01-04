@@ -5,6 +5,7 @@ from django.db.utils import ProgrammingError
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status, viewsets
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, UpdateModelMixin
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
@@ -21,6 +22,7 @@ from .serializers import (
     BotControlManualCommandSerializer,
     BotDefaultSettingSerializer,
     BotSerializer,
+    BotSubscribeSerializer,
 )
 
 logger = logging.getLogger(__name__)
@@ -127,6 +129,44 @@ class BotDefaultSettingViewSet(UpdateModelMixin, RetrieveModelMixin, GenericView
     lookup_field = "id"
 
 
+#############################
+# Bot Subscription ViewSets #
+#############################
+
+
+class BotSubscribeViewSet(viewsets.GenericViewSet):
+    queryset = Bot.objects.all()
+    serializer_class = BotSubscribeSerializer
+    permission_classes = [IsAuthenticated]
+    lookup_field = "id"
+
+    @swagger_auto_schema(
+        responses={200: "success", 401: "unauthorized", 404: "not found"}
+    )
+    def subscribe(self, request: Request, *args: Any, **kwargs: Any):
+        # TODO: Since FE is not ready, replace fields like
+        #  `status` and `run_type` with default values
+        request.data["status"] = SubscribedBot.StatusChoices.ACTIVE
+        request.data["run_type"] = SubscribedBot.RunTypeChoices.LIVE_RUN
+
+        serializer = self.get_serializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(
+                data={"detail": f"invalid payload: {request.data}"},
+                status=status.HTTP_406_NOT_ACCEPTABLE,
+            )
+
+        # subscribe to bot
+        serializer.save()
+        return Response(status=status.HTTP_200_OK)
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["user"] = self.request.user
+        context["bot"] = Bot.objects.get(id=self.kwargs["id"])
+        return context
+
+
 ########################
 # Bot Control ViewSets #
 ########################
@@ -136,12 +176,13 @@ class BotControlGeneralCommandViewSet(viewsets.GenericViewSet):
     queryset = SubscribedBot.objects.all()
     serializer_class = BotControlGeneralCommandSerializer
     permission_classes = [IsUserBotOwner & IsSubscriptionValid]
+    lookup_field = "id"
 
     @swagger_auto_schema(
         responses={
             200: "success",
             400: "bot is active/inactive",
-            403: "permission denied",
+            401: "unauthorized",
             406: "invalid payload",
         }
     )
@@ -207,7 +248,7 @@ class BotControlManualCommandViewSet(viewsets.GenericViewSet):
     @swagger_auto_schema(
         responses={
             200: "success",
-            403: "permission denied",
+            401: "unauthorized",
             406: "invalid payload",
         }
     )

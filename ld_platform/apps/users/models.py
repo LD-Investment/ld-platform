@@ -20,7 +20,6 @@ class User(AbstractUser):
 
         Returns:
             str: URL for user detail.
-
         """
         return reverse("api:users:user-detail", kwargs={"user_id": self.id})
 
