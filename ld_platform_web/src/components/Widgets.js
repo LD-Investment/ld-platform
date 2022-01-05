@@ -15,7 +15,7 @@ export const BotCardWidget = props => {
     LdAxios.post(`/api/bots/${botId}/subscribe`, {
       user_bot_settings: {} // TODO: make it customizable
     })
-      .then(res => {
+      .then(() => {
         toast.success("Success!");
         // redirect
         window.location.href = `/#${Routes.MyBots.path}`;

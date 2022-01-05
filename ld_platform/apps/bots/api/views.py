@@ -113,11 +113,7 @@ class RunningBotObjStores:
 ###############################
 
 
-class BotViewSet(
-    RetrieveModelMixin,
-    ListModelMixin,
-    GenericViewSet,
-):
+class BotViewSet(RetrieveModelMixin, ListModelMixin, GenericViewSet):
     serializer_class = BotSerializer
     queryset = Bot.objects.all()
     lookup_field = "id"

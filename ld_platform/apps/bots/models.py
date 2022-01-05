@@ -53,5 +53,5 @@ class SubscribedBot(models.Model):
     )
     user_bot_settings = models.JSONField(default=dict, null=True, blank=True)
     # TODO: for now, just leave it as null
-    subscribe_start_date = models.DateTimeField(null=True)
+    subscribe_start_date = models.DateTimeField(null=True, auto_now_add=True)
     subscribe_end_date = models.DateTimeField(null=True)
