@@ -12,7 +12,7 @@ import {
 } from "@themesberg/react-bootstrap";
 
 import EmptyProfilePicture from "../assets/img/team/profile-picture-empty.jpg";
-import LdAxios from "../api/axios";
+import LdAxios from "ld-axios/axios";
 
 const handleLogOut = () => {
   LdAxios.get("/api/auth/logout/").then(() => {

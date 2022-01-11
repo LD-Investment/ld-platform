@@ -2,7 +2,7 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGlobeEurope } from "@fortawesome/free-solid-svg-icons";
 import { Card, Col, Row } from "@themesberg/react-bootstrap";
-import LdAxios from "../api/axios";
+import LdAxios from "ld-axios/axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Routes } from "../routes";

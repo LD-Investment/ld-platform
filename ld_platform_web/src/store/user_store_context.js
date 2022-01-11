@@ -1,6 +1,6 @@
 import { action, computed, makeObservable, observable } from "mobx";
 import { createContext, useContext } from "react";
-import LdAxios from "../api/axios";
+import LdAxios from "ld-axios/axios";
 
 export class UserStore {
   @observable

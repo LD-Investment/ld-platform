@@ -1,19 +1,10 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faEdit,
-  faEllipsisH,
-  faEye,
-  faTrashAlt
-} from "@fortawesome/free-solid-svg-icons";
-import {
-  Button,
-  ButtonGroup,
-  Card,
-  Dropdown,
-  Table
-} from "@themesberg/react-bootstrap";
+import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
+import { Button, Card, Table } from "@themesberg/react-bootstrap";
 import LdAxios from "../api/axios";
+import { Link } from "react-router-dom";
+import { Routes } from "../routes";
 
 export const SubscribedBotTable = () => {
   const [subscribedBots, setSubscribedBots] = React.useState([]);
@@ -24,7 +15,7 @@ export const SubscribedBotTable = () => {
     });
   }, []);
 
-  const TableRow = props => {
+  const SubscribedBotTableRow = props => {
     const {
       bot,
       subscribe_end_date,
@@ -61,29 +52,18 @@ export const SubscribedBotTable = () => {
         </td>
 
         <td>
-          <Dropdown as={ButtonGroup}>
-            <Dropdown.Toggle
-              as={Button}
-              split
-              variant="link"
-              className="text-dark m-0 p-0"
-            >
-              <span className="icon icon-sm">
-                <FontAwesomeIcon icon={faEllipsisH} className="icon-dark" />
-              </span>
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Dropdown.Item>
-                <FontAwesomeIcon icon={faEye} className="me-2" /> View Details
-              </Dropdown.Item>
-              <Dropdown.Item>
-                <FontAwesomeIcon icon={faEdit} className="me-2" /> Edit
-              </Dropdown.Item>
-              <Dropdown.Item className="text-danger">
-                <FontAwesomeIcon icon={faTrashAlt} className="me-2" /> Remove
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
+          <Button
+            variant="secondary"
+            as={Link}
+            to={Routes.NotFound.path}
+            className="text-dark me-3"
+          >
+            Control{" "}
+            <FontAwesomeIcon
+              icon={faExternalLinkAlt}
+              className="d-none d-sm-inline ms-1"
+            />
+          </Button>
         </td>
       </tr>
     );
@@ -104,7 +84,10 @@ export const SubscribedBotTable = () => {
           </thead>
           <tbody>
             {subscribedBots.map((item, index) => (
-              <TableRow key={`subscribed-bot-${index}`} {...item} />
+              <SubscribedBotTableRow
+                key={`subscribed-bot-${index}`}
+                {...item}
+              />
             ))}
           </tbody>
         </Table>

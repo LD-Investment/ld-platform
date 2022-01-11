@@ -20,7 +20,7 @@ import { Link } from "react-router-dom";
 
 import { Routes } from "../../routes";
 import BgImage from "../../assets/img/illustrations/signin.svg";
-import LdAxios from "../../api/axios";
+import LdAxios from "ld-axios/axios";
 
 export default () => {
   const [signUpFailed, setSignUpFailed] = React.useState(false);
