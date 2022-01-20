@@ -10,8 +10,8 @@ import {
 } from "@themesberg/react-bootstrap";
 
 import Documentation from "../../components/Documentation";
-import ReactLogoPrimary from "../../assets/img/technologies/react-logo-primary.svg";
-import ReactLogoTransparent from "../../assets/img/technologies/react-logo-transparent.svg";
+import LdGradient2DLogo from "../../assets/img/logo/logo_gradient_2d.png";
+import LdMint2DLogo from "../../assets/img/logo/logo_mint_2d.png";
 
 export default () => {
   return (
@@ -35,7 +35,7 @@ export default () => {
             Card,
             Navbar,
             Container,
-            ReactLogo: ReactLogoTransparent,
+            ReactLogo: LdMint2DLogo,
             Image
           }}
           imports={`import { Nav, Card, Navbar, Container } from '@themesberg/react-bootstrap';
@@ -71,8 +71,8 @@ import ReactLogo from "src/assets/img/technologies/react-logo-transparent.svg";`
             Navbar,
             Image,
             Container,
-            ReactLogoPrimary,
-            ReactLogo: ReactLogoTransparent
+            ReactLogoPrimary: LdGradient2DLogo,
+            ReactLogo: LdMint2DLogo
           }}
           imports={`import React, { useEffect, useState } from "react";
 import { Nav, Card, Navbar, Container } from '@themesberg/react-bootstrap';
@@ -80,7 +80,7 @@ import ReactLogo from "src/assets/img/technologies/react-logo-transparent.svg";
 import ReactLogoPrimary from "src/assets/img/technologies/react-logo-primary.svg";`}
           example={`const NavbarThemes = [
   { themeVariant: 'primary', navbarColor: 'dark', brandIcon: ReactLogo },
-  { themeVariant: 'secondary', navbarColor: 'light', brandIcon: ReactLogoPrimary },
+  { themeVariant: 'secondary', navbarColor: 'light', brandIcon: LdGradient2DLogo },
   { themeVariant: 'soft', navbarColor: 'light', brandIcon: ReactLogo }
 ];
 

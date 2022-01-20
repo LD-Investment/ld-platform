@@ -21,8 +21,8 @@ import { Link } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
 
 import { Routes } from "../routes";
-import LDLogo2DGradient from "../assets/img/pages/landing_page/logo_gradient_2d.png";
-import LDLogo2DMint from "../assets/img/pages/landing_page/logo_mint_2d.png";
+import LDLogo2DGradient from "../assets/img/logo/logo_gradient_2d.png";
+import LDLogo2DMint from "../assets/img/logo/logo_mint_2d.png";
 import LdEcoSystem from "../assets/img/pages/landing_page/1-placeholder.png";
 import TrustlessIcon from "../assets/img/pages/landing_page/4-icon1.png";
 import IaaPIcon from "../assets/img/pages/landing_page/4-icon2.png";
@@ -151,9 +151,6 @@ export default () => {
         <Container>
           <Row>
             <Col xs={12} className="text-center">
-              <div className="logo-big-icon d-none d-lg-block">
-                <span className="fab fa-react" />
-              </div>
               <h1 className="fw-bolder text-secondary">
                 L&D Investment Platform
               </h1>
@@ -179,13 +176,16 @@ export default () => {
       <div className="section pt-0">
         <Container className="mt-n10 mt-lg-n12 z-2">
           <Row className="justify-content-center">
-            <Col xs={9}>
+            <Col xs={24}>
               <Image src={LdEcoSystem} alt="Mockup presentation" />
             </Col>
           </Row>
           <Row className="justify-content-center mt-5 mt-lg-6" id="who-are-we">
             <Col xs={6} md={3} className="text-center">
-              <div className="icon icon-shape icon-lg bg-white shadow-lg border-light rounded-circle mb-4">
+              <div
+                className="icon icon-shape icon-lg rounded-circle mb-4"
+                style={{ width: 50, height: 50 }}
+              >
                 <Image src={TrustlessIcon} alt="Trustless Icon" />
               </div>
               <h3 className="fw-bolder">Trustless Track-records</h3>
@@ -195,7 +195,10 @@ export default () => {
               </p>
             </Col>
             <Col xs={6} md={3} className="text-center">
-              <div className="icon icon-shape icon-lg bg-white shadow-lg border-light rounded-circle mb-4">
+              <div
+                className="icon icon-shape icon-lg rounded-circle mb-4"
+                style={{ width: 50, height: 50 }}
+              >
                 <Image src={WorldClassAiIcon} alt="WorldClass AI/Quant Icon" />
               </div>
               <h3 className="fw-bolder">World-class AI/Quants</h3>
@@ -205,7 +208,10 @@ export default () => {
               </p>
             </Col>
             <Col xs={6} md={3} className="text-center">
-              <div className="icon icon-shape icon-lg bg-white shadow-lg border-light rounded-circle mb-4">
+              <div
+                className="icon icon-shape icon-lg rounded-circle mb-4"
+                style={{ width: 50, height: 50 }}
+              >
                 <Image src={IaaPIcon} alt="Iaap Icon" />
               </div>
               <h3 className="fw-bolder">Investment as a Platform</h3>
@@ -215,7 +221,10 @@ export default () => {
               </p>
             </Col>
             <Col xs={6} md={3} className="text-center">
-              <div className="icon icon-shape icon-lg bg-white shadow-lg border-light rounded-circle mb-4">
+              <div
+                className="icon icon-shape icon-lg rounded-circle mb-4"
+                style={{ width: 50, height: 50 }}
+              >
                 <Image src={Web23Icon} alt="Bridge of web 2.0/3.0" />
               </div>
               <h3 className="fw-bolder">Bridging Web2.0/3.0</h3>
@@ -291,7 +300,7 @@ export default () => {
                 Check out Strategies!
               </Button>
             </Col>
-            <Col lg={6} className="rounded shadow pt-3">
+            <Col lg={6} className="order-lg-1">
               <Image
                 src={WorldClassAiQuantImage}
                 alt="World Class Ai/Quant Image"
@@ -347,7 +356,7 @@ export default () => {
                 hello hello
               </p>
             </Col>
-            <Col lg={6} className="rounded shadow pt-3">
+            <Col lg={6} className="order-lg-1">
               <Image
                 src={BridgingWeb23Image}
                 alt="Bridging Web 2.0/3.0 Image"

@@ -11,19 +11,19 @@ export default [
     title: "Luke Kim",
     subtitle: "AI/Quant researcher",
     text: "Stanford University"
-  },
-  {
-    id: 2,
-    image: JWLeeProfile,
-    title: "J.W Lee",
-    subtitle: "Equity Analyst",
-    text: "Korea Ratings"
-  },
-  {
-    id: 3,
-    image: YKJeongProfile,
-    title: "Y.K Jeong",
-    subtitle: "Limited Partners, Manager",
-    text: "MG Insurance"
   }
+  // {
+  //   id: 2,
+  //   image: JWLeeProfile,
+  //   title: "J.W Lee",
+  //   subtitle: "Equity Analyst",
+  //   text: "Korea Ratings"
+  // },
+  // {
+  //   id: 3,
+  //   image: YKJeongProfile,
+  //   title: "Y.K Jeong",
+  //   subtitle: "Limited Partners, Manager",
+  //   text: "MG Insurance"
+  // }
 ];
