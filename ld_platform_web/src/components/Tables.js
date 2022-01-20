@@ -1,70 +1,69 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faEdit,
-  faEllipsisH,
-  faEye,
-  faTrashAlt
-} from "@fortawesome/free-solid-svg-icons";
-import {
-  Button,
-  ButtonGroup,
-  Card,
-  Dropdown,
-  Table
-} from "@themesberg/react-bootstrap";
-import subscribedBots from "../data/subscribedBots";
+import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
+import { Button, Card, Table } from "@themesberg/react-bootstrap";
+import LdAxios from "../api/axios";
+import { Link } from "react-router-dom";
+import { Routes } from "../routes";
 
 export const SubscribedBotTable = () => {
-  const TableRow = props => {
-    const { subscription, issueDate, dueDate, status } = props;
+  const [subscribedBots, setSubscribedBots] = React.useState([]);
+  React.useEffect(() => {
+    LdAxios.get("/api/users/subscribed-bots/").then(response => {
+      if (!response) return;
+      setSubscribedBots(response.data.data);
+    });
+  }, []);
+
+  const SubscribedBotTableRow = props => {
+    const {
+      bot,
+      subscribe_end_date,
+      status,
+      status_display,
+      run_type_display
+    } = props;
     const statusVariant =
-      status === "Paid"
+      status === "ACTV" // consult BE for symbol
         ? "success"
-        : status === "Due"
+        : status === "INAC"
         ? "warning"
-        : status === "Canceled"
-        ? "danger"
         : "primary";
 
     return (
       <tr>
         <td>
-          <span className="fw-normal">{subscription}</span>
+          <span className="fw-normal">{bot.name_display}</span>
         </td>
         <td>
-          <span className="fw-normal">{issueDate}</span>
+          <span className="fw-normal">{bot.type_display}</span>
+        </td>
+
+        <td>
+          <span className="fw-normal">{subscribe_end_date}</span>
         </td>
         <td>
-          <span className="fw-normal">{dueDate}</span>
+          <span className="fw-normal">{run_type_display}</span>
         </td>
         <td>
-          <span className={`fw-normal text-${statusVariant}`}>{status}</span>
+          <span className={`fw-normal text-${statusVariant}`}>
+            {status_display}
+          </span>
         </td>
+
         <td>
-          <Dropdown as={ButtonGroup}>
-            <Dropdown.Toggle
-              as={Button}
-              split
-              variant="link"
-              className="text-dark m-0 p-0"
-            >
-              <span className="icon icon-sm">
-                <FontAwesomeIcon icon={faEllipsisH} className="icon-dark" />
-              </span>
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Dropdown.Item>
-                <FontAwesomeIcon icon={faEye} className="me-2" /> View Details
-              </Dropdown.Item>
-              <Dropdown.Item>
-                <FontAwesomeIcon icon={faEdit} className="me-2" /> Edit
-              </Dropdown.Item>
-              <Dropdown.Item className="text-danger">
-                <FontAwesomeIcon icon={faTrashAlt} className="me-2" /> Remove
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
+          <Button
+            variant="secondary"
+            as={Link}
+            to={Routes.NotFound.path}
+            className="text-dark me-3"
+          >
+            Control{" "}
+            <FontAwesomeIcon
+              icon={faExternalLinkAlt}
+              className="d-none d-sm-inline ms-1"
+            />
+          </Button>
         </td>
       </tr>
     );
@@ -76,16 +75,19 @@ export const SubscribedBotTable = () => {
         <Table hover className="user-table align-items-center">
           <thead>
             <tr>
-              <th className="border-bottom">Bot name</th>
-              <th className="border-bottom">Bot type</th>
-              <th className="border-bottom">Subscribed date</th>
+              <th className="border-bottom">Name</th>
+              <th className="border-bottom">Type</th>
+              <th className="border-bottom">Expires at</th>
+              <th className="border-bottom">Run Type</th>
               <th className="border-bottom">Status</th>
-              <th className="border-bottom">Action</th>
             </tr>
           </thead>
           <tbody>
-            {subscribedBots.map(t => (
-              <TableRow key={`transaction-${t.invoiceNumber}`} {...t} />
+            {subscribedBots.map((item, index) => (
+              <SubscribedBotTableRow
+                key={`subscribed-bot-${index}`}
+                {...item}
+              />
             ))}
           </tbody>
         </Table>

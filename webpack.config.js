@@ -56,7 +56,8 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "ld_platform_web/public/index.html"
+      template: "ld_platform_web/public/index.html",
+      favicon: "ld_platform_web/public/favicon.ico"
     }),
     new InterpolateHtmlPlugin({
       PUBLIC_URL: "ld_platform_web/public" // can modify `static` to another name or get it from `process`

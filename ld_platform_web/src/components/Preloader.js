@@ -1,7 +1,7 @@
 import React from "react";
 import { Image } from "@themesberg/react-bootstrap";
 
-import ReactLogo from "../assets/img/technologies/react-logo-transparent.svg";
+import LDGradient3DLogo from "../assets/img/logo/logo_gradient_3d.png";
 
 export default props => {
   const { show } = props;
@@ -14,7 +14,7 @@ export default props => {
     >
       <Image
         className="loader-element animate__animated animate__jackInTheBox"
-        src={ReactLogo}
+        src={LDGradient3DLogo}
         height={40}
       />
     </div>

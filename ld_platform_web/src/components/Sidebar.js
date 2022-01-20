@@ -19,7 +19,7 @@ import {
 } from "@themesberg/react-bootstrap";
 
 import { Routes } from "../routes";
-import ReactHero from "../assets/img/technologies/react-hero-logo.svg";
+import LdGradient2DLogo from "../assets/img/logo/logo_gradient_2d.png";
 
 export default (props = {}) => {
   const location = useLocation();
@@ -95,7 +95,7 @@ export default (props = {}) => {
           as={Link}
           to={Routes.PlatformDashboard.path}
         >
-          <Image src={ReactHero} className="navbar-brand-light" />
+          <Image src={LdGradient2DLogo} className="navbar-brand-light" />
         </Navbar.Brand>
         <Navbar.Toggle
           as={Button}
@@ -122,7 +122,7 @@ export default (props = {}) => {
               <NavItem
                 title="L&D Investment"
                 link={Routes.PlatformDashboard.path}
-                image={ReactHero}
+                image={LdGradient2DLogo}
               />
               <NavItem
                 title="My Bots"

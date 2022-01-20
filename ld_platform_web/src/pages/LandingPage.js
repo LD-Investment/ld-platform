@@ -3,14 +3,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCheckCircle,
   faExternalLinkAlt,
-  faMapMarkedAlt,
-  faPager
+  faMapMarkedAlt
 } from "@fortawesome/free-solid-svg-icons";
-import {
-  faBootstrap,
-  faReact,
-  faSass
-} from "@fortawesome/free-brands-svg-icons";
+import { faReact } from "@fortawesome/free-brands-svg-icons";
 import {
   Button,
   Card,
@@ -26,8 +21,18 @@ import { Link } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
 
 import { Routes } from "../routes";
-import PlaceholderImage from "../assets/img/placeholder.png";
-import ReactHero from "../assets/img/technologies/react-hero-logo.svg";
+import LDLogo2DGradient from "../assets/img/logo/logo_gradient_2d.png";
+import LDLogo2DMint from "../assets/img/logo/logo_mint_2d.png";
+import LdEcoSystem from "../assets/img/pages/landing_page/1-placeholder.png";
+import TrustlessIcon from "../assets/img/pages/landing_page/4-icon1.png";
+import IaaPIcon from "../assets/img/pages/landing_page/4-icon2.png";
+import Web23Icon from "../assets/img/pages/landing_page/4-icon4.png";
+import WorldClassAiIcon from "../assets/img/pages/landing_page/4-icon3.png";
+import TrustlessTrackRecordImage from "../assets/img/pages/landing_page/2-concept-trustless_track_record.png";
+import WorldClassAiQuantImage from "../assets/img/pages/landing_page/2-concept-world_class_ai.png";
+import InvestmentAsPlatformImage from "../assets/img/pages/landing_page/2-concept-invest_as_platform.png";
+import BridgingWeb23Image from "../assets/img/pages/landing_page/2-concept-bridge_web2_3.png";
+import GetSomeSleepImage from "../assets/img/pages/landing_page/5-final-sleep_well.png";
 
 import pages from "../data/pages";
 import managers from "../data/managers";
@@ -37,7 +42,7 @@ export default () => {
   const PagePreview = props => {
     const { name, image, link } = props;
     return (
-      <Col xs={6} className="mb-5">
+      <Col xs={3} className="mb-5">
         <Card.Link
           as={Link}
           to={link}
@@ -97,7 +102,7 @@ export default () => {
             to="#home"
             className="me-lg-3 d-flex align-items-center"
           >
-            <Image src={ReactHero} />
+            <Image src={LDLogo2DGradient} />
             <span className="ms-2 brand-text d-none d-md-inline">
               L&D Investment
             </span>
@@ -146,9 +151,6 @@ export default () => {
         <Container>
           <Row>
             <Col xs={12} className="text-center">
-              <div className="react-big-icon d-none d-lg-block">
-                <span className="fab fa-react" />
-              </div>
               <h1 className="fw-bolder text-secondary">
                 L&D Investment Platform
               </h1>
@@ -158,7 +160,6 @@ export default () => {
                 <span className="fw-bold">Bots</span>
                 <p>for traders, analysts and investors of web2.0 and 3.0</p>
               </pre>
-              <div className="d-flex justify-content-center flex-column mb-6 mb-lg-5 mt-5" />
             </Col>
           </Row>
           <figure className="position-absolute bottom-0 left-0 w-100 d-none d-md-block mb-n2">
@@ -175,14 +176,17 @@ export default () => {
       <div className="section pt-0">
         <Container className="mt-n10 mt-lg-n12 z-2">
           <Row className="justify-content-center">
-            <Col xs={9}>
-              <Image src={PlaceholderImage} alt="Mockup presentation" />
+            <Col xs={24}>
+              <Image src={LdEcoSystem} alt="Mockup presentation" />
             </Col>
           </Row>
           <Row className="justify-content-center mt-5 mt-lg-6" id="who-are-we">
             <Col xs={6} md={3} className="text-center">
-              <div className="icon icon-shape icon-lg bg-white shadow-lg border-light rounded-circle mb-4">
-                <FontAwesomeIcon icon={faSass} className="text-secondary" />
+              <div
+                className="icon icon-shape icon-lg rounded-circle mb-4"
+                style={{ width: 50, height: 50 }}
+              >
+                <Image src={TrustlessIcon} alt="Trustless Icon" />
               </div>
               <h3 className="fw-bolder">Trustless Track-records</h3>
               <p className="text-gray">
@@ -190,9 +194,12 @@ export default () => {
                 providing immutable track-records.
               </p>
             </Col>
-            <Col xs={6} md={3} className="text-center mb-4">
-              <div className="icon icon-shape icon-lg bg-white shadow-lg border-light rounded-circle mb-4">
-                <FontAwesomeIcon icon={faPager} className="text-secondary" />
+            <Col xs={6} md={3} className="text-center">
+              <div
+                className="icon icon-shape icon-lg rounded-circle mb-4"
+                style={{ width: 50, height: 50 }}
+              >
+                <Image src={WorldClassAiIcon} alt="WorldClass AI/Quant Icon" />
               </div>
               <h3 className="fw-bolder">World-class AI/Quants</h3>
               <p className="text-gray">
@@ -200,9 +207,12 @@ export default () => {
                 quants who knows about alpha.
               </p>
             </Col>
-            <Col xs={6} md={3} className="text-center mb-4">
-              <div className="icon icon-shape icon-lg bg-white shadow-lg border-light rounded-circle mb-4">
-                <FontAwesomeIcon icon={faReact} className="text-secondary" />
+            <Col xs={6} md={3} className="text-center">
+              <div
+                className="icon icon-shape icon-lg rounded-circle mb-4"
+                style={{ width: 50, height: 50 }}
+              >
+                <Image src={IaaPIcon} alt="Iaap Icon" />
               </div>
               <h3 className="fw-bolder">Investment as a Platform</h3>
               <p className="text-gray">
@@ -211,12 +221,11 @@ export default () => {
               </p>
             </Col>
             <Col xs={6} md={3} className="text-center">
-              <div className="icon icon-shape icon-lg bg-white shadow-lg border-light rounded-circle mb-4">
-                <FontAwesomeIcon
-                  color="secondary"
-                  icon={faBootstrap}
-                  className="text-secondary"
-                />
+              <div
+                className="icon icon-shape icon-lg rounded-circle mb-4"
+                style={{ width: 50, height: 50 }}
+              >
+                <Image src={Web23Icon} alt="Bridge of web 2.0/3.0" />
               </div>
               <h3 className="fw-bolder">Bridging Web2.0/3.0</h3>
               <p className="text-gray">
@@ -256,7 +265,10 @@ export default () => {
               </Button>
             </Col>
             <Col lg={6} className="order-lg-1">
-              <Image src={PlaceholderImage} alt="Calendar Preview" />
+              <Image
+                src={TrustlessTrackRecordImage}
+                alt="Trustless Track Record Image"
+              />
             </Col>
           </Row>
           <Row className="justify-content-between align-items-center mb-5 mb-lg-7">
@@ -288,10 +300,10 @@ export default () => {
                 Check out Strategies!
               </Button>
             </Col>
-            <Col lg={6} className="rounded shadow pt-3">
+            <Col lg={6} className="order-lg-1">
               <Image
-                src={PlaceholderImage}
-                alt="MapBox Leaflet.js Custom Integration Mockup"
+                src={WorldClassAiQuantImage}
+                alt="World Class Ai/Quant Image"
               />
             </Col>
           </Row>
@@ -320,7 +332,10 @@ export default () => {
               </Button>
             </Col>
             <Col lg={6} className="order-lg-1">
-              <Image src={PlaceholderImage} alt="Front pages overview" />
+              <Image
+                src={InvestmentAsPlatformImage}
+                alt="Investment As Platform Image"
+              />
             </Col>
           </Row>
           <Row className="justify-content-between align-items-center mb-5 mb-lg-7">
@@ -341,10 +356,10 @@ export default () => {
                 hello hello
               </p>
             </Col>
-            <Col lg={6} className="rounded shadow pt-3">
+            <Col lg={6} className="order-lg-1">
               <Image
-                src={PlaceholderImage}
-                alt="MapBox Leaflet.js Custom Integration Mockup"
+                src={BridgingWeb23Image}
+                alt="Bridging Web 2.0/3.0 Image"
               />
             </Col>
           </Row>
@@ -485,18 +500,21 @@ export default () => {
           </Row>
         </Container>
       </section>
-      <section className="section section-lg bg-white" id="getting-started">
+      <section className="section section-lg bg-white" id="get-some-sleep">
         <Container>
-          <Row className="justify-content-center text-center mb-5">
-            <Col xs={12}>
+          <Row className="justify-content-between align-items-center mb-5 mb-lg-7">
+            <Col lg={5} className="order-lg-2 mb-5 mb-lg-0">
               <h2 className="fw-light mb-3">
                 Get some <span className="fw-bold">sleep</span>.
               </h2>
-              <p className="lead px-lg-8">
+              <p className="mb-4">
                 Do not stay overnight because of the crushed crypto wallet. Just
                 subscribe L&D funds and bots via Platform and you will now crush
                 the market.
               </p>
+            </Col>
+            <Col lg={6} className="order-lg-1">
+              <Image src={GetSomeSleepImage} alt="Mockup presentation" />
             </Col>
           </Row>
         </Container>
@@ -510,7 +528,7 @@ export default () => {
                 to="#home"
                 className="me-lg-3 mb-3 d-flex align-items-center"
               >
-                <Image src={ReactHero} />
+                <Image src={LDLogo2DMint} />
                 <span className="ms-2 brand-text">L&D Investment</span>
               </Navbar.Brand>
               <p>

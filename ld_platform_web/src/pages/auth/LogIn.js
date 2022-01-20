@@ -19,7 +19,7 @@ import { Link } from "react-router-dom";
 
 import { Routes } from "../../routes";
 import BgImage from "../../assets/img/illustrations/signin.svg";
-import LdAxios from "../../api/axios";
+import LdAxios from "ld-axios/axios";
 import useUserStore from "../../store/user_store_context";
 
 export default () => {

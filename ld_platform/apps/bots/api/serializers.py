@@ -1,4 +1,5 @@
 from django.db.models.query import QuerySet
+from django.utils import timezone
 from rest_framework import serializers
 
 from ld_platform.apps.bots.models import Bot, SubscribedBot
@@ -34,7 +35,12 @@ class BotSubscribeSerializer(serializers.ModelSerializer):
 
         # check if user already subscribed to same bot
         if self.check_bot_subscription(user, bot):
-            raise serializers.ValidationError("user already subscribed to the bot")
+            raise serializers.ValidationError("User already subscribed to the bot")
+
+        # TODO: set subscription start/end date as default
+        validated_data["subscribe_end_date"] = timezone.now() + timezone.timedelta(
+            days=100
+        )
 
         subscribed_bot: SubscribedBot = SubscribedBot(
             user=user,
