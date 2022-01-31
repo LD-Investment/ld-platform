@@ -277,7 +277,6 @@ ld_platform/media/
 
 
 .ipython/
-frontend/.env
 .envs/*
 !.envs/.local/
 
