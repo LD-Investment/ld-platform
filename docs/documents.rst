@@ -9,7 +9,7 @@ After you have set up to `develop locally`_, run the following command from the 
 
 If you set up your project to `develop locally with docker`_, run the following command: ::
 
-    $ docker-compose -f local.yml up docs
+    $ docker-compose -f platform.local.yml up docs
 
 Navigate to port 7000 on your host to see the documentation. This will be opened automatically at `localhost`_ for local, non-docker development.
 

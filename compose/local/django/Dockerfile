@@ -26,7 +26,7 @@ RUN echo "${SSH_PRIVATE_KEY}" > /root/.ssh/id_rsa && \
     chmod 600 /root/.ssh/id_rsa
 
 # Requirements are installed here to ensure they will be cached.
-COPY ./requirements/django .
+COPY ./backend/requirements/django .
 
 # Create Python Dependency and Sub-Dependency Wheels.
 RUN pip wheel --wheel-dir /usr/src/app/wheels  \
@@ -39,7 +39,7 @@ RUN rm -rf /root/.ssh/
 FROM python as python-run-stage
 
 ARG BUILD_ENVIRONMENT=local
-ARG APP_HOME=/app
+ARG APP_HOME=/app/backend
 
 ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1

@@ -20,7 +20,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # Requirements are installed here to ensure they will be cached.
-COPY ./requirements/docs .
+COPY ./backend/requirements/docs .
 # All imports needed for autodoc.
 RUN pip install -r base.txt
 

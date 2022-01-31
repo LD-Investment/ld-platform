@@ -9,4 +9,4 @@ build:
 python:
   version: 3.9
   install:
-    - requirements: requirements/local.txt
+    - requirements: backend/requirements/local.txt
