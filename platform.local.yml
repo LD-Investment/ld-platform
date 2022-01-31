@@ -1,0 +1,104 @@
+version: "3"
+
+volumes:
+  local_postgres_data: {}
+  local_postgres_data_backups: {}
+  django_static_volume: {}
+
+services:
+  django: &django
+    build:
+      context: .
+      dockerfile: ./compose/local/django/Dockerfile
+      args:
+        SSH_PRIVATE_KEY: $SSH_PRIVATE_KEY
+    image: ld_platform_local_django
+    container_name: django
+    depends_on:
+      - postgres
+    volumes:
+      - .:/app:z
+      - django_static_volume:/app/backend/django_static
+    env_file:
+      - ./.envs/.local/.django
+      - ./.envs/.local/.postgres
+    ports:
+      - "8000:8000"
+    command: /start
+
+  postgres:
+    build:
+      context: .
+      dockerfile: ./compose/production/postgres/Dockerfile
+    image: ld_platform_local_postgres
+    container_name: postgres
+    volumes:
+      - local_postgres_data:/var/lib/postgresql/data:Z
+      - local_postgres_data_backups:/backups:z
+    env_file:
+      - ./.envs/.local/.postgres
+    ports:
+      - "5432:5432"
+
+  nginx:
+    build:
+      context: .
+      dockerfile: ./compose/local/nginx/Dockerfile
+    image: ld_platform_local_nginx
+    container_name: nginx
+    volumes:
+      - ./compose/local/nginx/conf:/etc/nginx/conf
+      - ./compose/local/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - django_static_volume:/app/backend/django_static
+    depends_on:
+      - django
+    ports:
+      - "80:80"
+
+  redis:
+    image: redis:6
+    container_name: redis
+
+  celeryworker:
+    <<: *django
+    image: ld_platform_local_celeryworker
+    container_name: celeryworker
+    depends_on:
+      - redis
+      - postgres
+    ports: []
+    command: /start-celeryworker
+
+  celerybeat:
+    <<: *django
+    image: ld_platform_local_celerybeat
+    container_name: celerybeat
+    depends_on:
+      - redis
+      - postgres
+    ports: []
+    command: /start-celerybeat
+
+  flower:
+    <<: *django
+    image: ld_platform_local_flower
+    container_name: flower
+    ports:
+      - "5555:5555"
+    command: /start-flower
+
+  docs:
+    image: ld_platform_local_docs
+    container_name: docs
+    build:
+      context: .
+      dockerfile: ./compose/local/docs/Dockerfile
+    env_file:
+      - ./.envs/.local/.django
+    volumes:
+      - ./docs:/docs:z
+      - ./backend/config:/app/backend/config:z
+      - ./backend/ld_platform:/app/backend/ld_platform:z
+    ports:
+      - "7000:7000"
+    command: /start-docs

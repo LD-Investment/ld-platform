@@ -6,7 +6,7 @@ FROM python:${PYTHON_VERSION} as python
 # Python build stage
 FROM python as python-build-stage
 
-ARG BUILD_ENVIRONMENT=local
+ARG BUILD_ENVIRONMENT=production
 ARG SSH_PRIVATE_KEY
 
 # Install apt packages
@@ -38,7 +38,7 @@ RUN rm -rf /root/.ssh/
 # Python 'run' stage
 FROM python as python-run-stage
 
-ARG BUILD_ENVIRONMENT=local
+ARG BUILD_ENVIRONMENT=prod
 ARG APP_HOME=/app/collector
 
 ENV PYTHONUNBUFFERED 1
@@ -61,11 +61,11 @@ COPY --from=python-build-stage /usr/src/app/wheels  /wheels/
 RUN pip install --no-cache-dir --no-index --find-links=/wheels/ /wheels/* \
 	&& rm -rf /wheels/
 
-COPY ./compose/local/collector/rmq/producer/start /start-producer
+COPY ./compose/production/collector/rmq/producer/start /start-producer
 RUN sed -i 's/\r$//g' /start-producer
 RUN chmod +x /start-producer
 
-COPY ./compose/local/collector/rmq/consumer/start /start-consumer
+COPY ./compose/production/collector/rmq/consumer/start /start-consumer
 RUN sed -i 's/\r$//g' /start-consumer
 RUN chmod +x /start-consumer
 
