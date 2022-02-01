@@ -240,7 +240,7 @@ while True:
         if best_profits > 1 + threshold:
             bah_cnt += best_choice == 0
             tco_cnt += best_choice == 2
-            if choice == 1:
+            if choice == 1 or choice == 2:
                 # we open positions based on the best portfolio
                 best_portfolio = (
                     defensive_bah_portfolio
