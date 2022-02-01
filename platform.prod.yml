@@ -2,8 +2,7 @@ version: "3"
 
 volumes:
   production_postgres_data: {}
-  production_postgres_data_backups: {}
-  production_traefik: {}
+  django_static_volume: {}
 
 services:
   django: &django
@@ -24,27 +23,29 @@ services:
   postgres:
     build:
       context: .
-      dockerfile: ./compose/production/postgres/Dockerfile
+      dockerfile: ./compose/local/postgres/Dockerfile
     image: ld_platform_production_postgres
+    container_name: postgres
     volumes:
       - production_postgres_data:/var/lib/postgresql/data:Z
-      - production_postgres_data_backups:/backups:z
     env_file:
       - ./.envs/.production/.postgres
-  #
-  #  traefik:
-  #    build:
-  #      context: .
-  #      dockerfile: ./compose/production/traefik/Dockerfile
-  #    image: ld_platform_production_traefik
-  #    depends_on:
-  #      - django
-  #    volumes:
-  #      - production_traefik:/etc/traefik/acme:z
-  #    ports:
-  #      - "0.0.0.0:80:80"
-  #      - "0.0.0.0:443:443"
-  #      - "0.0.0.0:5555:5555"
+
+  nginx:
+    build:
+      context: .
+      dockerfile: ./compose/production/nginx/Dockerfile
+    image: ld_platform_production_nginx
+    container_name: nginx
+    volumes:
+      - ./compose/production/nginx/conf:/etc/nginx/conf
+      - ./compose/production/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - django_static_volume:/app/backend/django_static
+    depends_on:
+      - django
+    ports:
+      - "80:80"
+      - "443:443"
 
   redis:
     image: redis:6
@@ -63,12 +64,3 @@ services:
     <<: *django
     image: ld_platform_production_flower
     command: /start-flower
-
-  awscli:
-    build:
-      context: .
-      dockerfile: ./compose/production/aws/Dockerfile
-    env_file:
-      - ./.envs/.production/.django
-    volumes:
-      - production_postgres_data_backups:/backups:z

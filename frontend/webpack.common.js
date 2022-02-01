@@ -1,9 +1,4 @@
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const InterpolateHtmlPlugin = require("interpolate-html-plugin");
-const Dotenv = require("dotenv-webpack");
-
 module.exports = {
-  mode: "development",
   entry: "./ld_platform_web/src/index.js",
   output: {
     filename: "bundle.[hash].js"
@@ -52,21 +47,5 @@ module.exports = {
         ]
       }
     ]
-  },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: "ld_platform_web/public/index.html",
-      favicon: "ld_platform_web/public/favicon.ico"
-    }),
-    new InterpolateHtmlPlugin({
-      PUBLIC_URL: "ld_platform_web/public" // can modify `static` to another name or get it from `process`
-    }),
-    new Dotenv()
-  ],
-  devServer: {
-    host: "localhost",
-    port: 9000,
-    open: true,
-    hot: true
   }
 };

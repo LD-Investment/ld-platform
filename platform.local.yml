@@ -2,7 +2,6 @@ version: "3"
 
 volumes:
   local_postgres_data: {}
-  local_postgres_data_backups: {}
   django_static_volume: {}
 
 services:
@@ -29,31 +28,15 @@ services:
   postgres:
     build:
       context: .
-      dockerfile: ./compose/production/postgres/Dockerfile
+      dockerfile: ./compose/local/postgres/Dockerfile
     image: ld_platform_local_postgres
     container_name: postgres
     volumes:
       - local_postgres_data:/var/lib/postgresql/data:Z
-      - local_postgres_data_backups:/backups:z
     env_file:
       - ./.envs/.local/.postgres
     ports:
       - "5432:5432"
-
-  nginx:
-    build:
-      context: .
-      dockerfile: ./compose/local/nginx/Dockerfile
-    image: ld_platform_local_nginx
-    container_name: nginx
-    volumes:
-      - ./compose/local/nginx/conf:/etc/nginx/conf
-      - ./compose/local/nginx/nginx.conf:/etc/nginx/nginx.conf
-      - django_static_volume:/app/backend/django_static
-    depends_on:
-      - django
-    ports:
-      - "80:80"
 
   redis:
     image: redis:6
