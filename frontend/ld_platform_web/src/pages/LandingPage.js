@@ -28,6 +28,7 @@ import TrustlessIcon from "../assets/img/pages/landing_page/4-icon1.png";
 import IaaPIcon from "../assets/img/pages/landing_page/4-icon2.png";
 import Web23Icon from "../assets/img/pages/landing_page/4-icon4.png";
 import WorldClassAiIcon from "../assets/img/pages/landing_page/4-icon3.png";
+import GMADefenseGraphImage from "../assets/img/pages/landing_page/3-funds-gma-defense.png";
 import TrustlessTrackRecordImage from "../assets/img/pages/landing_page/2-concept-trustless_track_record.png";
 import WorldClassAiQuantImage from "../assets/img/pages/landing_page/2-concept-world_class_ai.png";
 import InvestmentAsPlatformImage from "../assets/img/pages/landing_page/2-concept-invest_as_platform.png";
@@ -68,8 +69,12 @@ export default () => {
   const ProfileCardWidget = props => {
     const { image, title, subtitle, text } = props;
     return (
-      <Col xs={4} className="mb-5">
-        <Card border="light" className="text-center p-0 mb-4">
+      <Col className="d-flex justify-content-center mb-5">
+        <Card
+          border="light"
+          className="text-center p-0 mb-4"
+          style={{ width: "18rem" }}
+        >
           <div
             style={{ backgroundImage: `url(${ProfileCover})` }}
             className="profile-cover rounded-top"
@@ -279,14 +284,13 @@ export default () => {
                 class AI/Quant researchers.
               </p>
               <p className="mb-4">
-                blablablablablablablablablablablablablablablablablablablablab
-                blablablablablablablablablablablablablablablablablablablablab
-                blablablablablablablablablablablablablablablablablablablablab
+                Our AI/Quant strategies are developed by world-class researchers
+                from prestigious universities like Stanford and MIT.
               </p>
               <p className="mb-4">
-                hellohello hello hellohellohello hello hellohellohello hello
-                hellohellohello hello hellohellohello hello hellohellohello
-                hello hello
+                Models developed by L&D researchers are proven to be performant,
+                market-beating and highly risk-manageable. We also target for
+                publishing dissertation for our AI driven Qaunt strategies.
               </p>
               {/* TODO: Replace path to AI/Quant strategy pages */}
               <Button
@@ -317,9 +321,10 @@ export default () => {
                 L&D Platform.
               </p>
               <p className="mb-4">
-                blablablablablablablablablablablablablablablablablablablablab
-                blablablablablablablablablablablablablablablablablablablablab
-                blablablablablablablablablablablablablablablablablablablablab
+                L&D Investment provides a platform where you can see the
+                trustless track-records of our bots and funds. You can also
+                subscribe, manage, control any types of bots that are available
+                for public in this platform as well.
               </p>
               <Button
                 href="https://demo.themesberg.com/volt-pro-react/#/map"
@@ -346,14 +351,9 @@ export default () => {
                 Web2.0 and 3.0
               </p>
               <p className="mb-4">
-                blablablablablablablablablablablablablablablablablablablablab
-                blablablablablablablablablablablablablablablablablablablablab
-                blablablablablablablablablablablablablablablablablablablablab
-              </p>
-              <p className="mb-4">
-                hellohello hello hellohellohello hello hellohellohello hello
-                hellohellohello hello hellohellohello hello hellohellohello
-                hello hello
+                We do not want to just confine into crypto territory. We are
+                trying to leverage the advantages of blockchain while expanding
+                our investment to stocks, futures, options in web2.0 and web3.0
               </p>
             </Col>
             <Col lg={6} className="order-lg-1">
@@ -378,7 +378,7 @@ export default () => {
               </h2>
               <p className="lead px-lg-8">
                 Our funds and bots are beating the crypto market! Check out
-                their amazing track-records that are immnutably on-chained as
+                their amazing track-records that are immutably on-chained as
                 DeFi.
               </p>
             </Col>
@@ -387,6 +387,19 @@ export default () => {
             {pages.map(page => (
               <PagePreview key={`page-${page.id}`} {...page} />
             ))}
+          </Row>
+          <Row className="justify-content-center mb-5 mb-lg-6">
+            <Col xs={10} className="text-center">
+              <p className="lead px-lg-8">
+                ✅ Our portfolio rebalancing bot trading in the spot market was
+                able to{" "}
+                <span className="fw-bold">
+                  successfully defend against the crypto dip
+                </span>{" "}
+                that occurred in Jan 2022.
+              </p>
+              <Image src={GMADefenseGraphImage} alt="GMA Defense v2.0" />
+            </Col>
           </Row>
         </Container>
       </section>
