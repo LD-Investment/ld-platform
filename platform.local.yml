@@ -70,18 +70,8 @@ services:
       - "5555:5555"
     command: /start-flower
 
-  docs:
-    image: ld_platform_local_docs
-    container_name: docs
-    build:
-      context: .
-      dockerfile: ./compose/local/docs/Dockerfile
-    env_file:
-      - ./.envs/.local/.django
-    volumes:
-      - ./docs:/docs:z
-      - ./backend/config:/app/backend/config:z
-      - ./backend/ld_platform:/app/backend/ld_platform:z
+  selenium-chrome:
+    image: selenium/standalone-chrome
+    container_name: selenium-chrome
     ports:
-      - "7000:7000"
-    command: /start-docs
+      - "4444:4444"
