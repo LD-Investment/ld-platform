@@ -53,34 +53,6 @@ You will probably also need to setup the Mail backend, for example by adding a `
 .. _Mailgun: https://mailgun.com
 
 
-
-Optional: Use AWS IAM Role for EC2 instance
--------------------------------------------
-
-If you are deploying to AWS, you can use the IAM role to substitute AWS credentials, after which it's safe to remove the ``AWS_ACCESS_KEY_ID`` AND ``AWS_SECRET_ACCESS_KEY`` from ``.envs/.production/.django``. To do it, create an `IAM role`_ and `attach`_ it to the existing EC2 instance or create a new EC2 instance with that role. The role should assume, at minimum, the ``AmazonS3FullAccess`` permission.
-
-.. _IAM role: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html
-.. _attach: https://aws.amazon.com/blogs/security/easily-replace-or-attach-an-iam-role-to-an-existing-ec2-instance-by-using-the-ec2-console/
-
-
-HTTPS is On by Default
-----------------------
-
-SSL (Secure Sockets Layer) is a standard security technology for establishing an encrypted link between a server and a client, typically in this case, a web server (website) and a browser. Not having HTTPS means that malicious network users can sniff authentication credentials between your website and end users' browser.
-
-It is always better to deploy a site behind HTTPS and will become crucial as the web services extend to the IoT (Internet of Things). For this reason, we have set up a number of security defaults to help make your website secure:
-
-* If you are not using a subdomain of the domain name set in the project, then remember to put your staging/production IP address in the ``DJANGO_ALLOWED_HOSTS`` environment variable before you deploy your website. Failure to do this will mean you will not have access to your website through the HTTP protocol.
-
-* Access to the Django admin is set up by default to require HTTPS in production or once *live*.
-
-The Traefik reverse proxy used in the default configuration will get you a valid certificate from Lets Encrypt and update it automatically. All you need to do to enable this is to make sure that your DNS records are pointing to the server Traefik runs on.
-
-You can read more about this feature and how to configure it, at `Automatic HTTPS`_ in the Traefik docs.
-
-.. _Automatic HTTPS: https://docs.traefik.io/https/acme/
-
-
 (Optional) Postgres Data Volume Modifications
 ---------------------------------------------
 

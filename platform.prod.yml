@@ -64,3 +64,9 @@ services:
     <<: *django
     image: ld_platform_production_flower
     command: /start-flower
+
+  selenium-chrome:
+    image: selenium/standalone-chrome
+    container_name: selenium-chrome
+    ports:
+      - "4444:4444"

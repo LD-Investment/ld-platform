@@ -27,3 +27,7 @@ django-cors-headers==3.10.0  # https://github.com/adamchainz/django-cors-headers
 # CCXT
 ccxt    # https://github.com/ccxt/ccxt (keep this up-to-date)
 ccxtpro @ git+ssh://git@github.com/kroitor/ccxt.pro.git#subdirectory=python
+
+# LDBot
+selenium==4.1.0 # https://selenium-python.readthedocs.io/installation.html
+webdriver-manager==3.5.2 # https://selenium-python.readthedocs.io/installation.html

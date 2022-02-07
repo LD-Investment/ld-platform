@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from ld_platform.apps.bots.managers import CoinnessNewsDataManager
 from ld_platform.apps.users.models import User
 
 
@@ -55,3 +56,14 @@ class SubscribedBot(models.Model):
     # TODO: for now, just leave it as null
     subscribe_start_date = models.DateTimeField(null=True, auto_now_add=True)
     subscribe_end_date = models.DateTimeField(null=True)
+
+
+class CoinnessNewsData(models.Model):
+    article_num = models.IntegerField(unique=True)
+    date = models.DateTimeField(null=True)
+    title = models.TextField(null=True, blank=True, default="")
+    content = models.TextField(null=True, blank=True, default="")
+    # bull_count = models.IntegerField(null=True, blank=True, default=0)
+    # bear_count = models.IntegerField(null=True, blank=True, default=0)
+
+    objects = CoinnessNewsDataManager()
