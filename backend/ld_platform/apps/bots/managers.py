@@ -13,14 +13,14 @@ class CoinnessNewsDataManager(models.Manager):
         Should parse raw data scraped from web, validate and persist
         """
         date = kwargs.pop("date", None)  # e.g 23:002022년 2월 5일 토요일
-        bull_bear = kwargs.pop(
-            "bull_bear", "Bull 0Bear 0"
-        )  # e.g Bull 268Bear 22\n공유하기업계동향
+        # bull_bear = kwargs.pop(
+        #     "bull_bear", "Bull 0Bear 0"
+        # )  # e.g Bull 268Bear 22\n공유하기업계동향
 
         kwargs["date"] = self._parse_date(date) if date else timezone.now()
-        bull_bear = self._parse_bull_bear(bull_bear)
-        kwargs["bull_count"] = bull_bear[0]
-        kwargs["bear_count"] = bull_bear[1]
+        # bull_bear = self._parse_bull_bear(bull_bear)
+        # kwargs["bull_count"] = bull_bear[0]
+        # kwargs["bear_count"] = bull_bear[1]
 
         return super().create(**kwargs)
 
