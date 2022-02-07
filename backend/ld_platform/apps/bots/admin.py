@@ -46,8 +46,8 @@ class CoinnessNewsDataAdmin(admin.ModelAdmin):
         "date",
         "title",
         "content",
-        "bull_count",
-        "bear_count",
+        # "bull_count",
+        # "bear_count",
     ]
     search_fields = [
         "id",
@@ -55,6 +55,6 @@ class CoinnessNewsDataAdmin(admin.ModelAdmin):
         "date",
         "title",
         "content",
-        "bull_count",
-        "bear_count",
+        # "bull_count",
+        # "bear_count",
     ]

@@ -275,6 +275,15 @@ CELERY_TASK_TIME_LIMIT = 5 * 60
 CELERY_TASK_SOFT_TIME_LIMIT = 60
 # http://docs.celeryproject.org/en/latest/userguide/configuration.html#beat-scheduler
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
+# Celery Beat
+CELERY_BEAT_SCHEDULE = {
+    # COINNESS Scraper
+    "coinness-scraper-every-30s": {
+        "task": "ld_platform.apps.bots.tasks.scrap_coinness_news",
+        "schedule": 30.0,
+        "args": (),
+    },
+}
 
 # django-allauth
 # ------------------------------------------------------------------------------
