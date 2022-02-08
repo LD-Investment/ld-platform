@@ -30,11 +30,11 @@ class UserManager(BaseUserManager):
             email, username, first_name, last_name, password, **extra_fields
         )
 
-    def create_superuser(
-        self, email, username, first_name, last_name, password, **extra_fields
-    ):
+    def create_superuser(self, email, username, password, **extra_fields):
         extra_fields.setdefault("is_superuser", True)
         extra_fields.setdefault("is_staff", True)
+        first_name = extra_fields.pop("first_name", "admin")
+        last_name = extra_fields.pop("last_name", "L&D")
         return self._create_user(
             email, username, first_name, last_name, password, **extra_fields
         )

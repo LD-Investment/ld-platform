@@ -22,7 +22,7 @@ services:
       - ./.envs/.local/.django
       - ./.envs/.local/.postgres
     ports:
-      - "8000:8000"
+      - "5000:5000"
     command: /start
 
   postgres:
@@ -69,6 +69,22 @@ services:
     ports:
       - "5555:5555"
     command: /start-flower
+
+  nginx:
+    build:
+      context: .
+      dockerfile: ./compose/production/nginx/Dockerfile # uses /compose/prod
+    image: ld_platform_local_nginx
+    container_name: nginx
+    volumes: # uses /compose/local
+      - ./compose/local/nginx/conf:/etc/nginx/conf
+      - ./compose/local/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - django_static_volume:/app/backend/django_static
+    depends_on:
+      - django
+    ports:
+      - "80:80"
+      - "443:443"
 
   selenium-chrome:
     image: selenium/standalone-chrome
