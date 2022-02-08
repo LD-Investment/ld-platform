@@ -1,6 +1,7 @@
 """
 Base settings to build other settings files upon.
 """
+from datetime import timedelta
 from pathlib import Path
 
 import environ
@@ -273,15 +274,15 @@ CELERY_TASK_TIME_LIMIT = 5 * 60
 CELERY_TASK_SOFT_TIME_LIMIT = 5 * 60
 # http://docs.celeryproject.org/en/latest/userguide/configuration.html#beat-scheduler
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
-# Celery Beat
 CELERY_BEAT_SCHEDULE = {
     # COINNESS Scraper
     "coinness-scraper-every-5m": {
         "task": "ld_platform.apps.bots.tasks.scrap_coinness_news",
-        "schedule": 300,
+        "schedule": timedelta(minutes=5),
         "args": (),
     },
 }
+
 
 # django-allauth
 # ------------------------------------------------------------------------------

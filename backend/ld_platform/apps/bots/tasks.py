@@ -48,9 +48,9 @@ def scrap_coinness_news():
     COINNESS_BASE_URL = "https://coinness.live/news"
 
     title_selector = "#root > div > div > main > div > div.sc-bBXrwG.gIQUtB > h3"
-    date_selector = (
-        "#root > div > div > main > div > div.sc-bBXrwG.gIQUtB > div.sc-iwyWTf.bIbYqN"
-    )
+    # date_selector = (
+    #     "#root > div > div > main > div > div.sc-bBXrwG.gIQUtB > div.sc-iwyWTf.bIbYqN"
+    # )
     content_selector = "#root > div > div > main > div > div.sc-bBXrwG.gIQUtB > div.sc-lmoMya.jQLGnc > span"
     # bull_bear_selector = "#root > div > div > main > div > div.sc-bBXrwG.gIQUtB >
     # div.sc-crrszt.fqZBup > div.left > div > button.bull.false"
@@ -63,7 +63,7 @@ def scrap_coinness_news():
 
     logger.info(f"The latest article number is: {ARTICLE_NUM}")
 
-    MAX_RETRY = 2
+    MAX_RETRY = 5
     CUR_TRIAL = 0
     while CUR_TRIAL < MAX_RETRY:
         try:
@@ -71,14 +71,14 @@ def scrap_coinness_news():
             driver.get(url=cur_url)
             logger.info(f"Successfully connected to `{cur_url}`")
             title = driver.find_element(By.CSS_SELECTOR, title_selector)
-            date = driver.find_element(By.CSS_SELECTOR, date_selector)
+            # date = driver.find_element(By.CSS_SELECTOR, date_selector)
             content = driver.find_element(By.CSS_SELECTOR, content_selector)
             # bull_bear = driver.find_element(By.CSS_SELECTOR, bull_bear_selector)
 
             kwargs = {
                 "article_num": ARTICLE_NUM,
                 "title": title.text,
-                "date": date.text,
+                # "date": date.text,
                 "content": content.text,
                 # "bull_bear": bull_bear.text,
             }

@@ -12,12 +12,18 @@ services:
       args:
         SSH_PRIVATE_KEY: $SSH_PRIVATE_KEY
     image: ld_platform_production_django
+    container_name: django
     depends_on:
       - postgres
       - redis
+    volumes:
+      - .:/app:z
+      - django_static_volume:/app/backend/django_static
     env_file:
       - ./.envs/.production/.django
       - ./.envs/.production/.postgres
+    ports:
+      - "8000:8000"
     command: /start
 
   postgres:
@@ -30,6 +36,40 @@ services:
       - production_postgres_data:/var/lib/postgresql/data:Z
     env_file:
       - ./.envs/.production/.postgres
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:6
+    container_name: redis
+
+  celeryworker:
+    <<: *django
+    image: ld_platform_production_celeryworker
+    container_name: celeryworker
+    depends_on:
+      - redis
+      - postgres
+    ports: []
+    command: /start-celeryworker
+
+  celerybeat:
+    <<: *django
+    image: ld_platform_production_celerybeat
+    container_name: celerybeat
+    depends_on:
+      - redis
+      - postgres
+    ports: []
+    command: /start-celerybeat
+
+  flower:
+    <<: *django
+    image: ld_platform_production_flower
+    container_name: flower
+    ports:
+      - "5555:5555"
+    command: /start-flower
 
   nginx:
     build:
@@ -46,24 +86,6 @@ services:
     ports:
       - "80:80"
       - "443:443"
-
-  redis:
-    image: redis:6
-
-  celeryworker:
-    <<: *django
-    image: ld_platform_production_celeryworker
-    command: /start-celeryworker
-
-  celerybeat:
-    <<: *django
-    image: ld_platform_production_celerybeat
-    command: /start-celerybeat
-
-  flower:
-    <<: *django
-    image: ld_platform_production_flower
-    command: /start-flower
 
   selenium-chrome:
     image: selenium/standalone-chrome
