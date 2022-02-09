@@ -1,20 +1,26 @@
 version: "3"
 
+networks:
+  collector-network:
+    driver: bridge
+
 services:
   collector-rmqserver:
     image: rabbitmq:3.9-management
-    container_name: "collector-rmqserver"
+    container_name: collector-rmqserver
     networks:
       - collector-network
 
   collector-producer:
     build:
       context: .
-      dockerfile: ./compose/production/collector/Dockerfile
+      dockerfile: compose/production/collector/Dockerfile
       args:
         SSH_PRIVATE_KEY: $SSH_PRIVATE_KEY
     image: ld_platform_prod_collector
     container_name: collector-producer
+    env_file:
+      - ./.envs/.production/.collector
     depends_on:
       - collector-rmqserver
     networks:
@@ -25,13 +31,11 @@ services:
   collector-consumer:
     image: ld_platform_prod_collector
     container_name: collector-consumer
+    env_file:
+      - ./.envs/.production/.collector
     depends_on:
       - collector-rmqserver
     networks:
       - collector-network
     restart: always
     command: /start-consumer
-
-  networks:
-    collector-network:
-      driver: bridge

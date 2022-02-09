@@ -7,7 +7,7 @@ networks:
 services:
   collector-rmqserver:
     image: rabbitmq:3.9-management
-    container_name: "collector-rmqserver"
+    container_name: collector-rmqserver
     networks:
       - collector-network
 
@@ -19,6 +19,8 @@ services:
         SSH_PRIVATE_KEY: $SSH_PRIVATE_KEY
     image: ld_platform_local_collector
     container_name: collector-producer
+    env_file:
+      - ./.envs/.local/.collector
     depends_on:
       - collector-rmqserver
     networks:
@@ -29,6 +31,8 @@ services:
   collector-consumer:
     image: ld_platform_local_collector
     container_name: collector-consumer
+    env_file:
+      - ./.envs/.local/.collector
     depends_on:
       - collector-rmqserver
     networks:

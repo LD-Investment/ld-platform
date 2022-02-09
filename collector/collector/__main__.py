@@ -34,7 +34,6 @@ if __name__ == "__main__":
     elif args.mode == "consumer":
         con = CollectorConsumer(
             rmq_host=RMQ_SERVER_HOST,
-            mongo_host="localhost",
             queue_name=RmqQueueName.ORDERBOOK_1S,
         )
         con.run()
