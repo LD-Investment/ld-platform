@@ -1,13 +1,12 @@
 import asyncio
 import json
 import logging
+import os
 from asyncio.events import AbstractEventLoop
 from time import sleep
 
 import aio_pika
-from pymongo import MongoClient
-from pymongo.collection import Collection
-from pymongo.database import Database
+import sentry_sdk
 
 from .enums import RmqQueueName
 
@@ -20,17 +19,27 @@ class CollectorConsumer:  # pylint: disable=R0903
     """
 
     PREFETCH_COUNT = 10
-    MAX_CONN_RETRIAL = 5
+    MAX_CONN_RETRIAL = 10
 
-    def __init__(self, rmq_host: str, mongo_host: str, queue_name: RmqQueueName):
+    def __init__(self, rmq_host: str, queue_name: RmqQueueName):
+        # read environment variables
+        self._mode = os.environ.get("COLLECTOR_MODE")
+        self._sentry_dsn = os.environ.get("SENTRY_DSN", None)
+        self._sentry_trace_sample_rate = float(
+            os.environ.get("SENTRY_TRACE_SAMPLE_RATE", 1.0)
+        )
+
+        # enable sentry
+        if self._sentry_dsn:
+            sentry_sdk.init(
+                self._sentry_dsn, traces_sample_rate=self._sentry_trace_sample_rate
+            )
+
         # Localhost: amqp://guest:guest@localhost
         self.rmq_host: str = rmq_host
         self.queue_name: str = queue_name.value
 
-        # MongoDB related
-        self.mongo_client: MongoClient = MongoClient(host=mongo_host, port=27017)
-        self.mongo_db: Database = getattr(self.mongo_client, "ldbot")
-        self.mongo_collection: Collection = getattr(self.mongo_db, self.queue_name)
+        # TODO: connect database according to COLLECTOR_MODE
 
     def run(self):
         # Run loop
@@ -76,10 +85,10 @@ class CollectorConsumer:  # pylint: disable=R0903
                 timestamp = msg["timestamp"]
                 logger.info("Received orderbook(%s) | %s", symbol, timestamp)
 
-                # insert to MongoDB
                 if msg.get("nonce"):
                     del msg["nonce"]
-                self.mongo_collection.insert_one(msg)
+
+                # TODO: persist to db
 
             except Exception as err:  # pylint: disable=W0703
                 logger.error(err)

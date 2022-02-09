@@ -1,11 +1,14 @@
 import asyncio
 import json
 import logging
+import os
+import time
 from asyncio.events import AbstractEventLoop
 from time import sleep
 
 import aio_pika
 import ccxtpro
+import sentry_sdk
 from aio_pika.channel import Channel
 from aio_pika.message import Message
 from ccxtpro.base.order_book import OrderBook
@@ -20,7 +23,7 @@ class CollectorProducer:  # pylint: disable=R0903
     Exchange Orderbook producer to RabbitMQ message queue using CCXT Pro Websocket API interface.
     """
 
-    MAX_CONN_RETRIAL = 5
+    MAX_CONN_RETRIAL = 10
 
     def __init__(
         self,
@@ -29,6 +32,18 @@ class CollectorProducer:  # pylint: disable=R0903
         symbol: TradeSymbol,
         interval_sec: int = 1,
     ):
+        # read environment variables
+        self._mode = os.environ.get("COLLECTOR_MODE")
+        self._sentry_dsn = os.environ.get("SENTRY_DSN", None)
+        self._sentry_trace_sample_rate = float(
+            os.environ.get("SENTRY_TRACE_SAMPLE_RATE", 1.0)
+        )
+
+        # enable sentry
+        if not self._sentry_dsn:
+            sentry_sdk.init(
+                self._sentry_dsn, traces_sample_rate=self._sentry_trace_sample_rate
+            )
 
         # Localhost: amqp://guest:guest@localhost
         self.rmq_host: str = rmq_host
@@ -74,6 +89,10 @@ class CollectorProducer:  # pylint: disable=R0903
                     )
                     cur_msec = order_book["timestamp"]
 
+                    # there is a chance of None
+                    if not cur_msec:
+                        cur_msec = self._current_milli_epoch_time()
+
                     if not before_msec:
                         before_msec = cur_msec
                         continue
@@ -103,3 +122,8 @@ class CollectorProducer:  # pylint: disable=R0903
             ),
             routing_key=self.queue_name.value,
         )
+
+    @staticmethod
+    def _current_milli_epoch_time():
+        # e.g 1644398437664
+        return round(time.time() * 1000)
