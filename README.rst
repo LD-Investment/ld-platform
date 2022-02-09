@@ -12,7 +12,7 @@ Read the docs!
 
 Our documentation is maintained in ``ld-platform/docs``. In order to view them as ``html`` page, please do the following: ::
 
-    $ docker-compose -f platform.local.yml up docs
+    $ docker-compose -f docs.local.yml up docs
 
 
 Navigate to port 7000 on your host to see the documentation. From now on, this docs will become the lighthouse of everything.
