@@ -40,7 +40,8 @@ class CollectorProducer:  # pylint: disable=R0903
         )
 
         # enable sentry
-        if not self._sentry_dsn:
+        if self._sentry_dsn:
+            logger.info("Sentry enabled)")
             sentry_sdk.init(
                 self._sentry_dsn, traces_sample_rate=self._sentry_trace_sample_rate
             )
@@ -92,6 +93,7 @@ class CollectorProducer:  # pylint: disable=R0903
                     # there is a chance of None
                     if not cur_msec:
                         cur_msec = self._current_milli_epoch_time()
+                        order_book["timestamp"] = cur_msec
 
                     if not before_msec:
                         before_msec = cur_msec

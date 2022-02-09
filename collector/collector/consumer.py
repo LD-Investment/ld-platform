@@ -31,6 +31,7 @@ class CollectorConsumer:  # pylint: disable=R0903
 
         # enable sentry
         if self._sentry_dsn:
+            logger.info("Sentry enabled)")
             sentry_sdk.init(
                 self._sentry_dsn, traces_sample_rate=self._sentry_trace_sample_rate
             )
