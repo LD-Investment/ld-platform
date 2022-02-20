@@ -45,12 +45,9 @@ def scrap_coinness_news():
     )
     driver.implicitly_wait(5)
 
-    COINNESS_BASE_URL = "https://coinness.live/news"
+    BASE_URL = "https://coinness.live/news"
 
     title_selector = "#root > div > div > main > div > div.sc-bBXrwG.gIQUtB > h3"
-    # date_selector = (
-    #     "#root > div > div > main > div > div.sc-bBXrwG.gIQUtB > div.sc-iwyWTf.bIbYqN"
-    # )
     content_selector = "#root > div > div > main > div > div.sc-bBXrwG.gIQUtB > div.sc-lmoMya.jQLGnc > span"
     # bull_bear_selector = "#root > div > div > main > div > div.sc-bBXrwG.gIQUtB >
     # div.sc-crrszt.fqZBup > div.left > div > button.bull.false"
@@ -67,18 +64,16 @@ def scrap_coinness_news():
     CUR_TRIAL = 0
     while CUR_TRIAL < MAX_RETRY:
         try:
-            cur_url = f"{COINNESS_BASE_URL}/{ARTICLE_NUM}"
+            cur_url = f"{BASE_URL}/{ARTICLE_NUM}"
             driver.get(url=cur_url)
             logger.info(f"Successfully connected to `{cur_url}`")
             title = driver.find_element(By.CSS_SELECTOR, title_selector)
-            # date = driver.find_element(By.CSS_SELECTOR, date_selector)
             content = driver.find_element(By.CSS_SELECTOR, content_selector)
             # bull_bear = driver.find_element(By.CSS_SELECTOR, bull_bear_selector)
 
             kwargs = {
                 "article_num": ARTICLE_NUM,
                 "title": title.text,
-                # "date": date.text,
                 "content": content.text,
                 # "bull_bear": bull_bear.text,
             }

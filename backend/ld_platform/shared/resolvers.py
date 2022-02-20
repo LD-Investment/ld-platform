@@ -93,7 +93,7 @@ class BotResolver:
 
         if bot_type == Bot.TypeChoices.AUTOMATED:
             if bot_name == Bot.NameChoices.TTADAK:
-                from ld_platform.trading_bots.automated.ttadak import TtadakBot
+                from ld_platform.ai.automated.ttadak import TtadakBot
 
                 return TtadakBot(compiled_setting)
             else:
@@ -101,7 +101,7 @@ class BotResolver:
 
         if bot_type == Bot.TypeChoices.MANUAL:
             if bot_name == Bot.NameChoices.TTADAK:
-                from ld_platform.trading_bots.manual.ttadak import TtadakBot
+                from ld_platform.ai.manual.ttadak import TtadakBot
 
                 return TtadakBot(compiled_setting)
             else:

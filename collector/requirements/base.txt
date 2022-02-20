@@ -4,3 +4,6 @@ ccxtpro @ git+ssh://git@github.com/kroitor/ccxt.pro.git#subdirectory=python
 
 # Sentry
 sentry-sdk==1.5.4  # https://pypi.org/project/sentry-sdk/
+
+# AWS
+boto3==1.20.49  # https://boto3.amazonaws.com/v1/documentation/api/latest/index.html

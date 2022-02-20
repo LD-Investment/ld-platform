@@ -1,0 +1,5 @@
+# AWS
+# ------------------------------------------------------------------------------
+AWS_ACCESS_KEY_ID=fake-aws-access-key-id
+AWS_SECRET_ACCESS_KEY=fake-aws-secret-access-key
+AWS_DEFAULT_REGION=ap-northeast-2
