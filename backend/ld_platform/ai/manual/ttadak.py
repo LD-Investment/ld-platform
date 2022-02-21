@@ -6,7 +6,7 @@ import ccxtpro
 
 from ld_platform.apps.bots.models import Bot
 from ld_platform.shared.resolvers import CompiledBotSetting
-from ld_platform.trading_bots.interface import IBot, IBotDefaultSetting
+from ld_platform.ai.interface import IBot, IBotDefaultSetting
 
 # import asyncio
 # import aio_pika

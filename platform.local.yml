@@ -19,6 +19,7 @@ services:
       - .:/app:z
       - django_static_volume:/app/backend/django_static
     env_file:
+      - ./.envs/.local/.aws
       - ./.envs/.local/.django
       - ./.envs/.local/.postgres
     ports:

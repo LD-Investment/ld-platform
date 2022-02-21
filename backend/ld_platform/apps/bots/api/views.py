@@ -10,11 +10,11 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
+from ld_platform.ai.interface import IBot
 from ld_platform.apps.bots.models import Bot, SubscribedBot
 from ld_platform.apps.users.models import UserExchangeSetting
 from ld_platform.shared.choices import BotCommandsChoices
 from ld_platform.shared.resolvers import BotResolver, BotSettingResolver
-from ld_platform.trading_bots.interface import IBot
 
 from .permissions import IsBotActive, IsManualBot, IsSubscriptionValid, IsUserBotOwner
 from .serializers import (

@@ -1,7 +1,7 @@
 import logging
 
 from ld_platform.apps.bots.models import Bot
-from ld_platform.trading_bots.interface import IBot
+from ld_platform.ai.interface import IBot
 
 logger = logging.getLogger(__name__)
 

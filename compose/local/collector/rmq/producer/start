@@ -5,4 +5,4 @@ set -o pipefail
 set -o nounset
 
 
-python -m collector --mode producer
+python -m collector --mode producer --symbol $1

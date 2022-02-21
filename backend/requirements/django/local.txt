@@ -37,3 +37,8 @@ django-coverage-plugin==2.0.1  # https://github.com/nedbat/django_coverage_plugi
 pytest-django==4.4.0  # https://github.com/pytest-dev/pytest-django
 # Django Swagger
 drf-yasg==1.20.0  # https://github.com/axnsan12/drf-yasg
+
+# Scrapper
+pandas==1.4.1  # https://pandas.pydata.org/docs/getting_started/install.html
+tqdm==4.62.3  # https://pypi.org/project/tqdm/
+lxml==4.8.0  # https://lxml.de/installation.html

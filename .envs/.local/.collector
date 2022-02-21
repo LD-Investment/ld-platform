@@ -9,3 +9,6 @@ COLLECTOR_MODE=local
 # of transactions for performance monitoring.
 # We recommend adjusting this value in production.
 # SENTRY_TRACE_SAMPLE_RATE=1.0
+
+# AWS DynamoDB
+COLLECTOR_AWS_DYNAMO_TABLE=1sec-orderbook-binance

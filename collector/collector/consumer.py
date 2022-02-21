@@ -3,9 +3,11 @@ import json
 import logging
 import os
 from asyncio.events import AbstractEventLoop
+from decimal import Decimal
 from time import sleep
 
 import aio_pika
+import boto3
 import sentry_sdk
 
 from .enums import RmqQueueName
@@ -31,7 +33,7 @@ class CollectorConsumer:  # pylint: disable=R0903
 
         # enable sentry
         if self._sentry_dsn:
-            logger.info("Sentry enabled)")
+            logger.info("Sentry enabled")
             sentry_sdk.init(
                 self._sentry_dsn, traces_sample_rate=self._sentry_trace_sample_rate
             )
@@ -40,7 +42,25 @@ class CollectorConsumer:  # pylint: disable=R0903
         self.rmq_host: str = rmq_host
         self.queue_name: str = queue_name.value
 
-        # TODO: connect database according to COLLECTOR_MODE
+        # AWS DynamoDB
+        self._dynamodb_table_name = os.environ.get("COLLECTOR_AWS_DYNAMO_TABLE")
+        if self._mode == "local":
+            self._dynamodb = boto3.resource(
+                "dynamodb", endpoint_url="http://dynamodb-local:8000"
+            )
+            logger.info("AWS local DynamoDB enabled")
+        else:
+            self._dynamodb = boto3.resource(
+                "dynamodb",
+                aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
+                aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
+            )
+            logger.info("AWS prod DynamoDB enabled")
+
+        # check table
+        self._create_dynamo_db_local_table_if_not_exists()
+        self._dynamodb_table = self._dynamodb.Table(self._dynamodb_table_name)
+        logger.info(f"Using AWS dynamoDB table: '{self._dynamodb_table_name}'")
 
     def run(self):
         # Run loop
@@ -84,12 +104,67 @@ class CollectorConsumer:  # pylint: disable=R0903
                 msg = json.loads(message.body.decode())
                 msg["symbol"] = symbol
                 timestamp = msg["timestamp"]
-                logger.info("Received orderbook(%s) | %s", symbol, timestamp)
 
+                del msg["datetime"]
                 if msg.get("nonce"):
                     del msg["nonce"]
 
-                # TODO: persist to db
+                # convert float to Decimal
+                data = json.loads(json.dumps(msg), parse_float=Decimal)
+                data["id"] = data["symbol"] + "-" + str(data["timestamp"])
+                self._dynamodb_table.put_item(Item=data)
+                logger.info("Received and saved orderbook(%s) | %s", symbol, timestamp)
 
-            except Exception as err:  # pylint: disable=W0703
-                logger.error(err)
+            except Exception as e:  # pylint: disable=W0703
+                logger.error(e)
+
+    def _create_dynamo_db_local_table_if_not_exists(self):
+        if not self._dynamodb:
+            raise RuntimeError("Please initialize DynamoDB instance first!")
+
+        table_names = [table.name for table in self._dynamodb.tables.all()]
+        if self._mode == "local":
+            if self._dynamodb_table_name in table_names:
+                logger.info(
+                    f"DynamoDB table({self._dynamodb_table_name}) already exists. Skipping..."
+                )
+                return
+            logger.info(
+                f"DynamoDB table({self._dynamodb_table_name}) does not exist. Now creating one."
+            )
+            self._dynamodb.create_table(
+                AttributeDefinitions=[
+                    {
+                        "AttributeName": "id",
+                        "AttributeType": "S",
+                    },
+                    {
+                        "AttributeName": "symbol",
+                        "AttributeType": "S",
+                    },
+                ],
+                KeySchema=[
+                    {
+                        "AttributeName": "id",
+                        "KeyType": "HASH",
+                    },
+                    {
+                        "AttributeName": "symbol",
+                        "KeyType": "RANGE",
+                    },
+                ],
+                ProvisionedThroughput={
+                    "ReadCapacityUnits": 5,
+                    "WriteCapacityUnits": 5,
+                },
+                TableName=self._dynamodb_table_name,
+            )
+            logger.info(
+                f"Successfully created DynamoDB table({self._dynamodb_table_name})."
+            )
+        else:
+            if self._dynamodb_table_name not in table_names:
+                # if mode is prod, user should create table via AWS console
+                raise RuntimeError(
+                    f"DynamoDB table({self._dynamodb_table_name}) does not exist. Please create one."
+                )
