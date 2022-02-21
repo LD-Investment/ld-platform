@@ -17,3 +17,7 @@ class RmqQueueName(Enum):
 
 class TradeSymbol(Enum):
     BTC_USDT = "BTC/USDT"
+    ETH_USDT = "ETH/USDT"
+    XRP_USDT = "XRP/USDT"
+    BNB_USDT = "BNB/USDT"
+    BCH_USDT = "BCH/USDT"

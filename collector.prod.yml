@@ -11,14 +11,14 @@ services:
     networks:
       - collector-network
 
-  collector-producer:
+  collector-producer-BTC_USDT: &collector-base
     build:
       context: .
       dockerfile: compose/production/collector/Dockerfile
       args:
         SSH_PRIVATE_KEY: $SSH_PRIVATE_KEY
     image: ld_platform_prod_collector
-    container_name: collector-producer
+    container_name: collector-producer-BTC_USDT
     env_file:
       - ./.envs/.production/.collector
     depends_on:
@@ -26,17 +26,32 @@ services:
     networks:
       - collector-network
     restart: always
-    command: /start-producer
+    command: /start-producer BTC_USDT
+
+  collector-producer-ETH_USDT:
+    <<: *collector-base
+    container_name: collector-producer-ETH_USDT
+    command: /start-producer ETH_USDT
+
+  collector-producer-XRP_USDT:
+    <<: *collector-base
+    container_name: collector-producer-XRP_USDT
+    command: /start-producer XRP_USDT
+
+  collector-producer-BNB_USDT:
+    <<: *collector-base
+    container_name: collector-producer-BNB_USDT
+    command: /start-producer BNB_USDT
+
+  collector-producer-BCH_USDT:
+    <<: *collector-base
+    container_name: collector-producer-BCH_USDT
+    command: /start-producer BCH_USDT
 
   collector-consumer:
-    image: ld_platform_prod_collector
+    <<: *collector-base
     container_name: collector-consumer
     env_file:
       - ./.envs/.production/.aws
       - ./.envs/.production/.collector
-    depends_on:
-      - collector-rmqserver
-    networks:
-      - collector-network
-    restart: always
     command: /start-consumer

@@ -22,7 +22,6 @@ class CollectorConsumer:  # pylint: disable=R0903
 
     PREFETCH_COUNT = 10
     MAX_CONN_RETRIAL = 10
-    AWS_DYNAMODB_TABLE = "1sec_orderbook_binance"
 
     def __init__(self, rmq_host: str, queue_name: RmqQueueName):
         # read environment variables
@@ -44,6 +43,7 @@ class CollectorConsumer:  # pylint: disable=R0903
         self.queue_name: str = queue_name.value
 
         # AWS DynamoDB
+        self._dynamodb_table_name = os.environ.get("COLLECTOR_AWS_DYNAMO_TABLE")
         if self._mode == "local":
             self._dynamodb = boto3.resource(
                 "dynamodb", endpoint_url="http://dynamodb-local:8000"
@@ -59,8 +59,8 @@ class CollectorConsumer:  # pylint: disable=R0903
 
         # check table
         self._create_dynamo_db_local_table_if_not_exists()
-        self._dynamodb_table = self._dynamodb.Table(self.AWS_DYNAMODB_TABLE)
-        logger.info(f"Using AWS dynamoDB table: '{self.AWS_DYNAMODB_TABLE}'")
+        self._dynamodb_table = self._dynamodb.Table(self._dynamodb_table_name)
+        logger.info(f"Using AWS dynamoDB table: '{self._dynamodb_table_name}'")
 
     def run(self):
         # Run loop
@@ -124,13 +124,13 @@ class CollectorConsumer:  # pylint: disable=R0903
 
         table_names = [table.name for table in self._dynamodb.tables.all()]
         if self._mode == "local":
-            if self.AWS_DYNAMODB_TABLE in table_names:
+            if self._dynamodb_table_name in table_names:
                 logger.info(
-                    f"DynamoDB table({self.AWS_DYNAMODB_TABLE}) already exists. Skipping..."
+                    f"DynamoDB table({self._dynamodb_table_name}) already exists. Skipping..."
                 )
                 return
             logger.info(
-                f"DynamoDB table({self.AWS_DYNAMODB_TABLE}) does not exist. Now creating one."
+                f"DynamoDB table({self._dynamodb_table_name}) does not exist. Now creating one."
             )
             self._dynamodb.create_table(
                 AttributeDefinitions=[
@@ -139,8 +139,8 @@ class CollectorConsumer:  # pylint: disable=R0903
                         "AttributeType": "S",
                     },
                     {
-                        "AttributeName": "timestamp",
-                        "AttributeType": "N",
+                        "AttributeName": "symbol",
+                        "AttributeType": "S",
                     },
                 ],
                 KeySchema=[
@@ -149,7 +149,7 @@ class CollectorConsumer:  # pylint: disable=R0903
                         "KeyType": "HASH",
                     },
                     {
-                        "AttributeName": "timestamp",
+                        "AttributeName": "symbol",
                         "KeyType": "RANGE",
                     },
                 ],
@@ -157,13 +157,14 @@ class CollectorConsumer:  # pylint: disable=R0903
                     "ReadCapacityUnits": 5,
                     "WriteCapacityUnits": 5,
                 },
-                TableName=self.AWS_DYNAMODB_TABLE,
+                TableName=self._dynamodb_table_name,
             )
             logger.info(
-                f"Successfully created DynamoDB table({self.AWS_DYNAMODB_TABLE})."
+                f"Successfully created DynamoDB table({self._dynamodb_table_name})."
             )
         else:
-            # if mode is prod, user should create table via AWS console
-            raise RuntimeError(
-                f"DynamoDB table({self.AWS_DYNAMODB_TABLE}) does not exist. Please create one."
-            )
+            if self._dynamodb_table_name not in table_names:
+                # if mode is prod, user should create table via AWS console
+                raise RuntimeError(
+                    f"DynamoDB table({self._dynamodb_table_name}) does not exist. Please create one."
+                )
