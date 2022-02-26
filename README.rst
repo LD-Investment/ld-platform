@@ -15,4 +15,4 @@ Our documentation is maintained in ``ld-platform/docs``. In order to view them a
     $ docker-compose -f docs.local.yml up docs
 
 
-Navigate to port 7000 on your host to see the documentation. From now on, this docs will become the lighthouse of everything.
+Navigate to `127.0.0.1:7000` on your host to see the documentation. From now on, this docs will become the lighthouse of everything.

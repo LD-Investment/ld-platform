@@ -1,5 +1,6 @@
 import logging
 
+import ccxt
 from celery import shared_task
 from celery.exceptions import SoftTimeLimitExceeded
 from selenium import webdriver
@@ -7,7 +8,8 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 
-from ld_platform.apps.bots.models import CoinnessNewsData
+from ld_platform.apps.dataset.models import CoinnessNewsData, LongShortRatioData
+from ld_platform.shared.choices import CryptoExchangeChoices
 
 logger = logging.getLogger(__name__)
 
@@ -101,3 +103,87 @@ def scrap_coinness_news():
 
     logger.info("Coinness Web scraper finished. Stopping..")
     driver.quit()
+
+
+@shared_task(soft_time_limit=60)
+def scrap_long_short_ratio_data():
+    logger.info("Starting Long/Short Ratio Scraper")
+    # init CCXT
+    binance = ccxt.binance({"option": {"defaultMarket": "futures"}})
+    bybit = ccxt.bybit({"enableRateLimit": True})
+    logger.info("Successfully initiated CCXT exchanges")
+
+    # Get BINANCE L/S Ratio for each symbols
+    logger.info("Now fetching L/S ratio data from Binacne")
+    for symbol_choice in LongShortRatioData.BinanceSymbolChoices.choices:
+        res = binance.fapiData_get_globallongshortaccountratio(
+            {
+                "symbol": symbol_choice[0],
+                "period": "5m",
+                "limit": 1,
+            }
+        )[0]
+        cur_timestamp = int(res["timestamp"]) / 1000
+
+        # check with the latest data
+        qs = LongShortRatioData.objects.filter(
+            exchange_name=CryptoExchangeChoices.BINANCE, symbol=symbol_choice[0]
+        ).order_by("-timestamp")
+
+        # skip if already created
+        if qs.exists() and qs[0].timestamp == cur_timestamp:
+            logger.info(
+                f"Data already exists for exchange(={CryptoExchangeChoices.BINANCE}), "
+                f"symbol(={symbol_choice[0]}), timestamp(={cur_timestamp})"
+            )
+            continue
+
+        LongShortRatioData.objects.create(
+            exchange_name=CryptoExchangeChoices.BINANCE,
+            symbol=symbol_choice[0],
+            long_ratio=float(res["longAccount"]),
+            short_ratio=float(res["shortAccount"]),
+            timestamp=cur_timestamp,
+        )  # 10 digits
+        logger.info(
+            f"Saved new data for exchange(={CryptoExchangeChoices.BINANCE}), "
+            f"symbol(={symbol_choice[0]}), timestamp(={cur_timestamp})"
+        )
+
+    # Get BYBIT L/S Ratio for each symbols
+    logger.info("Now fetching L/S ratio data from Bybit")
+    for (
+        symbol_choice
+    ) in (
+        LongShortRatioData.BybitSymbolChoices.choices
+    ):  # type: LongShortRatioData.BinanceSymbolChoices
+        res = bybit.public_get_v2_public_account_ratio(
+            {"symbol": symbol_choice[0], "period": "5min", "limit": 1}
+        )["result"][0]
+        cur_timestamp = int(res["timestamp"])
+
+        # check with the latest data
+        qs = LongShortRatioData.objects.filter(
+            exchange_name=CryptoExchangeChoices.BYBIT, symbol=symbol_choice[0]
+        ).order_by("-timestamp")
+
+        # skip if already created
+        if qs.exists() and qs[0].timestamp == cur_timestamp:
+            logger.info(
+                f"Data already exists for exchange(={CryptoExchangeChoices.BYBIT}), "
+                f"symbol(={symbol_choice[0]}), timestamp(={cur_timestamp})"
+            )
+            continue
+
+        LongShortRatioData.objects.create(
+            exchange_name=CryptoExchangeChoices.BYBIT,
+            symbol=symbol_choice[0],
+            long_ratio=float(res["buy_ratio"]),
+            short_ratio=float(res["sell_ratio"]),
+            timestamp=cur_timestamp,
+        )  # 10 digits
+
+        logger.info(
+            f"Saved new data for exchange(={CryptoExchangeChoices.BYBIT}), "
+            f"symbol(={symbol_choice[0]}), timestamp(={cur_timestamp})"
+        )

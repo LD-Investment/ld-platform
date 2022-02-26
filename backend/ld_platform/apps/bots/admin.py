@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from ld_platform.apps.bots.models import Bot, CoinnessNewsData, SubscribedBot
+from ld_platform.apps.bots.models import Bot, SubscribedBot
 
 
 @admin.register(Bot)
@@ -36,25 +36,3 @@ class SubscribedBotAdmin(admin.ModelAdmin):
         return obj.bot.name
 
     get_bot_name.short_description = "Bot Name"  # Renames column head
-
-
-@admin.register(CoinnessNewsData)
-class CoinnessNewsDataAdmin(admin.ModelAdmin):
-    list_display = [
-        "id",
-        "article_num",
-        "date",
-        "title",
-        "content",
-        # "bull_count",
-        # "bear_count",
-    ]
-    search_fields = [
-        "id",
-        "article_num",
-        "date",
-        "title",
-        "content",
-        # "bull_count",
-        # "bear_count",
-    ]
