@@ -78,6 +78,7 @@ LOCAL_APPS = [
     "ld_platform.infra",
     "ld_platform.apps.users.apps.UsersConfig",
     "ld_platform.apps.bots.apps.BotsConfig",
+    "ld_platform.apps.dataset.apps.DataConfig",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -277,12 +278,17 @@ CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 CELERY_BEAT_SCHEDULE = {
     # COINNESS Scraper
     "coinness-scraper-every-1m": {
-        "task": "ld_platform.apps.bots.tasks.scrap_coinness_news",
+        "task": "ld_platform.apps.dataset.tasks.scrap_coinness_news",
+        "schedule": timedelta(minutes=1),
+        "args": (),
+    },
+    # Long/Short Ratio Scraper
+    "long-short-ratio-every-1m": {
+        "task": "ld_platform.apps.dataset.tasks.scrap_long_short_ratio_data",
         "schedule": timedelta(minutes=1),
         "args": (),
     },
 }
-
 
 # django-allauth
 # ------------------------------------------------------------------------------

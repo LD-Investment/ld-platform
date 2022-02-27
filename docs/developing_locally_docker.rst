@@ -37,6 +37,15 @@ After that, please do the following before you build anything::
 
 You may add this to your ``bashrc`` or ``zshrc`` so that you do not have to repeat whenever you try to build images.
 
+Add LD local domain name to /etc/hosts
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Please add domain name in /etc/hosts like below::
+
+    /etc/hosts
+    127.0.0.1  local.ld-investment.ai
+
+
 Build docker images
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -91,6 +100,15 @@ To run in a detached (background) mode, just::
     $ docker-compose up -d
 
 
+Check LD Platform and Django Admin
+------------------------------------
+
+Navigate to http://local.ld-investment.ai for LD Platform Landing page and http://local.ld-investment.ai/admin for Django Admin page.
+
+- Django Admin ID: `admin`
+- Django Admin Password: `333`
+
+
 Execute Management Commands
 ---------------------------
 
@@ -117,11 +135,11 @@ When ``DEBUG`` is set to ``True``, the host is validated against ``['localhost',
 .. _envs:
 
 
-Check Swagger and Redoc while developing API
+(TODO) Check Swagger while developing API
 --------------------------------------------------------
 We use swagger & redoc as a tool for designing, documenting and collaborating on L&D Platform APIs. This is only applied to local development setting.
 
-Navigate to http://127.0.0.1:8000/swagger for Swagger page and http://127.0.0.1:8000/redoc for Redoc page.
+(TODO) Navigate to http://127.0.0.1:8000/swagger for Swagger page.
 
 Please refer `django-yasg`_ for more info.
 
@@ -253,75 +271,6 @@ Prerequisites:
 By default, it's enabled both in local and production environments (``platform.local.yml`` and ``ld_platform.prod.yml`` Docker Compose configs, respectively) through a ``flower`` service. For added security, ``flower`` requires its clients to provide authentication credentials specified as the corresponding environments' ``.envs/.local/.django`` and ``.envs/.production/.django`` ``CELERY_FLOWER_USER`` and ``CELERY_FLOWER_PASSWORD`` environment variables. Check out ``localhost:5555`` and see for yourself.
 
 .. _`Flower`: https://github.com/mher/flower
-
-Developing locally with HTTPS
------------------------------
-
-Increasingly it is becoming necessary to develop software in a secure environment in order that there are very few changes when deploying to production. Recently Facebook changed their policies for apps/sites that use Facebook login which requires the use of an HTTPS URL for the OAuth redirect URL. So if you want to use the ``users`` application with a OAuth provider such as Facebook, securing your communication to the local development environment will be necessary.
-
-In order to create a secure environment, we need to have a trusted SSL certficate installed in our Docker application.
-
-#.  **Let's Encrypt**
-
-    The official line from Let’s Encrypt is:
-
-    [For local development section] ... The best option: Generate your own certificate, either self-signed or signed by a local root, and trust it in your operating system’s trust store. Then use that certificate in your local web server. See below for details.
-
-    See `letsencrypt.org - certificates-for-localhost`_
-
-    .. _`letsencrypt.org - certificates-for-localhost`: https://letsencrypt.org/docs/certificates-for-localhost/
-
-#.  **mkcert: Valid Https Certificates For Localhost**
-
-    `mkcert`_ is a simple by design tool that hides all the arcane knowledge required to generate valid TLS certificates. It works for any hostname or IP, including localhost. It supports macOS, Linux, and Windows, and Firefox, Chrome and Java. It even works on mobile devices with a couple manual steps.
-
-    See https://blog.filippo.io/mkcert-valid-https-certificates-for-localhost/
-
-    .. _`mkcert`:  https://github.com/FiloSottile/mkcert/blob/master/README.md#supported-root-stores
-
-After installing a trusted TLS certificate, configure your docker installation. We are going to configure an ``nginx`` reverse-proxy server. This makes sure that it does not interfere with our ``traefik`` configuration that is reserved for production environments.
-
-These are the places that you should configure to secure your local environment.
-
-certs
-~~~~~
-
-Take the certificates that you generated and place them in a folder called ``certs`` in the project's root folder. Assuming that you registered your local hostname as ``my-dev-env.local``, the certificates you will put in the folder should have the names ``my-dev-env.local.crt`` and ``my-dev-env.local.key``.
-
-platform.local.yml
-~~~~~~~~~
-
-#. Add the ``nginx-proxy`` service. ::
-
-    ...
-
-    nginx-proxy:
-      image: jwilder/nginx-proxy:alpine
-      container_name: nginx-proxy
-      ports:
-        - "80:80"
-        - "443:443"
-      volumes:
-        - /var/run/docker.sock:/tmp/docker.sock:ro
-        - ./certs:/etc/nginx/certs
-      restart: always
-      depends_on:
-        - django
-
-    ...
-
-#. Link the ``nginx-proxy`` to ``django`` through environment variables.
-
-   ``django`` already has an ``.env`` file connected to it. Add the following variables. You should do this especially if you are working with a team and you want to keep your local environment details to yourself.
-
-   ::
-
-      # HTTPS
-      # ------------------------------------------------------------------------------
-      VIRTUAL_HOST=my-dev-env.local
-      VIRTUAL_PORT=8000
-
-   The services run behind the reverse proxy.
 
 config/settings/local.py
 ~~~~~~~~~~~~~~~~~~~~~~~~
