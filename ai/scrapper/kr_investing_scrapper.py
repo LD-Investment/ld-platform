@@ -1,9 +1,10 @@
-import requests
-from bs4 import BeautifulSoup, Comment
-from tqdm import tqdm
 import re
+
 import pandas as pd
-import numpy as np
+import requests
+from bs4 import BeautifulSoup
+from tqdm import tqdm
+
 
 def get_contents(num_id):
     url = "https://kr.investing.com/news/cryptocurrency-news/article-" + str(num_id)
@@ -12,7 +13,7 @@ def get_contents(num_id):
         'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0',
     })
     news_req = requests.get(url, headers=headers)
-    news_content = BeautifulSoup(news_req.content,"lxml")
+    news_content = BeautifulSoup(news_req.content, "lxml")
     try:
         title = news_content.find("h1").text
     except Exception as e:
@@ -42,37 +43,41 @@ def get_contents(num_id):
     return title, ' '.join(arr)
 
 
-titles, contents = [], []
+def main(last_page: int):
+    titles, contents = [], []
+    for i in range(1, last_page):
+        print("collecting from page {}...".format(i))
+        url = "https://kr.investing.com/news/cryptocurrency-news/" + str(i)
+        headers = requests.utils.default_headers()
+        headers.update({
+            'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0',
+        })
+        main_news_req = requests.get(url, headers=headers)
+        main_news_content = BeautifulSoup(main_news_req.content, "lxml")
 
-for i in range(1,2970):
-    print("collecting from page {}...".format(i))
-    url = "https://kr.investing.com/news/cryptocurrency-news/" + str(i)
-    headers = requests.utils.default_headers()
-    headers.update({
-        'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0',
-    })
-    main_news_req = requests.get(url, headers=headers)
-    main_news_content = BeautifulSoup(main_news_req.content,"lxml")
+        article_nums = set()
 
-    article_nums = set()
+        try:
+            for a in main_news_content.find_all("a", href=True):
+                if "/news/cryptocurrency-news/article-" in a['href']:
+                    num_list = re.findall(r'\d+', str(a['href']))
+                    for x in num_list:
+                        article_nums.add(int(x))
+        except Exception as e:
+            print(e)
+            continue
 
-    try:
-        for a in main_news_content.find_all("a", href=True):
-            if "/news/cryptocurrency-news/article-" in a['href']:
-                num_list = re.findall(r'\d+', str(a['href']))
-                for x in num_list:
-                    article_nums.add(int(x))
-    except Exception as e:
-        print(e)
-        continue
+        for num_id in tqdm(article_nums, position=0, leave=True):
+            title, content = get_contents(num_id)
+            titles.append(title)
+            contents.append(content)
+
+        if i % 500 == 0:
+            print("Saving most recent checkpoint...")
+            df = pd.DataFrame(list(zip(titles, contents)), columns=['Title', 'Content'])
+            df.to_csv("crypto_news_investing_kr.csv", index=False)
 
 
-    for num_id in tqdm(article_nums, position=0, leave=True):
-        title, content = get_contents(num_id)
-        titles.append(title)
-        contents.append(content)
-
-    if i%500 == 0:
-        print("Saving most recent checkpoint...")
-        df = pd.DataFrame(list(zip(titles, contents)), columns=['Title','Content'])
-        df.to_csv("crypto_news_investing_kr.csv",index=False)
+if __name__ == '__main__':
+    LAST_PAGE = 2970
+    main(LAST_PAGE)
