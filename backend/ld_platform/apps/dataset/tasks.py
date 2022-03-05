@@ -49,10 +49,9 @@ def scrap_coinness_news():
 
     BASE_URL = "https://coinness.live/news"
 
-    title_selector = "#root > div > div > main > div > div.sc-bBXrwG.gIQUtB > h3"
-    content_selector = "#root > div > div > main > div > div.sc-bBXrwG.gIQUtB > div.sc-lmoMya.jQLGnc > span"
-    # bull_bear_selector = "#root > div > div > main > div > div.sc-bBXrwG.gIQUtB >
-    # div.sc-crrszt.fqZBup > div.left > div > button.bull.false"
+    title_selector = '//*[@id="root"]/div/div/main/div/div[2]/h3'
+    content_selector = '//*[@id="root"]/div/div/main/div/div[2]/div[2]/span'
+    date_selector = '//*[@id="root"]/div/div/main/div/div[2]/div[1]'
 
     # Get the latest article number
     ARTICLE_NUM = 1011000
@@ -69,15 +68,15 @@ def scrap_coinness_news():
             cur_url = f"{BASE_URL}/{ARTICLE_NUM}"
             driver.get(url=cur_url)
             logger.info(f"Successfully connected to `{cur_url}`")
-            title = driver.find_element(By.CSS_SELECTOR, title_selector)
-            content = driver.find_element(By.CSS_SELECTOR, content_selector)
-            # bull_bear = driver.find_element(By.CSS_SELECTOR, bull_bear_selector)
+            title = driver.find_element(By.XPATH, title_selector)
+            content = driver.find_element(By.XPATH, content_selector)
+            date = driver.find_element(By.XPATH, date_selector)
 
             kwargs = {
                 "article_num": ARTICLE_NUM,
                 "title": title.text,
                 "content": content.text,
-                # "bull_bear": bull_bear.text,
+                "date": date.text,
             }
 
             logger.info(f"Data parsed from HTML: {kwargs}")
@@ -99,6 +98,9 @@ def scrap_coinness_news():
             driver.quit()
             exit(1)
 
+        except Exception as e:
+            logger.error(f"Unexpected Error occurred: {e}")
+
         ARTICLE_NUM += 1
 
     logger.info("Coinness Web scraper finished. Stopping..")
@@ -114,8 +116,12 @@ def scrap_long_short_ratio_data():
     logger.info("Successfully initiated CCXT exchanges")
 
     # Get BINANCE L/S Ratio for each symbols
-    logger.info("Now fetching L/S ratio data from Binacne")
-    for symbol_choice in LongShortRatioData.BinanceSymbolChoices.choices:
+    logger.info("Now fetching L/S ratio data from Binance")
+    for (
+        symbol_choice
+    ) in (
+        LongShortRatioData.BinanceSymbolChoices.choices
+    ):  # type: LongShortRatioData.BinanceSymbolChoices
         res = binance.fapiData_get_globallongshortaccountratio(
             {
                 "symbol": symbol_choice[0],
@@ -156,7 +162,7 @@ def scrap_long_short_ratio_data():
         symbol_choice
     ) in (
         LongShortRatioData.BybitSymbolChoices.choices
-    ):  # type: LongShortRatioData.BinanceSymbolChoices
+    ):  # type: LongShortRatioData.BybitSymbolChoices
         res = bybit.public_get_v2_public_account_ratio(
             {"symbol": symbol_choice[0], "period": "5min", "limit": 1}
         )["result"][0]

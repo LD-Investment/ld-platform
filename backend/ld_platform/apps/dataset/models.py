@@ -10,8 +10,6 @@ class CoinnessNewsData(models.Model):
     date = models.DateTimeField(null=True)
     title = models.TextField(null=True, blank=True, default="")
     content = models.TextField(null=True, blank=True, default="")
-    # bull_count = models.IntegerField(null=True, blank=True, default=0)
-    # bear_count = models.IntegerField(null=True, blank=True, default=0)
 
     objects = CoinnessNewsDataManager()
 
