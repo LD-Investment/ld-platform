@@ -9,16 +9,18 @@ export default [
   {
     id: 1,
     image: LukeProfile,
-    title: "Luke Kim",
-    subtitle: "AI/Quant Researcher",
-    text: "Stanford University"
+    name: "Luke Kim",
+    job_title: "AI/Quant Researcher",
+    university: "Stanford University",
+    major: "B.A in Mathematics"
   },
   {
     id: 2,
     image: KevinProfile,
-    title: "Kevin Kim",
-    subtitle: "AI/Quant Researcher",
-    text: "UCLA University"
+    name: "Kevin Kim",
+    job_title: "AI/Quant Researcher",
+    university: "University of Toronto",
+    major: "B.A in Physics"
   }
   // {
   //   id: 3,
