@@ -67,7 +67,7 @@ export default () => {
   };
 
   const ProfileCardWidget = props => {
-    const { image, title, subtitle, text } = props;
+    const { image, name, job_title, university, major } = props;
     return (
       <Col className="d-flex justify-content-center mb-5">
         <Card
@@ -84,9 +84,12 @@ export default () => {
               src={image}
               className="user-avatar large-avatar rounded-circle mx-auto mt-n7 mb-4"
             />
-            <Card.Title>{title}</Card.Title>
-            <Card.Subtitle className="fw-normal">{subtitle}</Card.Subtitle>
-            <Card.Text className="text-gray mb-4">{text}</Card.Text>
+            <Card.Title>{name}</Card.Title>
+            <Card.Subtitle className="fw-normal mb-4">
+              {job_title}
+            </Card.Subtitle>
+            <Card.Text className="fw-bold mb-0">🎓 {university}</Card.Text>
+            <Card.Text className="mb-0">📚 {major}</Card.Text>
           </Card.Body>
         </Card>
       </Col>
