@@ -61,7 +61,7 @@ def scrap_coinness_news():
 
     logger.info(f"The latest article number is: {ARTICLE_NUM}")
 
-    MAX_RETRY = 5
+    MAX_RETRY = 10
     CUR_TRIAL = 0
     while CUR_TRIAL < MAX_RETRY:
         try:
