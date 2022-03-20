@@ -1,8 +1,6 @@
 L&D Investment Platform
 =======================
-
-
-
+asdf
 Overview
 ----------
 
