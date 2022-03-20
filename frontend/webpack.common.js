@@ -44,11 +44,11 @@ module.exports = {
           "css-loader",
           // Compiles Sass to CSS
           {
-            loader: 'sass-loader',
+            loader: "sass-loader",
             options: {
-              implementation: require('sass')
-            },
-          },
+              implementation: require("sass")
+            }
+          }
         ]
       }
     ]
