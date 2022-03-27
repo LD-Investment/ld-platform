@@ -18,13 +18,6 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
   # git ssh
   ssh git
 
-# Add credentials on build
-RUN mkdir -p /root/.ssh && \
-    chmod 0700 /root/.ssh
-RUN ssh-keyscan github.com > /root/.ssh/known_hosts
-RUN echo "${SSH_PRIVATE_KEY}" > /root/.ssh/id_rsa && \
-    chmod 600 /root/.ssh/id_rsa
-
 # Requirements are installed here to ensure they will be cached.
 COPY ./backend/requirements/django .
 
