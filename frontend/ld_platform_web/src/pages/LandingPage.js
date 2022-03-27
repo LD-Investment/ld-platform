@@ -2,6 +2,7 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCheckCircle,
+  faDownload,
   faExternalLinkAlt,
   faMapMarkedAlt
 } from "@fortawesome/free-solid-svg-icons";
@@ -15,11 +16,13 @@ import {
   ListGroup,
   Nav,
   Navbar,
-  Row
+  OverlayTrigger,
+  Row,
+  Tooltip
 } from "@themesberg/react-bootstrap";
 import { Link } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
-
+import GitHubButton from "react-github-btn";
 import { Routes } from "../routes";
 import LDLogo2DGradient from "../assets/img/logo/logo_gradient_2d.png";
 import LDLogo2DMint from "../assets/img/logo/logo_mint_2d.png";
@@ -67,7 +70,7 @@ export default () => {
   };
 
   const ProfileCardWidget = props => {
-    const { image, name, job_title, university, major } = props;
+    const { image, name, job_title, work, university, major } = props;
     return (
       <Col className="d-flex justify-content-center mb-5">
         <Card
@@ -88,8 +91,21 @@ export default () => {
             <Card.Subtitle className="fw-normal mb-4">
               {job_title}
             </Card.Subtitle>
-            <Card.Text className="fw-bold mb-0">🎓 {university}</Card.Text>
-            <Card.Text className="mb-0">📚 {major}</Card.Text>
+            {work ? (
+              <Card.Text className="fw-bold mb-0">🧑‍💻 {work}</Card.Text>
+            ) : (
+              <Card.Text />
+            )}
+            {university ? (
+              <Card.Text className="fw-bold mb-0">🎓 {university}</Card.Text>
+            ) : (
+              <Card.Text />
+            )}
+            {major ? (
+              <Card.Text className="mb-0">📚 {major}</Card.Text>
+            ) : (
+              <Card.Text />
+            )}
           </Card.Body>
         </Card>
       </Col>
@@ -127,14 +143,21 @@ export default () => {
                 </Nav.Link>
                 <Nav.Link
                   as={HashLink}
-                  to="#ld-managers"
+                  to="#publication"
                   className="d-sm-none d-xl-inline"
                 >
-                  Managers
+                  Publication
                 </Nav.Link>
-                <Nav.Link as={HashLink} to="#subscribe">
-                  Subscribe
+                <Nav.Link
+                  as={HashLink}
+                  to="#ld-team"
+                  className="d-sm-none d-xl-inline"
+                >
+                  Team
                 </Nav.Link>
+                {/*<Nav.Link as={HashLink} to="#subscribe">*/}
+                {/*  Subscribe*/}
+                {/*</Nav.Link>*/}
               </Nav>
             </Navbar.Collapse>
             <Button
@@ -143,7 +166,7 @@ export default () => {
               to={Routes.PlatformDashboard.path}
               className="text-dark me-3"
             >
-              L&D Platform{" "}
+              LD Platform{" "}
               <FontAwesomeIcon
                 icon={faExternalLinkAlt}
                 className="d-none d-sm-inline ms-1"
@@ -181,6 +204,44 @@ export default () => {
           </figure>
         </Container>
       </section>
+      <div>
+        <Card className="theme-settings">
+          <Card.Body className="pt-4">
+            <div className="d-flex justify-content-between align-items-center mb-3">
+              <p className="m-0 mb-1 me-3 fs-7">
+                Stay Tuned!{" "}
+                <span role="img" aria-label="gratitude">
+                  💙
+                </span>
+              </p>
+            </div>
+            <div className="form-row mb-2">
+              <div className="col-12">
+                <input
+                  type="email"
+                  className="form-control mb-2"
+                  placeholder="your@email.com"
+                  name="email"
+                  aria-label="Subscribe form"
+                  required
+                />
+              </div>
+              <div className="col-12">
+                <button
+                  type="submit"
+                  className="btn btn-secondary text-dark shadow-soft btn-block"
+                  data-loading-text="Sending"
+                >
+                  <span>Submit</span>
+                </button>
+              </div>
+            </div>
+            <p className="text-muted font-small m-0">
+              Subscribe to notable news and products!
+            </p>
+          </Card.Body>
+        </Card>
+      </div>
       <div className="section pt-0">
         <Container className="mt-n10 mt-lg-n12 z-2">
           <Row className="justify-content-center">
@@ -211,8 +272,8 @@ export default () => {
               </div>
               <h3 className="fw-bolder">World-class AI/Quants</h3>
               <p className="text-gray">
-                Our funds are operated by world-class AI researchers, top-tier
-                quants who knows about alpha.
+                Our funds are operated by world-class AI researchers and Quants
+                who know about alpha.
               </p>
             </Col>
             <Col xs={6} md={3} className="text-center">
@@ -406,17 +467,23 @@ export default () => {
           </Row>
         </Container>
       </section>
-      <section className="section section-lg line-bottom-soft" id="ld-managers">
+      <section
+        className="section section-lg bg-primary text-white"
+        id="publication"
+      >
+        {/*  TODO: Add Publication section */}
+      </section>
+      <section className="section section-lg line-bottom-soft" id="ld-team">
         <Container>
           <Row className="justify-content-between mb-5 mb-lg-6">
             <Col xs={12} className="text-center">
               <h2 className="fw-light mb-3">
-                Meet our <span className="fw-bold">superb</span> fund managers
+                Meet our <span className="fw-bold">superb</span> team!
               </h2>
               <p className="lead px-lg-8">
                 All funds and bots operated by L&D Investment are the direct
-                results of researches and development by world-class AI/Quant
-                engineers and researchers.
+                results of researches and development by competitive AI
+                researchers and Software Engineers!
               </p>
             </Col>
           </Row>
@@ -439,9 +506,8 @@ export default () => {
               </h2>
               <p className="lead mb-4 me-lg-6">
                 See the list of funds and bots running in L&D Investment
-                Platform. Look carefully each of their yields, track-records and
-                affinity of your investment style. Pick one and you will not all
-                set!
+                Platform. Look carefully at their yields and track-records. Pick
+                one and you will not all set!
               </p>
             </Col>
             <Col xs={12} md={6} lg={4} className="mb-5 mb-lg-0">
@@ -460,35 +526,42 @@ export default () => {
                         icon={faCheckCircle}
                         className="text-success me-2"
                       />{" "}
-                      10+ AI driven bots
+                      AI-driven Bots
                     </ListGroup.Item>
                     <ListGroup.Item className="bg-white border-0 ps-0">
                       <FontAwesomeIcon
                         icon={faCheckCircle}
                         className="text-success me-2"
                       />{" "}
-                      20+ Indicator bots
+                      Indicator Bots
                     </ListGroup.Item>
                     <ListGroup.Item className="bg-white border-0 ps-0">
                       <FontAwesomeIcon
                         icon={faCheckCircle}
                         className="text-success me-2"
                       />{" "}
-                      1 Scalping manual bot
+                      Scalping Bots
                     </ListGroup.Item>
                     <ListGroup.Item className="bg-white border-0 ps-0">
                       <FontAwesomeIcon
                         icon={faCheckCircle}
                         className="text-success me-2"
                       />{" "}
-                      5+ Insight reports daily
+                      News Letters
                     </ListGroup.Item>
                     <ListGroup.Item className="bg-white border-0 ps-0">
                       <FontAwesomeIcon
                         icon={faCheckCircle}
                         className="text-success me-2"
                       />{" "}
-                      On-chained fund results
+                      Market Reports
+                    </ListGroup.Item>
+                    <ListGroup.Item className="bg-white border-0 ps-0">
+                      <FontAwesomeIcon
+                        icon={faCheckCircle}
+                        className="text-success me-2"
+                      />{" "}
+                      On-chain track-records
                     </ListGroup.Item>
                     <ListGroup.Item className="bg-white border-0 border-0 ps-0 pb-0">
                       <FontAwesomeIcon
@@ -538,7 +611,7 @@ export default () => {
       <footer className="footer py-6 bg-dark text-white">
         <Container>
           <Row>
-            <Col md={4}>
+            <Col md={8}>
               <Navbar.Brand
                 as={HashLink}
                 to="#home"
@@ -548,79 +621,8 @@ export default () => {
                 <span className="ms-2 brand-text">L&D Investment</span>
               </Navbar.Brand>
               <p>
-                We run DeFi powered hedge funds & bots for traders, analysts and
+                DeFi powered hedge funds & bots for traders, analysts and
                 investors of web2.0 and 3.0.
-              </p>
-            </Col>
-            <Col xs={6} md={2} className="mb-5 mb-lg-0">
-              <span className="h5">More info</span>
-              <ul className="links-vertical mt-2">
-                <li>
-                  <Card.Link target="_blank" href="https://themesberg.com/blog">
-                    Blog
-                  </Card.Link>
-                </li>
-                <li>
-                  <Card.Link
-                    target="_blank"
-                    href="https://themesberg.com/about"
-                  >
-                    About Us
-                  </Card.Link>
-                </li>
-              </ul>
-            </Col>
-            <Col xs={6} md={2} className="mb-5 mb-lg-0">
-              <span className="h5">Other</span>
-              <ul className="links-vertical mt-2">
-                <li>
-                  <Card.Link
-                    target="_blank"
-                    href="https://themesberg.com/contact"
-                  >
-                    Contact Us
-                  </Card.Link>
-                </li>
-                <li>
-                  <Card.Link
-                    target="_blank"
-                    href="https://themesberg.com/licensing"
-                  >
-                    License
-                  </Card.Link>
-                </li>
-              </ul>
-            </Col>
-            <Col xs={12} md={4} className="mb-5 mb-lg-0">
-              <span className="h5 mb-3 d-block">Stay tuned</span>
-              <form action="#">
-                <div className="form-row mb-2">
-                  <div className="col-12">
-                    <input
-                      type="email"
-                      className="form-control mb-2"
-                      placeholder="example@domain.com"
-                      name="email"
-                      aria-label="Subscribe form"
-                      required
-                    />
-                  </div>
-                  <div className="col-12">
-                    <button
-                      type="submit"
-                      className="btn btn-secondary text-dark shadow-soft btn-block"
-                      data-loading-text="Sending"
-                    >
-                      <span>Submit</span>
-                    </button>
-                  </div>
-                </div>
-              </form>
-              <p className="text-muted font-small m-0">
-                We’ll never share your details. See our{" "}
-                <Card.Link className="text-white" href="#">
-                  Privacy Policy
-                </Card.Link>
               </p>
             </Col>
           </Row>
@@ -632,7 +634,7 @@ export default () => {
                 role="contentinfo"
               >
                 <p className="font-weight-normal font-small mb-0">
-                  Copyright © Luke and David Investment, Inc. 2021-
+                  Copyright © L&D Investment, Inc. 2021-
                   <span className="current-year">2022</span>. All rights
                   reserved.
                 </p>
