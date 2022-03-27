@@ -2,7 +2,7 @@ import dataclasses
 import logging
 from enum import Enum
 
-import ccxtpro
+# import ccxtpro
 
 from ld_platform.apps.bots.models import Bot
 from ld_platform.shared.resolvers import CompiledBotSetting
@@ -50,16 +50,16 @@ class TtadakBot(IBot):
     def __init__(self, bot_setting: CompiledBotSetting):
         super(TtadakBot, self).__init__(bot_setting, logger)
         self._bot_setting = bot_setting
-        self.exchange = ccxtpro.binance(
-            {
-                "apiKey": self._bot_setting.exchange_api_key,
-                "secret": self._bot_setting.exchange_api_secret,
-                "enableRateLimit": True,
-                "options": {
-                    "defaultType": "future",
-                },
-            }
-        )
+        # self.exchange = ccxtpro.binance(
+        #     {
+        #         "apiKey": self._bot_setting.exchange_api_key,
+        #         "secret": self._bot_setting.exchange_api_secret,
+        #         "enableRateLimit": True,
+        #         "options": {
+        #             "defaultType": "future",
+        #         },
+        #     }
+        # )
 
     def run(self):
         # validate exchange setting
