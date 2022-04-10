@@ -2,9 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { Routes } from "../routes";
 
-// L&D Landing Page
-import LandingPage from "./LandingPage";
-
 // L&D Platform
 import PlatformDashboard from "./dashboard/Dashboard";
 import MyBots from "./my/Bots";
@@ -76,13 +73,6 @@ const RouteWithSidebar = ({ component: Component, ...rest }) => {
 
 export default () => (
   <Switch>
-    {/* L&D Landing Pages */}
-    <RouteWithLoader
-      exact
-      path={Routes.LandingView.path}
-      component={LandingPage}
-    />
-
     {/* L&D Platform Pages */}
     <RouteWithSidebar
       exact
