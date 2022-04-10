@@ -74,7 +74,7 @@ def preprocess_data(df):
                 else:
                     ret = val[i] / val[i - l]
                 val_ret.append(ret)
-            df['{}_change_{}'.format(col, l)] = val_ret
+            df[f'{col}_change_{l}'] = val_ret
 
     # ebsw
     df['ebsw'] = df.ta.ebsw(lookahead=False)
@@ -140,7 +140,7 @@ def execute_trade(leverage, bybit_session, telebot, tele_chat_id, tabnet):
     high_leverage = False
 
     while True:
-        text = "==== Trade Iteration " + str(iteration) + " ===="
+        text = f"==== Trade Iteration {str(iteration)} ===="
         telebot.sendMessage(chat_id=tele_chat_id, text=text)
 
         t0 = time.time()
@@ -163,13 +163,12 @@ def execute_trade(leverage, bybit_session, telebot, tele_chat_id, tabnet):
 
         if prob > 0.9:
             high_leverage = True
-            text = "TabNet predicted class {} with probability {}. Resetting leverage to 5x.".format(action[int(pred)],
-                                                                                                     prob)
+            text = f"TabNet predicted class {action[int(pred)]} with probability {prob}. Resetting leverage to 5x."
             telebot.sendMessage(chat_id=tele_chat_id, text=text)
             leverage = 5
             bybit_session.set_leverage(symbol='BTCUSDT', buy_leverage=leverage, sell_leverage=leverage)
         elif prob <= 0.9:
-            text = "TabNet predicted class {} with probability {}. Using 1x leverage.".format(action[int(pred)], prob)
+            text = f"TabNet predicted class {action[int(pred)]} with probability {prob}. Using 1x leverage."
             telebot.sendMessage(chat_id=tele_chat_id, text=text)
 
         ### open position ###
