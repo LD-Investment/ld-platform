@@ -7,12 +7,10 @@ import telegram
 from pytorch_tabnet.tab_model import TabNetClassifier
 from tqdm import tqdm
 
-# TODO: replace with ccxt
-from pybit import HTTP
 
-
-def get_df(bybit_ccxt):
-    df = pd.DataFrame(bybit_ccxt.fetch_ohlcv("BTCUSDT", timeframe='4h', limit=200))
+def get_df():
+    binance = ccxt.binance()
+    df = pd.DataFrame(binance.fetch_ohlcv("BTCUSDT", timeframe='4h', limit=200))
     df = df.rename(columns={0: 'timestamp',
                             1: 'open',
                             2: 'high',
@@ -23,11 +21,11 @@ def get_df(bybit_ccxt):
 
 
 def create_timestamps(df):
-    bybit = ccxt.bybit()
+    binance = ccxt.binance()
     dates = df['timestamp'].values
     timestamp = []
     for i in range(len(dates)):
-        date_string = bybit.iso8601(int(dates[i]))
+        date_string = binance.iso8601(int(dates[i]))
         date_string = date_string[:10] + " " + date_string[11:-5]
         timestamp.append(date_string)
     df['datetime'] = timestamp
@@ -127,15 +125,34 @@ def my_floor(a, precision=0):
     return np.true_divide(np.floor(a * 10 ** precision), 10 ** precision)
 
 
+def get_position_amount(exchange):
+    balance = exchange.fetch_balance()
+    for position in balance['info']['positions']:
+        if position["symbol"] == "BTCUSDT":
+            return position["positionAmt"]
+
+
+def set_leverage(exchange, symbol, leverage: int):
+    exchange.fapiPrivate_post_leverage({
+        "symbol": symbol,
+        "leverage": leverage,
+    })
+
+
+def place_market_order(exchange, symbol: str, side: str, amount: float, params=None) -> None:
+    if params is None:
+        params = {}
+    exchange.create_order(symbol, "market", side, amount, params=params)
+
+
 cash_status = []  # store cash amount
 
 action = {0: 'long', 1: 'short', 2: 'hold'}
 
 
-def execute_trade(leverage, bybit_session, telebot, tele_chat_id, tabnet):
+def execute_trade(leverage, binance, telebot, tele_chat_id, tabnet):
     iteration = 0
     move = 0  # -1: short, 1: long
-    bybit_ccxt = ccxt.bybit()
 
     high_leverage = False
 
@@ -148,13 +165,11 @@ def execute_trade(leverage, bybit_session, telebot, tele_chat_id, tabnet):
         if high_leverage:
             text = "resetting leverage..."
             telebot.sendMessage(chat_id=tele_chat_id, text=text)
-            leverage = 1
-            bybit_session.set_leverage(symbol='BTCUSDT', buy_leverage=leverage, sell_leverage=leverage)
+            set_leverage(binance, "BTCUSDT", leverage=1)
 
         high_leverage = False
         ### make prediction ###
-        bybit_ccxt = ccxt.bybit()
-        df = get_df(bybit_ccxt)
+        df = get_df()
         df = create_timestamps(df)
         df = preprocess_data(df)
         x = df.values[-2].reshape((-1, df.shape[1]))
@@ -165,8 +180,7 @@ def execute_trade(leverage, bybit_session, telebot, tele_chat_id, tabnet):
             high_leverage = True
             text = f"TabNet predicted class {action[int(pred)]} with probability {prob}. Resetting leverage to 5x."
             telebot.sendMessage(chat_id=tele_chat_id, text=text)
-            leverage = 5
-            bybit_session.set_leverage(symbol='BTCUSDT', buy_leverage=leverage, sell_leverage=leverage)
+            set_leverage(binance, "BTCUSDT", leverage=5)
         elif prob <= 0.9:
             text = f"TabNet predicted class {action[int(pred)]} with probability {prob}. Using 1x leverage."
             telebot.sendMessage(chat_id=tele_chat_id, text=text)
@@ -177,7 +191,7 @@ def execute_trade(leverage, bybit_session, telebot, tele_chat_id, tabnet):
             text = "Choosing Short Position!"
             telebot.sendMessage(chat_id=tele_chat_id, text=text)
             if iteration > 0:
-                if bybit_session.my_position(symbol="BTCUSDT")['result'][0]['size'] == 0:
+                if get_position_amount(binance) == 0:
                     text = "no positions open... stop loss or take profit was probably triggered."
                     telebot.sendMessage(chat_id=tele_chat_id, text=text)
                 else:
@@ -185,28 +199,30 @@ def execute_trade(leverage, bybit_session, telebot, tele_chat_id, tabnet):
                         text = "Closing previous long position and opening short position..."
                         telebot.sendMessage(chat_id=tele_chat_id, text=text)
                         ### long was chosen, so we take short to close position ###
-                        bybit_session.place_active_order(
+                        place_market_order(
+                            exchange=binance,
                             symbol="BTCUSDT",
-                            side="Sell",
-                            order_type="Market",
-                            qty=qty,
-                            time_in_force="GoodTillCancel",
-                            reduce_only=True,
-                            close_on_trigger=False
-                        )
+                            side="sell",
+                            amount=qty,
+                            params={
+                                "reduceOnly": True,
+                                "timeInForce": "GTX"  # GTX means "Good Till Crossing"
+                            })
+
                     elif move == -1:
                         text = "Closing previous short position and opening short position..."
                         telebot.sendMessage(chat_id=tele_chat_id, text=text)
                         ### short was chosen, so we take long to close position ###
-                        bybit_session.place_active_order(
+                        place_market_order(
+                            exchange=binance,
                             symbol="BTCUSDT",
-                            side="Buy",
-                            order_type="Market",
-                            qty=qty,
-                            time_in_force="GoodTillCancel",
-                            reduce_only=True,
-                            close_on_trigger=False
-                        )
+                            side="buy",
+                            amount=qty,
+                            params={
+                                "reduceOnly": True,
+                                "timeInForce": "GTX"  # GTX means "Good Till Crossing"
+                            })
+
                 ### after closing the position, we need to recalculate quantity and cash status ###
                 cur_price = bybit_session.latest_information_for_symbol(symbol='BTCUSDT')['result'][0]['last_price']
                 balances = bybit_session.get_wallet_balance()
@@ -225,6 +241,16 @@ def execute_trade(leverage, bybit_session, telebot, tele_chat_id, tabnet):
                     take_profit = round(float(cur_price) * (1 + 3 / 100))
 
                 ### take short position as predicted ###
+                place_market_order(
+                    exchange=binance,
+                    symbol="BTCUSDT",
+                    side="buy",
+                    amount=qty,
+                    params={
+                        "reduceOnly": True,
+                        "timeInForce": "GTX" # GTX means "Good Till Crossing"
+                        ""
+                    })
                 bybit_session.place_active_order(
                     symbol="BTCUSDT",
                     side="Sell",
@@ -273,7 +299,7 @@ def execute_trade(leverage, bybit_session, telebot, tele_chat_id, tabnet):
             text = "Choosing Long Position!"
             telebot.sendMessage(chat_id=tele_chat_id, text=text)
             if iteration > 0:
-                if bybit_session.my_position(symbol="BTCUSDT")['result'][0]['size'] == 0:
+                if get_position_amount(binance) == 0:
                     text = "no positions open... stop loss or take profit was probably triggered."
                     telebot.sendMessage(chat_id=tele_chat_id, text=text)
                 else:
@@ -376,19 +402,23 @@ def execute_trade(leverage, bybit_session, telebot, tele_chat_id, tabnet):
 
 if __name__ == '__main__':
     # define session and set leverage
-    bybit_api_key = "<api key>"
-    bybit_api_secret = "<secret key>"
-    bybit_session = HTTP(
-        endpoint="https://api.bybit.com",
-        api_key=bybit_api_key,
-        api_secret=bybit_api_secret
-    )
-    # set leverage
-    bybit_session.set_leverage(symbol='BTCUSDT', buy_leverage=1, sell_leverage=1)
+    binance_api_key = "<api key>"
+    binance_api_secret = "<secret key>"
 
-    # load tabnet model
+    binance = ccxt.binance(config={
+        'apiKey': binance_api_key,
+        'secret': binance_api_secret,
+        'enableRateLimit': True,
+        'options': {
+            'defaultType': 'future'
+        }
+    })
+    # set leverage
+    set_leverage(binance, "BTCUSDT", leverage=1)
+
+    # load trained model
     tn = TabNetClassifier()
-    tn.load_model('TabNetClassifier_ByBit_with_class_weights_chart_only_74.zip')
+    tn.load_model('TabNetClassifier_Binance.zip')
 
     # define telegram bot
     chat_id = "<chat_id>"
@@ -397,4 +427,4 @@ if __name__ == '__main__':
 
     # run trade (4 hour cycle: 1 -> 5 -> 9 -> 1 ...)
     # needs to be executed at the exact hour
-    execute_trade(leverage=1, bybit_session=bybit_session, telebot=bot, tele_chat_id=chat_id, tabnet=tn)
+    execute_trade(leverage=1, binance=binance, telebot=bot, tele_chat_id=chat_id, tabnet=tn)
