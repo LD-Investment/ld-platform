@@ -34,7 +34,7 @@ if settings.DEBUG:
             permission_classes=(permissions.AllowAny,),
         )
 
-        urlpatterns += [
+        docs_urlpatterns = [
             url(
                 r"^swagger(?P<format>\.json|\.yaml)$",
                 schema_view.without_ui(cache_timeout=0),
@@ -51,3 +51,5 @@ if settings.DEBUG:
                 name="schema-redoc",
             ),
         ]
+
+        urlpatterns += [path(r"docs/", include(docs_urlpatterns))]
