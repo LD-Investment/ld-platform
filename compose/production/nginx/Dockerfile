@@ -12,4 +12,4 @@ RUN npm run build
 FROM nginx:latest
 RUN rm /etc/nginx/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /app/frontend/dist /usr/share/nginx/html
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["/bin/sh" , "-c" , "envsubst < /etc/nginx/nginx.template.conf > /etc/nginx/nginx.conf && exec nginx -g 'daemon off;'"]
