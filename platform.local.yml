@@ -74,7 +74,7 @@ services:
   nginx:
     build:
       context: .
-      dockerfile: ./compose/production/nginx/Dockerfile # uses /compose/prod
+      dockerfile: ./compose/local/nginx/Dockerfile
     image: ld_platform_local_nginx
     container_name: nginx
     volumes: # uses /compose/local
