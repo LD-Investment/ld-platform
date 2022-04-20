@@ -4,21 +4,22 @@ from ccxt.base.errors import ExchangeError
 
 if __name__ == '__main__':
     # List up all methods available.
-    pprint(dir(ccxt.bybit()))  # Python
+    # pprint(dir(ccxt.bybit()))  # Python
 
     # Some exchange allows sandbox mode
     # Bybit does not have SANDBOX MODE for Futures API
     SANDBOX_MODE = False
 
     # define session and set leverage
-    bybit_api_key = ""
-    bybit_api_secret = ""
+    bybit_api_key = "1oFPwTSRfVFfQZilBM"
+    bybit_api_secret = "zsHcBss330WvBMXdBVQHI5C0dAdmgV0Gey5l"
 
     exchange = ccxt.bybit({
         'enableRateLimit': True,
         "apiKey": bybit_api_key,
         "secret": bybit_api_secret,
     })
+    print(type(exchange))
     exchange.set_sandbox_mode(SANDBOX_MODE)  # enable sandbox mode
 
     # First, call to update the latest info. Data will be cached
@@ -69,25 +70,44 @@ if __name__ == '__main__':
     # If there is current position and if you want to close this position, use reduce_only = True
 
     # Best Limit Buy (using max_bid)
-    print(exchange.private_post_private_linear_order_create({
-        "symbol": exchange.market(symbol)['id'],  # get id by symbol
-        "side": "Buy",
-        "order_type": "Limit",
-        "price": exchange.price_to_precision(symbol=symbol, price=min_ask),
-        "qty": exchange.amount_to_precision(symbol=symbol, amount=0.001),
-        "time_in_force": "GoodTillCancel",
-        "reduce_only": False,
-        "close_on_trigger": False,
-    }))
+    # print(exchange.private_post_private_linear_order_create({
+    #     "symbol": exchange.market(symbol)['id'],  # get id by symbol
+    #     "side": "Buy",
+    #     "order_type": "Limit",
+    #     "price": exchange.price_to_precision(symbol=symbol, price=min_ask),
+    #     "qty": exchange.amount_to_precision(symbol=symbol, amount=0.001),
+    #     "time_in_force": "GoodTillCancel",
+    #     "reduce_only": False,
+    #     "close_on_trigger": False,
+    # }))
 
     # # Best Limit Sell (using min_ask)
-    print(exchange.private_post_private_linear_order_create({
-        "symbol": exchange.market(symbol)['id'],  # get id by symbol
-        "side": "Sell",
-        "order_type": "Limit",
-        "price": exchange.price_to_precision(symbol=symbol, price=max_bid),
-        "qty": exchange.amount_to_precision(symbol=symbol, amount=0.001),
-        "time_in_force": "GoodTillCancel",
-        "reduce_only": True,
-        "close_on_trigger": False,
-    }))
+    # print(exchange.private_post_private_linear_order_create({
+    #     "symbol": exchange.market(symbol)['id'],  # get id by symbol
+    #     "side": "Sell",
+    #     "order_type": "Limit",
+    #     "price": exchange.price_to_precision(symbol=symbol, price=max_bid),
+    #     "qty": exchange.amount_to_precision(symbol=symbol, amount=0.001),
+    #     "time_in_force": "GoodTillCancel",
+    #     "reduce_only": True,
+    #     "close_on_trigger": False,
+    # }))
+
+    # Get position list
+    # Buy position size
+    print(exchange.private_get_private_linear_position_list(
+        {
+            "symbol": exchange.market(symbol)['id']
+        })["result"][0]["size"])
+
+    # Sell position size
+    print(exchange.private_get_private_linear_position_list(
+        {
+            "symbol": exchange.market(symbol)['id']
+        })["result"][1]["size"])
+
+    # Wallet info
+    # get coin balance
+    print(exchange.fetch_balance({
+        "coin": "USDT"
+    })["info"]["result"]["USDT"]["available_balance"])
