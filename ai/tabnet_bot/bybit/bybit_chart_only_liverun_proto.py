@@ -130,14 +130,10 @@ def my_floor(a, precision=0):
     return np.true_divide(np.floor(a * 10 ** precision), 10 ** precision)
 
 
-cash_status = []  # store cash amount
-
-action = {0: 'long', 1: 'short', 2: 'hold'}
-
-
 def execute_trade(leverage, bybit_session, telebot, tele_chat_id, tabnet):
     iteration = 0
     move = 0  # -1: short, 1: long
+    action = {0: 'long', 1: 'short', 2: 'hold'}
 
     high_leverage = False
 
@@ -214,7 +210,6 @@ def execute_trade(leverage, bybit_session, telebot, tele_chat_id, tabnet):
                 usdt = balances['result']['USDT']['available_balance']
                 text = "current cash status = " + str(usdt)
                 telebot.sendMessage(chat_id=tele_chat_id, text=text)
-                cash_status.append(float(usdt))
                 qty = float(usdt) / float(cur_price) * leverage
                 qty = my_floor(qty, precision=5)
                 ### set stop loss and take profit ###
@@ -244,7 +239,6 @@ def execute_trade(leverage, bybit_session, telebot, tele_chat_id, tabnet):
                 usdt = balances['result']['USDT']['available_balance']
                 text = "current cash status = " + str(usdt)
                 telebot.sendMessage(chat_id=tele_chat_id, text=text)
-                cash_status.append(float(usdt))
                 qty = float(usdt) / float(cur_price) * leverage
                 qty = my_floor(qty, precision=5)
                 ### set stop loss and take profit ###
@@ -310,7 +304,6 @@ def execute_trade(leverage, bybit_session, telebot, tele_chat_id, tabnet):
                 usdt = balances['result']['USDT']['available_balance']
                 text = "current cash status = " + str(usdt)
                 telebot.sendMessage(chat_id=tele_chat_id, text=text)
-                cash_status.append(float(usdt))
                 qty = float(usdt) / float(cur_price) * leverage
                 qty = my_floor(qty, precision=5)
                 ### set stop loss and take profit ###
@@ -339,7 +332,6 @@ def execute_trade(leverage, bybit_session, telebot, tele_chat_id, tabnet):
                 usdt = balances['result']['USDT']['available_balance']
                 text = "current cash status = " + str(usdt)
                 telebot.sendMessage(chat_id=tele_chat_id, text=text)
-                cash_status.append(float(usdt))
                 qty = float(usdt) / float(cur_price) * leverage
                 qty = my_floor(qty, precision=5)
                 ### set stop loss and take profit ###
@@ -376,9 +368,24 @@ def execute_trade(leverage, bybit_session, telebot, tele_chat_id, tabnet):
 
 
 if __name__ == '__main__':
+    SANDBOX_MODE = True
+
     # define session and set leverage
     bybit_api_key = "<api key>"
     bybit_api_secret = "<secret key>"
+
+    exchange = ccxt.bybit({
+        'enableRateLimit': True,
+    })
+    exchange.set_sandbox_mode(SANDBOX_MODE)  # enable sandbox mode
+
+    exchange.load_markets()
+    symbol = 'BTC/USDT'
+    amount = 1.2345678  # amount in base currency BTC
+    price = 87654.321  # price in quote currency USDT
+    formatted_amount = exchange.amount_to_precision(symbol, amount)
+    formatted_price = exchange.price_to_precision(symbol, price)
+
     bybit_session = HTTP(
         endpoint="https://api.bybit.com",
         api_key=bybit_api_key,
