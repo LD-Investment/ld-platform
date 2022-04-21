@@ -1,0 +1,8 @@
+ccxt==1.76.63
+pybit==2.1.0
+pandas==1.4.1
+pandas_ta==0.3.14b0
+python-telegram-bot==13.11
+pytorch-tabnet==3.1.1
+numpy==1.22.3
+tqdm==4.62.3
