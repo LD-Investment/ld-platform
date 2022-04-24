@@ -79,13 +79,17 @@ services:
     container_name: nginx
     volumes:
       - ./compose/production/nginx/conf:/etc/nginx/conf
-      - ./compose/production/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./compose/production/nginx/nginx.template.conf:/etc/nginx/nginx.template.conf
+      - /etc/letsencrypt:/etc/letsencrypt # LetsEncrypt ssl certificates
+      - /var/www/letsencrypt:/var/www/letsencrypt # Certbot acme challenge
       - django_static_volume:/app/backend/django_static
     depends_on:
       - django
     ports:
       - "80:80"
       - "443:443"
+    environment:
+      - SERVER_NAME=${SERVER_NAME}
 
   selenium-chrome:
     image: selenium/standalone-chrome

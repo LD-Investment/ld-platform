@@ -19,7 +19,6 @@ Before you begin, check out the ``platform.prod.yml`` file in the root of this p
 * ``django``: your application running behind ``Gunicorn``;
 * ``postgres``: PostgreSQL database with the application's relational data;
 * ``redis``: Redis instance for caching;
-* ``traefik``: Traefik reverse proxy with HTTPS on by default.
 
 Provided you have opted for Celery (via setting ``use_celery`` to ``y``) there are three more services:
 
@@ -68,11 +67,13 @@ You will need to build the stack first. To do that, run::
 
 Once this is ready, you can run it with::
 
-    docker-compose -f platform.prod.yml up
+    SERVER_NAME=<server_name> docker-compose -f platform.prod.yml up
+
+    # <server_name> is something like, platform.ld-investment.ai
 
 To run the stack and detach the containers, run::
 
-    docker-compose -f platform.prod.yml up -d
+    SERVER_NAME=<server_name> docker-compose -f platform.prod.yml up -d
 
 To run a migration, open up a second terminal and run::
 
@@ -92,8 +93,8 @@ To check the logs out, run::
 
 If you want to scale your application, run::
 
-   docker-compose -f platform.prod.yml up --scale django=4
-   docker-compose -f platform.prod.yml up --scale celeryworker=2
+   SERVER_NAME=<server_name> docker-compose -f platform.prod.yml up --scale django=4
+   SERVER_NAME=<server_name> docker-compose -f platform.prod.yml up --scale celeryworker=2
 
 .. warning:: don't try to scale ``postgres``, ``celerybeat``, or ``traefik``.
 
