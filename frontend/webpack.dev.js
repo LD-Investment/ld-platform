@@ -20,7 +20,7 @@ module.exports = merge(common, {
     })
   ],
   devServer: {
-    host: "localhost",
+    host: "0.0.0.0",
     port: 9000,
     open: true,
     hot: true
