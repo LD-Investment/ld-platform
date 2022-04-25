@@ -89,7 +89,7 @@ services:
       - "80:80"
       - "443:443"
     environment:
-      - SERVER_NAME=${SERVER_NAME}
+      - SERVER_NAME=${SERVER_NAME?}
 
   selenium-chrome:
     image: selenium/standalone-chrome
