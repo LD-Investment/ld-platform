@@ -100,7 +100,7 @@ services:
     depends_on:
       - nginx
     volumes:
-      - ./frontend:/app/src
+      - ./frontend:/app/frontend
     env_file:
       - ./frontend/.env.development
     ports:
