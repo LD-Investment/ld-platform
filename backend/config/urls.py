@@ -9,12 +9,13 @@ urlpatterns = [
     path("api/", include("config.api_router")),
 ]
 
-if settings.DEBUG:
+if settings.DEBUG or settings.ENABLE_DEBUG_TOOLBAR:
     if "debug_toolbar" in settings.INSTALLED_APPS:
         import debug_toolbar
 
         urlpatterns += [path("__debug__/", include(debug_toolbar.urls))]
 
+if settings.DEBUG or settings.ENABLE_DOCS:
     if "drf_yasg" in settings.INSTALLED_APPS:
         from django.conf.urls import url
         from drf_yasg import openapi

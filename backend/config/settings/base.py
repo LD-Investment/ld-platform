@@ -334,3 +334,9 @@ REST_FRAMEWORK = {
 # Your stuff...
 # ------------------------------------------------------------------------------
 APPEND_SLASH = False
+
+# swagger
+ENABLE_DOCS = env.bool("ENABLE_DOCS", default=False)
+
+# debug toolbar
+ENABLE_DEBUG_TOOLBAR = env.bool("ENABLE_DEBUG_TOOLBAR", default=False)
