@@ -69,6 +69,19 @@ services:
       - "5555:5555"
     command: /start-flower
 
+  react:
+    build:
+      context: .
+      dockerfile: ./compose/local/react/Dockerfile
+    image: ld_platform_local_react
+    container_name: react
+    volumes:
+      - ./frontend:/app/frontend
+    env_file:
+      - ./frontend/.env.development
+    ports:
+      - "9000:9000"
+
   nginx:
     build:
       context: .
@@ -81,6 +94,7 @@ services:
       - django_static_volume:/app/backend/django_static
     depends_on:
       - django
+      - react
     ports:
       - "80:80"
       - "443:443"
@@ -90,18 +104,3 @@ services:
     container_name: selenium-chrome
     ports:
       - "4444:4444"
-
-  react:
-    build:
-      context: .
-      dockerfile: ./compose/local/react/Dockerfile
-    image: ld_platform_local_react
-    container_name: react
-    depends_on:
-      - nginx
-    volumes:
-      - ./frontend:/app/frontend
-    env_file:
-      - ./frontend/.env.development
-    ports:
-      - "9000:9000"
