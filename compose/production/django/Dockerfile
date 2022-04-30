@@ -7,16 +7,13 @@ FROM python:${PYTHON_VERSION} as python
 FROM python as python-build-stage
 
 ARG BUILD_ENVIRONMENT=production
-ARG SSH_PRIVATE_KEY
 
 # Install apt packages
 RUN apt-get update && apt-get install --no-install-recommends -y \
   # dependencies for building Python packages
   build-essential \
   # psycopg2 dependencies
-  libpq-dev \
-  # git ssh
-  ssh git
+  libpq-dev
 
 # Requirements are installed here to ensure they will be cached.
 COPY ./backend/requirements/django .
@@ -24,9 +21,6 @@ COPY ./backend/requirements/django .
 # Create Python Dependency and Sub-Dependency Wheels.
 RUN pip wheel --wheel-dir /usr/src/app/wheels  \
   -r ${BUILD_ENVIRONMENT}.txt
-
-# Remove SSH keys
-RUN rm -rf /root/.ssh/
 
 # Python 'run' stage
 FROM python as python-run-stage

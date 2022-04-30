@@ -1,7 +1,9 @@
 # General
 # ------------------------------------------------------------------------------
 USE_DOCKER=yes
-IPYTHONDIR=/app/.ipython
+ENABLE_DOCS=True
+ENABLE_DEBUG_TOOLBAR=True
+
 # Redis
 # ------------------------------------------------------------------------------
 REDIS_URL=redis://redis:6379/0
