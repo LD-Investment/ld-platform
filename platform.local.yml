@@ -9,8 +9,6 @@ services:
     build:
       context: .
       dockerfile: ./compose/local/django/Dockerfile
-      args:
-        SSH_PRIVATE_KEY: $SSH_PRIVATE_KEY
     image: ld_platform_local_django
     container_name: django
     depends_on:
@@ -71,6 +69,19 @@ services:
       - "5555:5555"
     command: /start-flower
 
+  react:
+    build:
+      context: .
+      dockerfile: ./compose/local/react/Dockerfile
+    image: ld_platform_local_react
+    container_name: react
+    volumes:
+      - ./frontend:/app/frontend
+    env_file:
+      - ./frontend/.env.development
+    ports:
+      - "9000:9000"
+
   nginx:
     build:
       context: .
@@ -83,6 +94,7 @@ services:
       - django_static_volume:/app/backend/django_static
     depends_on:
       - django
+      - react
     ports:
       - "80:80"
       - "443:443"
