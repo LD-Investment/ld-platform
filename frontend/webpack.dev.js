@@ -23,6 +23,7 @@ module.exports = merge(common, {
     host: "0.0.0.0",
     port: 9000,
     open: true,
-    hot: true
+    hot: true,
+    allowedHosts: "all"
   }
 });
