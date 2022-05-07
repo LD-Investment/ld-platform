@@ -1,24 +1,12 @@
-from dj_rest_auth.registration.views import VerifyEmailView
 from django.conf import settings
 from django.contrib import admin
-from django.urls import include, path, re_path
+from django.urls import include, path
 
 urlpatterns = [
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
     # API base url
     path("api/", include("config.api_router")),
-    path("verify-email/", VerifyEmailView.as_view(), name="rest_verify_email"),
-    path(
-        "account-confirm-email/",
-        VerifyEmailView.as_view(),
-        name="account_email_verification_sent",
-    ),
-    re_path(
-        r"^account-confirm-email/(?P<key>[-:\w]+)/$",
-        VerifyEmailView.as_view(),
-        name="account_confirm_email",
-    ),
 ]
 
 if settings.DEBUG or settings.ENABLE_DEBUG_TOOLBAR:

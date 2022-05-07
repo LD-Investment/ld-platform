@@ -245,7 +245,7 @@ LOGGING = {
     "formatters": {
         "verbose": {
             "format": "%(levelname)s %(asctime)s %(module)s "
-            "%(process)d %(thread)d %(message)s"
+                      "%(process)d %(thread)d %(message)s"
         }
     },
     "handlers": {
@@ -298,14 +298,14 @@ CELERY_BEAT_SCHEDULE = {
 # ------------------------------------------------------------------------------
 ACCOUNT_ALLOW_REGISTRATION = env.bool("DJANGO_ACCOUNT_ALLOW_REGISTRATION", True)
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
-ACCOUNT_AUTHENTICATION_METHOD = "username"
+ACCOUNT_AUTHENTICATION_METHOD = "email"
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
 ACCOUNT_EMAIL_REQUIRED = True
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
-# ACCOUNT_ADAPTER = "ld_platform.users.adapters.AccountAdapter"
+ACCOUNT_ADAPTER = "ld_platform.apps.auth.adapters.EmailAccountAdapter"
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
 # SOCIALACCOUNT_ADAPTER = "ld_platform.users.adapters.SocialAccountAdapter"
 # https://django-rest-auth.readthedocs.io/en/latest/configuration.html
