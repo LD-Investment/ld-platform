@@ -1,0 +1,4 @@
+MH_HOSTNAME=ld-investment.ai
+MH_API_BIND_ADDR=local.ld-investment.ai/mail/web/
+MH_UI_BIND_ADDR=local.ld-investment.ai/mail/web/
+MH_SMTP_BIND_ADDR=local.ld-investment.ai/mail/
