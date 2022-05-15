@@ -1,7 +1,7 @@
 import pytest
 from django.test import RequestFactory
 
-from ld_platform.apps.bots.api.views import BotViewSet
+from ld_platform.apps.bots.api.archives import BotViewSet
 from ld_platform.apps.bots.models import Bot
 
 pytestmark = pytest.mark.django_db
