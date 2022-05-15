@@ -1,0 +1,4 @@
+# News Tracker (CryptoBERT)
+# ------------------------------------------------------------------------------
+HUGGING_FACE_CRYPTO_DEBERTA_MODEL_NAME=CryptoModel/cryptodeberta-base-all-finetuned
+HUGGING_FACE_CRYPTO_DEBERTA_AUTH_TOKEN=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

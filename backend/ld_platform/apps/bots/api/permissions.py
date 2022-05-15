@@ -1,5 +1,3 @@
-from typing import Union
-
 from django.utils import timezone
 from rest_framework import exceptions, permissions
 from rest_framework.request import Request
@@ -41,20 +39,15 @@ class IsBotActive(permissions.BasePermission):
         return True
 
 
-class IsManualBot(permissions.BasePermission):
-    message = "Permission denied. Bot is not a manual bot."
+class IsNewsTrackerBot(permissions.BasePermission):
+    message = "The bot is not News Tracker Bot."
 
     def has_object_permission(
-        self, request: Request, view: APIView, obj: Union[SubscribedBot, Bot]
+        self, request: Request, view: APIView, obj: SubscribedBot
     ) -> bool:
-        if type(obj) is SubscribedBot:
-            bot_type = obj.bot.type
-        elif type(obj) is Bot:
-            bot_type = obj.type
-        else:
-            raise exceptions.PermissionDenied(
-                detail="Permission denied. Invalid bot object" " checked."
-            )
-        if bot_type != Bot.TypeChoices.MANUAL:
+        if not (
+            obj.bot.name == Bot.NameChoices.NEWS_TRACKER
+            and obj.bot.type == Bot.TypeChoices.INDICATOR
+        ):
             raise exceptions.PermissionDenied(detail=self.message)
         return True

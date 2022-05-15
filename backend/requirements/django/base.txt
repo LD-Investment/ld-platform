@@ -30,3 +30,11 @@ ccxt    # https://github.com/ccxt/ccxt (keep this up-to-date)
 # LDBot
 selenium==4.1.0 # https://selenium-python.readthedocs.io/installation.html
 webdriver-manager==3.5.2 # https://selenium-python.readthedocs.io/installation.html
+
+# AI
+# ------------------------------------------------------------------------------
+pytorch-tabnet==3.1.1 # https://pypi.org/project/pytorch-tabnet/
+torch==1.11.0 # https://pypi.org/project/torch/
+transformers==4.19.1 # https://pypi.org/project/transformers/
+sentencepiece==0.1.96 # https://pypi.org/project/sentencepiece/
+protobuf==3.20.1 # https://pypi.org/project/protobuf/

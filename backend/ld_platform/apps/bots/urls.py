@@ -1,65 +1,50 @@
 from django.urls import path
 
 from ld_platform.apps.bots.api.views import (
-    BotControlGeneralCommandViewSet,
-    BotControlManualCommandViewSet,
-    BotControlSettingViewSet,
-    BotDefaultSettingViewSet,
     BotSubscribeViewSet,
     BotViewSet,
+    IBNewsTrackerAiModelViewSet,
 )
 
 app_name = "bots"
 
-# Bot Administration
-bot_list = BotViewSet.as_view({"get": "list"})
-bot_detail = BotViewSet.as_view({"get": "retrieve"})
-bot_default_setting = BotDefaultSettingViewSet.as_view(
-    {"get": "retrieve", "put": "update"}
+bot_general_list = BotViewSet.as_view({"get": "list"})
+bot_general_detail = BotViewSet.as_view({"get": "retrieve"})
+bot_general_subscribe = BotSubscribeViewSet.as_view({"post": "subscribe"})
+
+# Indicator Views
+bot_indicator_news_tracker_ai_list = IBNewsTrackerAiModelViewSet.as_view(
+    {"get": "list"}
 )
-
-# Bot Subscription
-bot_subscribe = BotSubscribeViewSet.as_view({"post": "subscribe"})
-
-# Bot Authentication
-# TODO: Check if subscription is valid, bot setting etc.
-#  should give token to control bot
-
-# Bot Control
-bot_general_command = BotControlGeneralCommandViewSet.as_view(
-    {"post": "command"}
-)  # Command to all bot types
-bot_manual_command = BotControlManualCommandViewSet.as_view(
-    {"post": "command"}
-)  # Command to manual bot only
-bot_setting = BotControlSettingViewSet.as_view(
-    {"get": "get_setting", "put": "update_setting"}
+bot_indicator_news_tracker_ai_detail = IBNewsTrackerAiModelViewSet.as_view(
+    {"get": "retrieve"}
+)
+bot_indicator_news_tracker_score = IBNewsTrackerAiModelViewSet.as_view(
+    {"get": "calculate"}
 )
 
 urlpatterns = [
-    # Bot Administration
-    path("", bot_list, name="bot-list"),
-    path("<int:id>/", bot_detail, name="bot-detail"),
-    path("<int:id>/subscribe", bot_subscribe, name="bot-subscribe"),
+    # Bot General
+    # -------------------
+    path("", bot_general_list, name="bot-general-list"),
+    path("<int:id>/", bot_general_detail, name="bot-general-detail"),
+    path("<int:id>/subscribe", bot_general_subscribe, name="bot-general-subscribe"),
+    # Indicator Bots
+    # -------------------
+    # - News Tracker
     path(
-        "<int:id>/administration/setting",
-        bot_default_setting,
-        name="bot-default-setting",
-    ),
-    # Bot Control
-    path(
-        "control/subscribed_bot/<int:id>/general/command",
-        bot_general_command,
-        name="bot-control-general-command",
+        "indicator/news-tracker/ai-model",
+        bot_indicator_news_tracker_ai_list,
+        name="bot-indicator-news-tracker-ai-list",
     ),
     path(
-        "control/subscribed_bot/<int:id>/manual/command",
-        bot_manual_command,
-        name="bot-control-manual-command",
+        "indicator/news-tracker/ai/<str:model_name>",
+        bot_indicator_news_tracker_ai_detail,
+        name="bot-indicator-news-tracker-ai-detail",
     ),
     path(
-        "control/subscribed_bot/<int:id>/setting",
-        bot_setting,
-        name="bot-control-setting",
+        "indicator/news-tracker/ai-model/<str:model_name>/calculate",
+        bot_indicator_news_tracker_score,
+        name="bot-indicator-news-tracker-score",
     ),
 ]

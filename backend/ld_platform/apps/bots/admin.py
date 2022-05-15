@@ -5,8 +5,17 @@ from ld_platform.apps.bots.models import Bot, SubscribedBot
 
 @admin.register(Bot)
 class BotAdmin(admin.ModelAdmin):
-    list_display = ["id", "name", "type", "default_setting", "version"]
-    search_fields = ["id", "name", "type", "version"]
+    list_display = [
+        "id",
+        "name",
+        "type",
+        "default_setting",
+    ]
+    search_fields = [
+        "id",
+        "name",
+        "type",
+    ]
 
 
 @admin.register(SubscribedBot)

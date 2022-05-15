@@ -54,7 +54,7 @@ def scrap_coinness_news():
     date_selector = '//*[@id="root"]/div/div/main/div/div[2]/div[1]'
 
     # Get the latest article number
-    ARTICLE_NUM = 1011000
+    ARTICLE_NUM = 1031600
     qs = CoinnessNewsData.objects.all().order_by("-article_num")
     if qs.exists():
         ARTICLE_NUM = int(qs[0].article_num) + 1

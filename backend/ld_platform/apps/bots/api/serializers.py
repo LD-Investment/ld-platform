@@ -1,10 +1,17 @@
+from typing import List, Union
+
 from django.db.models.query import QuerySet
 from django.utils import timezone
 from rest_framework import serializers
 
+from ld_platform.ai.indicator.news_tracker import CryptoDeberta
 from ld_platform.apps.bots.models import Bot, SubscribedBot
+from ld_platform.apps.dataset.models import CoinnessNewsData
 from ld_platform.apps.users.models import User
-from ld_platform.shared.choices import BotCommandsChoices
+
+#################################
+# Bot Administration Serializer #
+#################################
 
 
 class BotSerializer(serializers.ModelSerializer):
@@ -19,9 +26,13 @@ class BotSerializer(serializers.ModelSerializer):
             "type_display",
             "name",
             "name_display",
-            "version",
             "default_setting",
         ]
+
+
+###############################
+# Bot Subscription Serializer #
+###############################
 
 
 class BotSubscribeSerializer(serializers.ModelSerializer):
@@ -59,16 +70,60 @@ class BotSubscribeSerializer(serializers.ModelSerializer):
         return qs.exists()
 
 
-class BotDefaultSettingSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Bot
-        fields = ["default_setting"]
+#######################################
+# Indicator - News Tracker Serializer #
+#######################################
 
 
-class BotControlGeneralCommandSerializer(serializers.Serializer):
-    command = serializers.ChoiceField(BotCommandsChoices.General)
+class IBNewsTrackerAiModelListSerializer(serializers.Serializer):
+    models = serializers.SerializerMethodField()
+
+    def get_models(self, obj: SubscribedBot):
+        models = Bot.indicator_bot_objects.load_ai_models(bot=obj.bot)
+        return [{"name": m.name, "detail": m.detail} for m in models]
 
 
-class BotControlManualCommandSerializer(serializers.Serializer):
-    # TODO: Custom Validator according to Bot
-    command = serializers.ChoiceField(BotCommandsChoices.Manual)
+class IBNewsTrackerAiModelRetrieveSerializer(serializers.Serializer):
+    model = serializers.SerializerMethodField()
+
+    def get_model(self, obj: SubscribedBot):
+        models = Bot.indicator_bot_objects.load_ai_models(bot=obj.bot)
+        for m in models:
+            if m.name == self.context["model_name"]:
+                return {"name": m.name, "detail": m.detail}
+        return {}
+
+
+class IBNewsTrackerAiModelCalculateSerializer(serializers.Serializer):
+    result = serializers.SerializerMethodField(method_name="calculate_score")
+
+    def calculate_score(self, obj: SubscribedBot):
+        models = Bot.indicator_bot_objects.load_ai_models(bot=obj.bot)
+        model = None
+        for m in models:
+            if m.name == self.context["model_name"]:
+                model = m
+        if not model:
+            raise serializers.ValidationError("AI Model not found.")
+
+        return self._extract_and_get_avg_scores(news=self.context["news"], model=model)
+
+    @staticmethod
+    def _extract_and_get_avg_scores(
+        news: List[CoinnessNewsData], model: Union[CryptoDeberta]
+    ):
+        import statistics
+
+        bull_scores = []
+        bear_scores = []
+        neutral_scores = []
+        for n in news:
+            score = model.calculate(n.title, n.content)
+            bull_scores.append(score[0])
+            neutral_scores.append(score[1])
+            bear_scores.append(score[2])
+
+        avg_bull_score = statistics.mean(bull_scores)
+        avg_neutral_score = statistics.mean(neutral_scores)
+        avg_bear_score = statistics.mean(bear_scores)
+        return avg_bull_score, avg_neutral_score, avg_bear_score
