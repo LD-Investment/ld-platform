@@ -1,7 +1,5 @@
 from allauth.account.adapter import DefaultAccountAdapter
-from allauth.utils import (
-    build_absolute_uri,
-)
+from allauth.utils import build_absolute_uri
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 

@@ -29,6 +29,7 @@ CACHES = {
 # Use Mailhog local SMTP server
 EMAIL_PORT = "1025"
 EMAIL_HOST = "mailhog"
+
 # django-debug-toolbar
 # ------------------------------------------------------------------------------
 # https://django-debug-toolbar.readthedocs.io/en/latest/installation.html#prerequisites
@@ -58,6 +59,14 @@ INSTALLED_APPS += [
     "django_extensions",
     "drf_yasg",
 ]  # noqa F405
+
+# drf-yasg
+SWAGGER_SETTINGS = {
+    "SECURITY_DEFINITIONS": {
+        "JWT": {"type": "apiKey", "name": "Authorization", "in": "header"}
+    }
+}
+
 
 # Celery
 # ------------------------------------------------------------------------------

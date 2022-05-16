@@ -308,18 +308,17 @@ ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 ACCOUNT_ADAPTER = "ld_platform.apps.auth.adapters.EmailAccountAdapter"
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
 # SOCIALACCOUNT_ADAPTER = "ld_platform.users.adapters.SocialAccountAdapter"
-# https://django-rest-auth.readthedocs.io/en/latest/configuration.html
 
-# django-rest-auth
-# ------------------------------------------------------------------------------
+# df-rest-auth
+# https://dj-rest-auth.readthedocs.io/en/latest/configuration.html
+REST_AUTH_REGISTER_PERMISSION_CLASSES = ("rest_framework.permissions.AllowAny",)
 REST_USE_JWT = True
-ACCOUNT_LOGOUT_ON_GET = True
+JWT_AUTH_COOKIE = "Authorization"
+# JWT_AUTH_COOKIE_USE_CSRF = True
 
-# djangorestframework-jwt
-# ------------------------------------------------------------------------------
-# https://github.com/jazzband/djangorestframework-simplejwt
-JWT_AUTH = {
-    "JWT_AUTH_COOKIE": "jwt_ld_platform",
+# rest_framework_simplejwt
+SIMPLE_JWT = {
+    "AUTH_HEADER_TYPES": "JWT",
 }
 
 # django-rest-framework
