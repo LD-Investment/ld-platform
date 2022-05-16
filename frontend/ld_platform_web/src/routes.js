@@ -2,6 +2,8 @@ export const Routes = {
   // L&D Platform
   PlatformDashboard: { path: "/" },
 
+  CryptoBertBot: { path: "/bots/news" },
+
   MyBots: { path: "/user/bots" },
   MyTrades: { path: "/user/trades" },
   MySettings: { path: "/user/settings" },
