@@ -26,9 +26,9 @@ CACHES = {
 # EMAIL
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
-EMAIL_BACKEND = env(
-    "DJANGO_EMAIL_BACKEND", default="django.core.mail.backends.console.EmailBackend"
-)
+# Use Mailhog local SMTP server
+EMAIL_PORT = "1025"
+EMAIL_HOST = "mailhog"
 
 # django-debug-toolbar
 # ------------------------------------------------------------------------------
@@ -59,6 +59,14 @@ INSTALLED_APPS += [
     "django_extensions",
     "drf_yasg",
 ]  # noqa F405
+
+# drf-yasg
+SWAGGER_SETTINGS = {
+    "SECURITY_DEFINITIONS": {
+        "JWT": {"type": "apiKey", "name": "Authorization", "in": "header"}
+    }
+}
+
 
 # Celery
 # ------------------------------------------------------------------------------

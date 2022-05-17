@@ -9,9 +9,29 @@ const LdAxios = axios.create({
   }
 });
 
+LdAxios.interceptors.request.use(
+  request => {
+    const token = localStorage.getItem("access_token");
+    if (token) {
+      request.headers.Authorization = `JWT ${token}`;
+    }
+    return request;
+  },
+  error => {
+    return Promise.reject(error);
+  }
+);
+
 // uses http-only JWT cookie for authorization
 LdAxios.interceptors.response.use(
-  res => res,
+  res => {
+    console.log(res.data);
+    if (res.data.data.access_token) {
+      localStorage.setItem("access_token", res.data.data.access_token);
+    }
+
+    return res;
+  },
   e => {
     if (e && !axios.isCancel(e)) {
       const res = e.response;

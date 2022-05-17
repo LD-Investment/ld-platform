@@ -104,3 +104,15 @@ services:
     container_name: selenium-chrome
     ports:
       - "4444:4444"
+
+  mailhog:
+    image: mailhog/mailhog
+    container_name: mailhog
+    depends_on:
+      - django
+      - react
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    env_file:
+      - ./.envs/.local/.mailhog
