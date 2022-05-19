@@ -245,7 +245,7 @@ LOGGING = {
     "formatters": {
         "verbose": {
             "format": "%(levelname)s %(asctime)s %(module)s "
-            "%(process)d %(thread)d %(message)s"
+                      "%(process)d %(thread)d %(message)s"
         }
     },
     "handlers": {
@@ -311,22 +311,19 @@ ACCOUNT_ADAPTER = "ld_platform.apps.auth.adapters.EmailAccountAdapter"
 
 # df-rest-auth
 # https://dj-rest-auth.readthedocs.io/en/latest/configuration.html
+ACCOUNT_LOGOUT_ON_GET = True
 REST_AUTH_REGISTER_PERMISSION_CLASSES = ("rest_framework.permissions.AllowAny",)
 REST_USE_JWT = True
-JWT_AUTH_COOKIE = "Authorization"
 # JWT_AUTH_COOKIE_USE_CSRF = True
-
-# rest_framework_simplejwt
-SIMPLE_JWT = {
-    "AUTH_HEADER_TYPES": "JWT",
-}
+JWT_AUTH_COOKIE = "jwt_ld_platform"
+JWT_EXPIRATION_DELTA = timedelta(days=7)
 
 # django-rest-framework
 # -------------------------------------------------------------------------------
 # django-rest-framework - https://www.django-rest-framework.org/api-guide/settings/
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "ld_platform.apps.auth.adapters.JWTHttpOnlyCookieAuthentication",
     ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "DEFAULT_RENDERER_CLASSES": ("ld_platform.shared.renderers.JSONResponseRenderer",),

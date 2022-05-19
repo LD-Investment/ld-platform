@@ -32,7 +32,9 @@ export class UserStore {
   @action
   updateUserInfo = () => {
     LdAxios.get("/api/users/profile/").then(res => {
-      this.initUserInfo(res.data.data);
+      if (res) {
+        this.initUserInfo(res.data.data);
+      }
     });
   };
 
