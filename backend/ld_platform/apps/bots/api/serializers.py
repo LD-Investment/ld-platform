@@ -99,14 +99,12 @@ class IBNewsTrackerAiModelCalculateSerializer(serializers.Serializer):
 
     def calculate_score(self, obj: SubscribedBot):
         models = Bot.indicator_bot_objects.load_ai_models(bot=obj.bot)
-        model = None
         for m in models:
             if m.name == self.context["model_name"]:
-                model = m
-        if not model:
-            raise serializers.ValidationError("AI Model not found.")
-
-        return self._extract_and_get_avg_scores(news=self.context["news"], model=model)
+                return self._extract_and_get_avg_scores(
+                    news=self.context["news"], model=m
+                )
+        raise serializers.ValidationError("AI Model not found.")
 
     @staticmethod
     def _extract_and_get_avg_scores(
