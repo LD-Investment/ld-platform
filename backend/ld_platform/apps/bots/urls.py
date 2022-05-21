@@ -20,7 +20,7 @@ bot_indicator_news_tracker_ai_detail = IBNewsTrackerAiModelViewSet.as_view(
     {"get": "retrieve"}
 )
 bot_indicator_news_tracker_score = IBNewsTrackerAiModelViewSet.as_view(
-    {"get": "calculate"}
+    {"post": "calculate"}
 )
 
 urlpatterns = [
