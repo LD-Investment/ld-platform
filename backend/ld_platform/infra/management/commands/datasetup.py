@@ -40,7 +40,9 @@ class Command(BaseCommand):
             last_name="Admin",
             password="333",
         )
-        EmailAddress.objects.create(user=super_user, email="admin@ld-invest.com", verified=True)
+        EmailAddress.objects.create(
+            user=super_user, email="admin@ld-invest.com", verified=True
+        )
         user1 = User.objects.create_user(
             email="chungjin93@gmail.com",
             username="chungjin93",
