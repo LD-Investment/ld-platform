@@ -3,25 +3,25 @@ from django.utils.translation import gettext_lazy as _
 
 from ld_platform.apps.users.models import User
 
+from .managers import IndicatorBotManager
+
 
 class Bot(models.Model):
     class NameChoices(models.TextChoices):
         # Add field every time new bots are created
-        TTADAK = "TTDK", _("Ttadak Bot")
-        NEWS_TRACKER = "NTRK", _("News Tracker")
+        NEWS_TRACKER = "news-tracker", _("News Tracker")
 
     class TypeChoices(models.TextChoices):
-        AUTOMATED = "AUTO", _("Automated Bot")
-        MANUAL = "MANU", _("Manual Bot")
-        INDICATOR = "INDI", _("Indicator Bot")
+        AUTOMATED = "automated-bot", _("Automated Bot")
+        MANUAL = "manual-bot", _("Manual Bot")
+        INDICATOR = "indicator-bot", _("Indicator Bot")
 
     name = models.CharField(
-        max_length=4, choices=NameChoices.choices, null=False, blank=False
+        max_length=256, choices=NameChoices.choices, null=False, blank=False
     )
     type = models.CharField(
-        max_length=4, choices=TypeChoices.choices, default=TypeChoices.AUTOMATED
+        max_length=256, choices=TypeChoices.choices, default=TypeChoices.AUTOMATED
     )
-    version = models.CharField(max_length=32, null=True, blank=True)
     default_setting = models.JSONField(null=True, blank=True, default=dict)
 
     class Meta:
@@ -31,25 +31,29 @@ class Bot(models.Model):
             "type",
         )
 
+    # Managers for each type of bots
+    objects = models.Manager()
+    indicator_bot_objects = IndicatorBotManager()
+
 
 class SubscribedBot(models.Model):
     class StatusChoices(models.TextChoices):
-        ACTIVE = "ACTV", _("Active")
-        INACTIVE = "INAC", _("Inactive")
+        ACTIVE = "active", _("Active")
+        INACTIVE = "inactive", _("Inactive")
 
     class RunTypeChoices(models.TextChoices):
-        BACK_TEST = "BACK", _("Back-testing Mode")
-        SIMULATION = "SIML", _("Simulation Mode")
-        DRY_RUN = "DRYR", _("Dry-run Mode")
-        LIVE_RUN = "LIVR", _("Live-run Mode")
+        BACK_TEST = "back-test", _("Back-testing Mode")
+        SIMULATION = "simulation", _("Simulation Mode")
+        DRY_RUN = "dry-run", _("Dry-run Mode")
+        LIVE_RUN = "live-run", _("Live-run Mode")
 
     user = models.ForeignKey(User, on_delete=models.PROTECT)
     bot = models.ForeignKey(Bot, on_delete=models.PROTECT)
     status = models.CharField(
-        max_length=4, choices=StatusChoices.choices, default=StatusChoices.INACTIVE
+        max_length=256, choices=StatusChoices.choices, default=StatusChoices.INACTIVE
     )
     run_type = models.CharField(
-        max_length=4, choices=RunTypeChoices.choices, default=RunTypeChoices.LIVE_RUN
+        max_length=256, choices=RunTypeChoices.choices, default=RunTypeChoices.LIVE_RUN
     )
     user_bot_settings = models.JSONField(default=dict, null=True, blank=True)
     # TODO: for now, just leave it as null

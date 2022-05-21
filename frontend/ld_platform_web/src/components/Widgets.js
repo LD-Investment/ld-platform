@@ -50,10 +50,6 @@ export const BotCardWidget = props => {
               <h5>{type}</h5>
               <h3 className="mb-1">{name}</h3>
             </div>
-            <small>
-              v{version} <FontAwesomeIcon icon={faGlobeEurope} size="xs" />{" "}
-              web3.0
-            </small>
           </Col>
         </Row>
       </Card.Body>

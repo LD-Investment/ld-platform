@@ -24,7 +24,6 @@ export default () => {
               id={item.id}
               name={item.name_display}
               type={item.type_display}
-              version={item.version}
               icon={faChartLine}
               iconColor="shape-secondary"
             />

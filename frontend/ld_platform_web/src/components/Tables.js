@@ -24,9 +24,9 @@ export const SubscribedBotTable = () => {
       run_type_display
     } = props;
     const statusVariant =
-      status === "ACTV" // consult BE for symbol
+      status === "active" // consult BE for symbol
         ? "success"
-        : status === "INAC"
+        : status === "inactive"
         ? "warning"
         : "primary";
 

@@ -1,8 +1,8 @@
 version: "3"
 
 volumes:
-  local_postgres_data: {}
-  django_static_volume: {}
+  local_postgres_data: { }
+  django_static_volume: { }
 
 services:
   django: &django
@@ -17,6 +17,7 @@ services:
       - .:/app:z
       - django_static_volume:/app/backend/django_static
     env_file:
+      - ./.envs/.local/.ai
       - ./.envs/.local/.aws
       - ./.envs/.local/.django
       - ./.envs/.local/.postgres
@@ -48,7 +49,7 @@ services:
     depends_on:
       - redis
       - postgres
-    ports: []
+    ports: [ ]
     command: /start-celeryworker
 
   celerybeat:
@@ -58,7 +59,7 @@ services:
     depends_on:
       - redis
       - postgres
-    ports: []
+    ports: [ ]
     command: /start-celerybeat
 
   flower:

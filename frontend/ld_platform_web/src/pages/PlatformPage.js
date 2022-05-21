@@ -4,6 +4,7 @@ import { Routes } from "../routes";
 
 // L&D Platform
 import PlatformDashboard from "./dashboard/Dashboard";
+import CryptoBertBot from "./bots/CryptoBertBot";
 import MyBots from "./my/Bots";
 import MySettings from "./my/Settings";
 import Login from "./auth/LogIn";
@@ -78,6 +79,11 @@ export default () => (
       exact
       path={Routes.PlatformDashboard.path}
       component={PlatformDashboard}
+    />
+    <RouteWithSidebar
+      exact
+      path={Routes.CryptoBertBot.path}
+      component={CryptoBertBot}
     />
     <RouteWithSidebar exact path={Routes.MyBots.path} component={MyBots} />
     <RouteWithSidebar
