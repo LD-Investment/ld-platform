@@ -1,10 +1,7 @@
-from typing import List
-
 from django.db.models.query import QuerySet
 from django.utils import timezone
 from rest_framework import serializers
 
-from ld_platform.ai.indicator.news_tracker import CryptoDeberta
 from ld_platform.apps.bots.models import Bot, SubscribedBot
 from ld_platform.apps.dataset.models import CoinnessNewsData
 from ld_platform.apps.users.models import User
@@ -80,7 +77,9 @@ class IBNewsTrackerAiModelListSerializer(serializers.Serializer):
 
     def get_models(self, obj: SubscribedBot):
         models = Bot.indicator_bot_objects.load_ai_models(bot=obj.bot)
-        return [{"name": m.name, "detail": m.detail} for m in models]
+        return [
+            {"id": i, "name": m.name, "detail": m.detail} for i, m in enumerate(models)
+        ]
 
 
 class IBNewsTrackerAiModelRetrieveSerializer(serializers.Serializer):
@@ -94,32 +93,57 @@ class IBNewsTrackerAiModelRetrieveSerializer(serializers.Serializer):
         return {}
 
 
-class IBNewsTrackerAiModelCalculateSerializer(serializers.Serializer):
-    result = serializers.SerializerMethodField(method_name="calculate_score")
+class IBNewsTrackerAiModelCalculateSerializer(serializers.ModelSerializer):
+    score = serializers.SerializerMethodField(method_name="calculate_score")
 
-    def calculate_score(self, obj: SubscribedBot):
-        models = Bot.indicator_bot_objects.load_ai_models(bot=obj.bot)
-        for m in models:
-            if m.name == self.context["model_name"]:
-                return self._extract_and_get_avg_scores(
-                    news=self.context["news"], model=m
-                )
-        raise serializers.ValidationError("AI Model not found.")
+    class Meta:
+        model = CoinnessNewsData
+        fields = [
+            "id",
+            "date",
+            "title",
+            "content",
+            "score",
+        ]
 
-    @staticmethod
-    def _extract_and_get_avg_scores(news: List[CoinnessNewsData], model: CryptoDeberta):
-        import statistics
+    def calculate_score(self, news: CoinnessNewsData):
+        model = self.context["model"]
+        score = model.calculate(news.title, news.content)
+        result = []
+        for s in score:
+            result.append(round(float(s), 2))
+        return result
 
-        bull_scores = []
-        bear_scores = []
-        neutral_scores = []
-        for n in news:
-            score = model.calculate(n.title, n.content)
-            bull_scores.append(score[0])
-            neutral_scores.append(score[1])
-            bear_scores.append(score[2])
-
-        avg_bull_score = statistics.mean(bull_scores)
-        avg_neutral_score = statistics.mean(neutral_scores)
-        avg_bear_score = statistics.mean(bear_scores)
-        return avg_bull_score, avg_neutral_score, avg_bear_score
+    # @staticmethod
+    # def _deserialize(
+    #     news: List[CoinnessNewsData], model: Union[CryptoDeberta]
+    # ):
+    #     """
+    #     Deserialize to JSON.
+    #     {
+    #         [
+    #             {"id": 1, "title": ..., "content": ..., "date": ..., "score": [.., .., ..]}.
+    #             {"id": 2, "title": ..., "content": ..., "date": ..., "score": [.., .., ..]}
+    #             {"id": 3, "title": ..., "content": ..., "date": ..., "score": [.., .., ..]}
+    #         ],
+    #     }
+    #     """
+    #
+    #     result = []
+    #     # bull_scores = [0]
+    #     # bear_scores = [0]
+    #     # neutral_scores = [0]
+    #
+    #     for i, n in enumerate(news):
+    #         score = model.calculate(n.title, n.content)
+    #         result.append({"id": i, "title": n.title, "content": n.content, "date": n.date, "score": score})
+    #
+    #         # save for average
+    #         # bull_scores.append(score[0])
+    #         # neutral_scores.append(score[1])
+    #         # bear_scores.append(score[2])
+    #
+    #     # avg_bull_score = statistics.mean(bull_scores)
+    #     # avg_neutral_score = statistics.mean(neutral_scores)
+    #     # avg_bear_score = statistics.mean(bear_scores)
+    #     return result

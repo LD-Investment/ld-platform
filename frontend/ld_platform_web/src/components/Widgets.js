@@ -1,6 +1,5 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGlobeEurope } from "@fortawesome/free-solid-svg-icons";
 import { Card, Col, Row } from "@themesberg/react-bootstrap";
 import LdAxios from "ld-axios/axios";
 import { toast } from "react-toastify";
