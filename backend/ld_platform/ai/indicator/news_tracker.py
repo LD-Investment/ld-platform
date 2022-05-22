@@ -16,20 +16,10 @@ MODEL_PATH = os.path.join(
 
 
 class CryptoDeberta:
-
-    tokenizer = AutoTokenizer.from_pretrained(
-        pretrained_model_name_or_path=MODEL_PATH,
-        use_auth_token=env("HUGGING_FACE_CRYPTO_DEBERTA_AUTH_TOKEN"),
-        local_files_only=True,
-    )
-
-    model = AutoModelForSequenceClassification.from_pretrained(
-        pretrained_model_name_or_path=MODEL_PATH,
-        use_auth_token=env("HUGGING_FACE_CRYPTO_DEBERTA_AUTH_TOKEN"),
-        local_files_only=True,
-        num_labels=3,
-    )
-    model.eval()
+    def __new__(cls):
+        if not hasattr(cls, "_instance"):
+            cls._instance = super().__new__(cls)
+        return cls._instance 
 
     def __init__(self):
         # informative
@@ -38,9 +28,20 @@ class CryptoDeberta:
 
         # load models
         logger.info("Loading CryptoDeberta AI model...")
+                
+        self.tokenizer = AutoTokenizer.from_pretrained(
+            pretrained_model_name_or_path=MODEL_PATH,
+            use_auth_token=env("HUGGING_FACE_CRYPTO_DEBERTA_AUTH_TOKEN"),
+            local_files_only=True,
+        )
 
-        self.tokenizer = CryptoDeberta.tokenizer
-        self.model = CryptoDeberta.model
+        self.model = AutoModelForSequenceClassification.from_pretrained(
+            pretrained_model_name_or_path=MODEL_PATH,
+            use_auth_token=env("HUGGING_FACE_CRYPTO_DEBERTA_AUTH_TOKEN"),
+            local_files_only=True,
+            num_labels=3,
+        )
+        self.model.eval()
         logger.info("Initialized CryptoDeberta AI model!")
 
     def calculate(self, title: str, content: str):

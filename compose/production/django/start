@@ -4,6 +4,7 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
+python ld_platform/ai/download.py
 
 python manage.py migrate
 python manage.py collectstatic --noinput

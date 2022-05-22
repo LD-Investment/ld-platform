@@ -52,12 +52,6 @@ COPY --from=python-build-stage /usr/src/app/wheels  /wheels/
 RUN pip install --no-cache-dir --no-index --find-links=/wheels/ /wheels/* \
 	&& rm -rf /wheels/
 
-# download pretrained model
-COPY ${AI_ENV} .
-COPY ./backend/ld_platform/ai/download.py .
-RUN python ${APP_HOME}/download.py
-RUN rm ${APP_HOME}/download.py .ai
-
 COPY ./compose/production/django/entrypoint /entrypoint
 RUN sed -i 's/\r$//g' /entrypoint
 RUN chmod +x /entrypoint
