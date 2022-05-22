@@ -1,4 +1,5 @@
 import logging
+import os
 
 import environ
 import torch
@@ -9,8 +10,26 @@ env = environ.Env()
 
 logger = logging.getLogger(__name__)
 
+MODEL_PATH = os.path.join(
+    env("BASE_MODEL_PATH"), env("HUGGING_FACE_CRYPTO_DEBERTA_MODEL_NAME")
+)
+
 
 class CryptoDeberta:
+
+    tokenizer = AutoTokenizer.from_pretrained(
+        pretrained_model_name_or_path=MODEL_PATH,
+        use_auth_token=env("HUGGING_FACE_CRYPTO_DEBERTA_AUTH_TOKEN"),
+        local_files_only=True,
+    )
+
+    model = AutoModelForSequenceClassification.from_pretrained(
+        pretrained_model_name_or_path=MODEL_PATH,
+        use_auth_token=env("HUGGING_FACE_CRYPTO_DEBERTA_AUTH_TOKEN"),
+        local_files_only=True,
+        num_labels=3,
+    )
+
     def __init__(self):
         # informative
         self.name = "crypto_deberta"
@@ -18,13 +37,9 @@ class CryptoDeberta:
 
         # load models
         logger.info("Loading CryptoDeberta AI model...")
-        self.tokenizer = AutoTokenizer.from_pretrained(
-            pretrained_model_name_or_path=env("HUGGING_FACE_CRYPTO_DEBERTA_MODEL_NAME"),
-            use_auth_token=env("HUGGING_FACE_CRYPTO_DEBERTA_AUTH_TOKEN"))
-        self.model = AutoModelForSequenceClassification.from_pretrained(
-            pretrained_model_name_or_path=env("HUGGING_FACE_CRYPTO_DEBERTA_MODEL_NAME"),
-            use_auth_token=env("HUGGING_FACE_CRYPTO_DEBERTA_AUTH_TOKEN"),
-            num_labels=3)
+
+        self.tokenizer = CryptoDeberta.tokenizer
+        self.model = CryptoDeberta.model
         self.model.eval()
         logger.info("Initialized CryptoDeberta AI model!")
 
