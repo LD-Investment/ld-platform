@@ -29,8 +29,9 @@ export default () => {
   const onSubmitLoginForm = e => {
     e.preventDefault();
     LdAxios.post("/api/auth/login/", {
-      username: e.target.username.value,
-      password: e.target.password.value
+      username: e.target[0].value,
+      email: e.target[1].value,
+      password: e.target[2].value
     })
       .then(res => {
         setLoginFailed(false);
@@ -84,6 +85,21 @@ export default () => {
                         type="text"
                         name="username"
                         placeholder="User ID"
+                      />
+                    </InputGroup>
+                  </Form.Group>
+                  <Form.Group id="username" className="mb-4">
+                    <Form.Label>Your Email</Form.Label>
+                    <InputGroup>
+                      <InputGroup.Text>
+                        <FontAwesomeIcon icon={faIdCard} />
+                      </InputGroup.Text>
+                      <Form.Control
+                        autoFocus
+                        required
+                        type="text"
+                        name="email"
+                        placeholder="User Email"
                       />
                     </InputGroup>
                   </Form.Group>

@@ -1,3 +1,4 @@
+from allauth.account.models import EmailAddress
 from django.core import management
 from django.core.management.base import BaseCommand
 from django.utils import timezone
@@ -32,12 +33,15 @@ class Command(BaseCommand):
         management.call_command("migrate", "--noinput")
 
         """ User setup """
-        User.objects.create_superuser(
+        super_user = User.objects.create_superuser(
             email="admin@ld-invest.com",
             username="admin",
             first_name="LD",
             last_name="Admin",
             password="333",
+        )
+        EmailAddress.objects.create(
+            user=super_user, email="admin@ld-invest.com", verified=True
         )
         user1 = User.objects.create_user(
             email="chungjin93@gmail.com",
