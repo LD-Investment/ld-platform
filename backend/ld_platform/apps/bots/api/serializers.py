@@ -1,3 +1,5 @@
+from typing import List
+
 from django.db.models.query import QuerySet
 from django.utils import timezone
 from rest_framework import serializers

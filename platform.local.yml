@@ -9,6 +9,8 @@ services:
     build:
       context: .
       dockerfile: ./compose/local/django/Dockerfile
+      args:
+        AI_ENV: ./.envs/.local/.ai
     image: ld_platform_local_django
     container_name: django
     depends_on:
