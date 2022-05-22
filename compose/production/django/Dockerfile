@@ -77,6 +77,10 @@ COPY ./compose/production/django/celery/flower/start /start-flower
 RUN sed -i 's/\r$//g' /start-flower
 RUN chmod +x /start-flower
 
+# download pretrained model
+COPY ./backend/ld_platform/ai/download.py .
+RUN python ${APP_HOME}/download.py && rm ${APP_HOME}/download.py
+
 # copy application code to WORKDIR
 COPY --chown=django:django ./backend ${APP_HOME}
 

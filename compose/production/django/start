@@ -4,8 +4,6 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
-python ld_platform/ai/download.py
-
 python manage.py migrate
 python manage.py collectstatic --noinput
 /usr/local/bin/gunicorn config.wsgi --bind 0.0.0.0:8000 --chdir=/app

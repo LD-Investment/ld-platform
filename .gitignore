@@ -405,6 +405,3 @@ modules.xml
 # AWS DynamoDB result
 *.db
 *.db-journal
-
-# Transformer models
-/models
