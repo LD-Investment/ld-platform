@@ -1,4 +1,4 @@
-from typing import List, Union
+from typing import List
 
 from django.db.models.query import QuerySet
 from django.utils import timezone
@@ -107,9 +107,7 @@ class IBNewsTrackerAiModelCalculateSerializer(serializers.Serializer):
         raise serializers.ValidationError("AI Model not found.")
 
     @staticmethod
-    def _extract_and_get_avg_scores(
-        news: List[CoinnessNewsData], model: Union[CryptoDeberta]
-    ):
+    def _extract_and_get_avg_scores(news: List[CoinnessNewsData], model: CryptoDeberta):
         import statistics
 
         bull_scores = []
