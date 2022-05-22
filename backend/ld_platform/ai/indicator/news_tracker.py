@@ -29,6 +29,7 @@ class CryptoDeberta:
         local_files_only=True,
         num_labels=3,
     )
+    model.eval()
 
     def __init__(self):
         # informative
@@ -40,7 +41,6 @@ class CryptoDeberta:
 
         self.tokenizer = CryptoDeberta.tokenizer
         self.model = CryptoDeberta.model
-        self.model.eval()
         logger.info("Initialized CryptoDeberta AI model!")
 
     def calculate(self, title: str, content: str):

@@ -11,7 +11,6 @@ services:
       dockerfile: ./compose/production/django/Dockerfile
       args:
         SSH_PRIVATE_KEY: $SSH_PRIVATE_KEY
-        AI_ENV: ./.envs/.local/.ai
     image: ld_platform_production_django
     container_name: django
     depends_on:

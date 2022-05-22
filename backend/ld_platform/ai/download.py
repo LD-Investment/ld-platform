@@ -1,9 +1,12 @@
 import os
 
-import environ
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
-env = environ.Env()
+with open(".ai", "r") as file:
+    for line in file.readlines():
+        if "=" in line:
+            key, value = line.split("=")
+            os.environ[key] = value.strip()
 
 base_model_path = os.environ["BASE_MODEL_PATH"]
 model_name = os.environ["HUGGING_FACE_CRYPTO_DEBERTA_MODEL_NAME"]
