@@ -79,7 +79,7 @@ RUN chmod +x /start-flower
 
 # download pretrained model
 COPY ./backend/ld_platform/ai/download.py .
-RUN python ${APP_HOME}/download.py && rm ${APP_HOME}/download.py
+RUN python ${APP_HOME}/download.py && rm ${APP_HOME}/download.py && rm -rf /root/.cache
 
 # copy application code to WORKDIR
 COPY --chown=django:django ./backend ${APP_HOME}
