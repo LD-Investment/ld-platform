@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime, timedelta
 from typing import Any
 
 from django.db.models import Q, QuerySet
@@ -147,13 +148,22 @@ class IBNewsTrackerAiModelViewSet(viewsets.ModelViewSet):
         """
         # TODO: Impl query param for date selection.
         #  refer https://www.django-rest-framework.org/api-guide/filtering/#djangofilterbackend
-        news = CoinnessNewsData.objects.all().order_by("article_num")
-
         obj = self.get_object()
         self.check_object_permissions(request, obj)
 
         # Serialize
-        serializer = self.get_serializer(
-            obj, context={"news": news, "model_name": self.kwargs["model_name"]}
-        )
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        sd = datetime.strptime(self.request.data["start_date"], "%Y-%m-%d").date()
+        ed = datetime.strptime(
+            self.request.data["end_date"], "%Y-%m-%d"
+        ).date() + timedelta(days=1)
+
+        qs = CoinnessNewsData.objects.filter(
+            date__gte=sd,
+            date__lte=ed,
+        ).order_by("article_num")
+        models = Bot.indicator_bot_objects.load_ai_models(bot=obj.bot)
+        for m in models:
+            if m.name == self.kwargs["model_name"]:
+                serializer = self.get_serializer(qs, many=True, context={"model": m})
+                return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_404_NOT_FOUND)

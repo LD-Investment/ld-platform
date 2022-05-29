@@ -3,6 +3,7 @@
 FROM node:17-alpine as build
 
 WORKDIR /app/frontend
+COPY  ./.envs/.production/.webpack /app/frontend/.env.production
 COPY  ./frontend /app/frontend
 RUN npm ci --silent
 RUN npm run build
