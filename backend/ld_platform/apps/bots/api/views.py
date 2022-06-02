@@ -7,6 +7,7 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status, viewsets
 from rest_framework.exceptions import NotFound
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -90,6 +91,12 @@ class BotSubscribeViewSet(viewsets.GenericViewSet):
 #  Note: IB will be prefixed to every ViewSet classes that represent Indicator Bot.
 
 
+class SmallResultsSetPagination(PageNumberPagination):
+    page_size = 5
+    page_size_query_param = "page_size"
+    max_page_size = 10
+
+
 class IBNewsTrackerAiModelViewSet(viewsets.ModelViewSet):
     serializer_class = IBNewsTrackerAiModelListSerializer
     permission_classes = [
@@ -99,6 +106,8 @@ class IBNewsTrackerAiModelViewSet(viewsets.ModelViewSet):
         & IsSubscriptionValid
         & IsNewsTrackerBot
     ]
+
+    pagination_class = SmallResultsSetPagination
 
     def get_object(self) -> SubscribedBot:
         qs = self.get_queryset()
@@ -164,6 +173,7 @@ class IBNewsTrackerAiModelViewSet(viewsets.ModelViewSet):
         models = Bot.indicator_bot_objects.load_ai_models(bot=obj.bot)
         for m in models:
             if m.name == self.kwargs["model_name"]:
+                qs = self.paginate_queryset(qs)
                 serializer = self.get_serializer(qs, many=True, context={"model": m})
-                return Response(serializer.data, status=status.HTTP_200_OK)
+                return self.get_paginated_response(serializer.data)
         return Response(status=status.HTTP_404_NOT_FOUND)
