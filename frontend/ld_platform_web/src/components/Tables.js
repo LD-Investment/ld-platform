@@ -22,6 +22,7 @@ import Datetime from "react-datetime";
 import { CalendarIcon } from "@heroicons/react/solid";
 import moment from "moment-timezone";
 import AccordionComponent from "./AccordionComponent";
+import { CustomPagination } from "./Pagination";
 
 export const SubscribedBotTable = () => {
   const [subscribedBots, setSubscribedBots] = React.useState([]);
@@ -122,38 +123,36 @@ export const SubscribedBotTable = () => {
 
 export const NewsTrackerNewsTable = () => {
   const [showSelectModal, setShowSelectModal] = React.useState(false);
+  const [totalPage, setTotalPage] = React.useState(0);
+  const [pageNum, setPageNum] = React.useState(1);
   const [newsLists, setNewsLists] = React.useState([]);
   const [selectedAiModelName, setSelectedAiModelName] = React.useState(null);
   const [selectedStartDate, setSelectedStartDate] = React.useState(null);
   const [selectedEndDate, setSelectedEndDate] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(false);
+  const baseUrl = `/api/bots/indicator/news-tracker/ai-model/${selectedAiModelName}/calculate?page=${pageNum}`;
 
   React.useEffect(() => {
     if (!selectedAiModelName) return;
     setIsLoading(true);
-    LdAxios.post(
-      `/api/bots/indicator/news-tracker/ai-model/${selectedAiModelName}/calculate`,
-      {
-        start_date: selectedStartDate.toString(),
-        end_date: selectedEndDate.toString()
-      }
-    ).then(response => {
+    LdAxios.post(baseUrl, {
+      start_date: selectedStartDate.toString(),
+      end_date: selectedEndDate.toString()
+    }).then(response => {
       setIsLoading(false);
       if (!response) return;
-      setNewsLists(response.data.data);
+      setNewsLists(response.data.data.results);
+      setTotalPage(
+        response.data.data.count / response.data.data.results.length
+      );
     });
-  }, [selectedAiModelName, selectedStartDate, selectedEndDate]);
+  }, [selectedAiModelName, baseUrl, selectedStartDate, selectedEndDate]);
 
   const NewsTable = () => {
     const TableRow = props => {
       const { id, title, content, date, score } = props;
       return (
         <tr>
-          <td>
-            <Card.Link href="#" className="text-primary fw-bold">
-              {id}
-            </Card.Link>
-          </td>
           <td>{date}</td>
           <td>
             <AccordionComponent
@@ -222,7 +221,6 @@ export const NewsTrackerNewsTable = () => {
           >
             <thead className="thead-light">
               <tr>
-                <th className="border-0">#</th>
                 <th className="border-0">Date</th>
                 <th className="border-0">News</th>
                 <th className="border-0">Score</th>
@@ -235,6 +233,14 @@ export const NewsTrackerNewsTable = () => {
               ))}
             </tbody>
           </Table>
+        </Card.Body>
+        <Card.Body>
+          <CustomPagination
+            withIcons={true}
+            totalPages={totalPage}
+            pageNum={pageNum}
+            setPageNum={setPageNum}
+          />
         </Card.Body>
       </Card>
     );
