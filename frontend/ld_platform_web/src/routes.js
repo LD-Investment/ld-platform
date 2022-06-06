@@ -10,6 +10,7 @@ export const Routes = {
 
   Login: { path: "/auth/login" },
   Signup: { path: "/auth/signup" },
+  SuccessSignup: { path: "/auth/success-signup" },
   ForgotPassword: { path: "/auth/forgot-password" },
   ResetPassword: { path: "/auth/reset-password" },
 

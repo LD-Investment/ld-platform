@@ -9,6 +9,7 @@ import MyBots from "./my/Bots";
 import MySettings from "./my/Settings";
 import Login from "./auth/LogIn";
 import Signup from "./auth/Signup";
+import SuccessSignup from "./auth/SuccessSignup";
 import ForgotPassword from "./auth/ForgotPassword";
 import ResetPassword from "./auth/ResetPassword";
 import NotFoundPage from "./errors/NotFound";
@@ -98,6 +99,11 @@ export default () => (
     />
     <RouteWithLoader exact path={Routes.Login.path} component={Login} />
     <RouteWithLoader exact path={Routes.Signup.path} component={Signup} />
+    <RouteWithLoader
+      exact
+      path={Routes.SuccessSignup.path}
+      component={SuccessSignup}
+    />
     <RouteWithLoader
       exact
       path={Routes.ForgotPassword.path}
