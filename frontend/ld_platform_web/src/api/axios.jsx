@@ -2,7 +2,7 @@ import axios from "axios";
 import { Routes } from "../routes";
 
 const LdAxios = axios.create({
-  baseURL: process.env.REACT_APP_BASE_URL,
+  baseURL: import.meta.env.REACT_APP_BASE_URL,
   withCredentials: true,
   headers: {
     "content-type": "application/json"

@@ -3,7 +3,6 @@ import { createContext, useContext } from "react";
 import LdAxios from "ld-axios/axios";
 
 export class UserStore {
-  @observable
   userInfo = {
     username: "",
     email: "",
@@ -14,12 +13,10 @@ export class UserStore {
     makeObservable(this);
   }
 
-  @computed
   get isUserInfoEmpty() {
     return this.userInfo.username === "" || this.userInfo.email === "";
   }
 
-  @action
   initUserInfo = data => {
     this.userInfo = {
       username: data.username,
@@ -29,7 +26,6 @@ export class UserStore {
     };
   };
 
-  @action
   updateUserInfo = () => {
     LdAxios.get("/api/users/profile/").then(res => {
       if (res) {
@@ -38,7 +34,6 @@ export class UserStore {
     });
   };
 
-  @action
   resetUserInfo = () => {
     this.userInfo = {
       username: "",
