@@ -42,33 +42,33 @@ services:
     image: redis:6
     container_name: redis
 
-  celeryworker:
-    <<: *django
-    image: ld_platform_local_celeryworker
-    container_name: celeryworker
-    depends_on:
-      - redis
-      - postgres
-    ports: [ ]
-    command: /start-celeryworker
+#   celeryworker:
+#     <<: *django
+#     image: ld_platform_local_celeryworker
+#     container_name: celeryworker
+#     depends_on:
+#       - redis
+#       - postgres
+#     ports: [ ]
+#     command: /start-celeryworker
 
-  celerybeat:
-    <<: *django
-    image: ld_platform_local_celerybeat
-    container_name: celerybeat
-    depends_on:
-      - redis
-      - postgres
-    ports: [ ]
-    command: /start-celerybeat
+#   celerybeat:
+#     <<: *django
+#     image: ld_platform_local_celerybeat
+#     container_name: celerybeat
+#     depends_on:
+#       - redis
+#       - postgres
+#     ports: [ ]
+#     command: /start-celerybeat
 
-  flower:
-    <<: *django
-    image: ld_platform_local_flower
-    container_name: flower
-    ports:
-      - "5555:5555"
-    command: /start-flower
+#   flower:
+#     <<: *django
+#     image: ld_platform_local_flower
+#     container_name: flower
+#     ports:
+#       - "5555:5555"
+#     command: /start-flower
 
   react:
     build:
@@ -100,11 +100,11 @@ services:
       - "80:80"
       - "443:443"
 
-  selenium-chrome:
-    image: selenium/standalone-chrome
-    container_name: selenium-chrome
-    ports:
-      - "4444:4444"
+#   selenium-chrome:
+#     image: selenium/standalone-chrome
+#     container_name: selenium-chrome
+#     ports:
+#       - "4444:4444"
 
   mailhog:
     image: mailhog/mailhog
