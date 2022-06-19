@@ -36,8 +36,7 @@ export default () => {
     })
       .then(() => {
         setSignUpFailed(false);
-        // redirect to login page
-        window.location.href = `/#${Routes.Login.path}`;
+        window.location.href = `/#${Routes.SuccessSignup.path}`;
       })
       .catch(e => {
         setSignUpFailed(true);

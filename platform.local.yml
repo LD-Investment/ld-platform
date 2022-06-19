@@ -96,6 +96,7 @@ services:
     depends_on:
       - django
       - react
+      - mailhog
     ports:
       - "80:80"
       - "443:443"
